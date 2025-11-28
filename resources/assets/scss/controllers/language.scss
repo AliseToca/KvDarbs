@@ -1,0 +1,33 @@
+@use '@environment' as *;
+
+.language {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+
+    svg {
+        width: 320px;
+        height: 68px;
+        fill: var(--color-white);
+    }
+
+    h1 {
+        @include baseline-box(63px, 72px);
+        color: var(--color-white);
+    }
+
+    form.container {
+        @include container(570px, 24px);
+        background-color: var(--color-white);
+        padding-top: steps(3);
+        padding-bottom: steps(3);
+        border-radius: 8px;
+        margin-top: steps(6);
+        margin-bottom: steps(6);
+    }
+
+    form p {
+        text-align: center;
+    }
+}

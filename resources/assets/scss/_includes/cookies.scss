@@ -1,0 +1,232 @@
+@use '@environment' as *;
+
+.cookies-layer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    max-height: 100vh;
+    transition: all $transition-timing $transition-animation;
+
+    &.expanded {
+        overflow-y: auto;
+
+        .cookies-settings {
+            max-height: 1000px;
+        }
+    }
+
+    &[data-hidden='true'] {
+        display: none;
+    }
+
+    .cookies-notice {
+        background-color: var(--color-gray);
+
+        .container {
+            padding-top: 24px;
+            padding-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+
+            .actions {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-evenly;
+
+                button {
+                    margin: 0 16px;
+                }
+
+                a,
+                button {
+                    margin-top: 24px;
+                }
+            }
+        }
+    }
+
+    .cookies-settings {
+        background-color: var(--color-white);
+        max-height: 0;
+        overflow: hidden;
+        transition: all $transition-timing $transition-animation;
+
+        .container {
+            flex-direction: column;
+
+            form {
+                display: flex;
+                width: 100%;
+                padding: 40px 0;
+                flex-direction: column;
+            }
+
+            .cookie-group-options {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+
+                label {
+                    margin-right: 16px;
+                }
+            }
+        }
+
+        .details {
+            width: 100%;
+            padding-bottom: 40px;
+
+            .tabs {
+                position: relative;
+                display: flex;
+
+                .form-field {
+                    margin-bottom: 0;
+                }
+
+                .form-field .wrapper {
+                    border-bottom: unset;
+                }
+            }
+
+            .content {
+                height: 280px;
+                border: 1px solid var(--color-dimgray);
+
+                & > *:not(:first-child) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .overview {
+        display: flex;
+
+        .cookie-group-list {
+            width: 30%;
+            margin-right: 10px;
+        }
+
+        .cookie-group {
+            display: flex;
+            width: 100%;
+            background: var(--color-white);
+            color: var(--color-text);
+            padding: 12px;
+            font-size: 12px;
+            border-bottom: 1px solid var(--color-dimgray);
+            transition: all 0.2s;
+
+            &:hover,
+            &.selected {
+                background-color: var(--color-gray);
+            }
+        }
+
+        .cookie-group-details-container {
+            width: 70%;
+            height: 280px;
+            overflow: auto;
+            padding: 18px 14px;
+
+            .description {
+                margin-bottom: 14px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border-style: hidden;
+                border-bottom: 1px solid var(--color-gray);
+            }
+
+            th {
+                background-color: var(--color-gray);
+                text-align: left;
+            }
+
+            th,
+            td {
+                text-align: left;
+                vertical-align: top;
+                padding: 4px;
+                font-size: 12px;
+            }
+
+            table td + td {
+                border-left: 1px solid var(--color-gray);
+            }
+
+            table tr + tr td {
+                border-top: 1px solid var(--color-gray);
+            }
+        }
+    }
+
+    .about-cookies {
+        width: 100%;
+        height: 100%;
+        max-height: 280px;
+        overflow: auto;
+        padding: 18px 14px;
+    }
+
+    @include for-at-least($tablet) {
+        .cookies-notice {
+            .container {
+                flex-flow: row nowrap;
+
+                .actions {
+                    margin-left: 40px;
+                    flex-wrap: nowrap;
+                }
+
+                .actions a,
+                .actions button {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        .cookies-settings .container {
+            form {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .cookie-group-options {
+                padding-bottom: 0;
+                align-items: flex-start;
+                justify-content: flex-start;
+                width: 75%;
+            }
+        }
+
+        .overview {
+            .cookie-group-details-container {
+                .description {
+                    margin-bottom: 28px;
+                }
+
+                th,
+                td {
+                    padding: 12px;
+                    font-size: 14px;
+                }
+            }
+
+            .cookie-group {
+                padding: 18px 24px;
+                font-size: 16px;
+                white-space: nowrap;
+            }
+        }
+    }
+}

@@ -1,0 +1,5 @@
+@use '@environment' as *;
+
+.accordion-item {
+    max-width: steps(100);
+}

@@ -1,0 +1,114 @@
+@use '@environment' as *;
+
+.pagination {
+    display: flex;
+    align-items: center;
+    margin-top: steps(2);
+
+    .loading-indicator {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+
+        .loader {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: steps(4);
+            height: steps(4);
+        }
+    }
+
+    button {
+        padding-block: 0;
+        padding-inline: steps(0.5);
+        display: block;
+        min-width: var(--button-height);
+
+        span {
+            color: var(--color-neutral-700);
+            padding-inline: 0;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        svg {
+            color: var(--color-primary-300);
+            width: steps(4);
+            height: steps(4);
+        }
+
+        &:disabled:not(.icon-only) {
+            opacity: 1;
+
+            span {
+                color: var(--color-neutral-700);
+            }
+        }
+
+        &:hover {
+            span {
+                color: var(--color-primary-300);
+            }
+        }
+
+        &.icon-only {
+            padding: 0;
+        }
+    }
+
+    @include for-at-least($tablet) {
+        .pagination-item {
+            &:first-of-type {
+                margin-right: steps(1.5);
+            }
+
+            &:last-of-type {
+                margin-left: steps(1.5);
+            }
+        }
+
+        button {
+            &.active {
+                background-color: var(--color-primary-050);
+                pointer-events: none;
+
+                &:hover {
+                    background-color: var(--color-primary-050);
+                }
+
+                span {
+                    color: var(--color-primary-400);
+                }
+            }
+        }
+    }
+
+    @include until($phone) {
+        .pagination-item {
+            display: none;
+
+            &.active,
+            &:nth-of-type(1),
+            &:nth-last-child(1),
+            &:nth-last-child(2) {
+                display: block;
+            }
+
+            &.active {
+                display: flex;
+                align-items: center;
+
+                &:after {
+                    content: '/';
+                    width: steps(2);
+                    text-align: center;
+                    display: block;
+                    color: var(--color-neutral-700);
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,87 @@
+@use '@environment' as *;
+
+.searchable-select {
+    position: relative;
+
+    .control {
+        span {
+            display: inline-block;
+            min-height: steps(6);
+            @include paragraph-secondary;
+            border: none;
+            background-color: var(--color-white);
+            color: var(--color-text);
+            appearance: none;
+            line-height: normal;
+            flex: 1 1 auto;
+            padding: steps(1) + 4 var(--field-padding-inline);
+            outline: 0 solid var(--color-primary-100);
+            transition:
+                all 0.2s ease-in-out,
+                height 0s;
+            border-radius: inherit;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex-grow: 1;
+            padding-inline-end: steps(5);
+
+            &::placeholder {
+                color: var(--color-gray-400);
+                font-weight: 400;
+            }
+        }
+    }
+
+    .searchable-select-dropdown {
+        width: 100%;
+        position: absolute;
+        z-index: 50;
+        margin-top: steps(0.5);
+        background-color: var(--color-white);
+        border-radius: steps(0.5) + 2;
+        box-shadow:
+            0 4px 6px -1px rgb(0 0 0 / 10%),
+            0 2px 4px -1px rgb(0 0 0 / 6%);
+
+        .hidden-input {
+            height: 0;
+            width: 0;
+            visibility: hidden;
+            padding: 0;
+            margin: 0;
+            float: right;
+        }
+
+        .searchable-select-search {
+            width: 100%;
+            padding: steps(1) steps(1.5);
+            border: 1px solid var(--color-neutral-950);
+            border-radius: steps(0.5) + 2;
+            margin-bottom: steps(1);
+
+            &:focus {
+                outline: 2px solid var(--color-primary-100);
+            }
+        }
+
+        .options-container {
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
+        .searchable-select-option {
+            padding: steps(1) steps(2);
+            min-height: steps(4);
+            display: flex;
+            align-items: center;
+            line-height: 1.5;
+            cursor: pointer;
+
+            &:hover,
+            &:not(.default).selected {
+                background-color: var(--color-primary-150);
+            }
+        }
+    }
+}

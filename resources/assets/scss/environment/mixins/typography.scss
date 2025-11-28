@@ -1,0 +1,49 @@
+@use '../variables' as *;
+@use '../mixins/media' as *;
+@use '../mixins/text' as *;
+
+@mixin paragraph() {
+    @include font-regular;
+    font-size: steps(1);
+    line-height: 1.5em;
+}
+
+@mixin paragraph-main() {
+    @include font-regular;
+    font-size: steps(1.125);
+    line-height: 1.5em;
+
+    @include for-at-least($tablet) {
+        font-size: steps(1.25);
+    }
+}
+
+@mixin paragraph-secondary() {
+    @include font-regular;
+    font-size: steps(0.875);
+    line-height: 1.5em;
+}
+
+@mixin paragraph-tiny() {
+    @include font-regular;
+}
+
+@mixin highlight-text() {
+    @include font-regular;
+}
+
+@mixin heading-h1() {
+    @include font-regular;
+}
+
+@mixin heading-h2() {
+    @include font-regular;
+}
+
+@mixin heading-h3() {
+    @include font-regular;
+}
+
+@mixin heading-h4() {
+    @include font-regular;
+}

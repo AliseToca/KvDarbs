@@ -1,0 +1,52 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ES6"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": false,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "types": ["node"],
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "preserve",
+        "baseUrl": "./",
+        "paths": {
+            "@root/*": ["resources/assets/js/*"],
+            "@controllers/*": ["resources/assets/js/controllers/*"],
+            "@helpers/*": ["resources/assets/js/helpers/*"],
+            "@modules/*": ["resources/assets/js/modules/*"],
+            "@definitions/*": ["resources/assets/js/definitions/*"],
+            "@utilities/*": ["resources/assets/js/utilities/*"],
+            "@environment/*": ["resources/assets/scss/environment/*"],
+            "@scss/*": ["resources/assets/scss/*"],
+        }
+    },
+    "include": [
+        "resources/assets/js/**/*",
+        "resources/assets/scss/**/*",
+        "vite.config.ts",
+        "vite/**/*.ts",
+        "vite.admin.config.ts",
+        "vite.config.ts"
+    ],
+    "exclude": [
+        "app/**",
+        "bootstrap/**",
+        "build/**",
+        "dist/**",
+        "lang/**",
+        "node_modules/**",
+        "packages/**",
+        "public/**",
+        "routes/**",
+        "storage/**",
+        "tests/**",
+        "vendor/**",
+    ]
+}

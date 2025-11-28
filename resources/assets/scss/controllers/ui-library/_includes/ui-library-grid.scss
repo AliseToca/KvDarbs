@@ -1,0 +1,50 @@
+@use '@environment' as *;
+
+.grid-container {
+    &.demo {
+        place-content: center;
+        gap: steps(2);
+
+        > * {
+            border: 1px solid var(--color-ui-library-gray-4);
+            padding: steps(1);
+            background-color: var(--color-ui-library-gray-3);
+        }
+
+        .grid-column-1 {
+            @include grid-column(1);
+        }
+
+        .item-1,
+        .item-2,
+        .item-3 {
+            @include grid-column(4);
+        }
+
+        .item-4 {
+            @include grid-column(3, 2);
+        }
+
+        .item-5 {
+            @include grid-column(3);
+        }
+
+        .item-6 {
+            @include grid-column(3, 0);
+        }
+
+        .item-7 {
+            @include grid-column(3);
+        }
+
+        .item-8 {
+            @include grid-column(3, 9);
+        }
+    }
+
+    @for $i from 1 through 12 {
+        .column-#{$i} {
+            @include grid-column($i);
+        }
+    }
+}

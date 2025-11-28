@@ -1,0 +1,35 @@
+@use '../variables.scss' as *;
+
+@mixin grid-column($span, $offset-start: -1) {
+    $start: $offset-start + 1;
+    $end: $start + $span;
+
+    @if $offset-start >= 0 {
+        grid-column: $start / span $span;
+    } @else {
+        grid-column: span $span;
+    }
+}
+
+/*
+// Example usage:
+
+// HTML structure:
+// <div class="grid-container">
+//   <div class="grid-item item-1"></div>
+//   <div class="grid-item item-2"></div>
+//   <div class="grid-item item-3"></div>
+// </div>
+
+.grid-item {
+  &.item-1 {
+    @include grid-column(4); // Span 4 columns
+  }
+
+  &.item-2 {
+    @include grid-column(4, 2); // Span 4 columns, offset 2 columns from the start
+  }
+
+}
+
+*/

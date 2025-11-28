@@ -1,0 +1,7 @@
+@use '@environment' as *;
+
+.tabs {
+    .panel-container {
+        padding: steps(4);
+    }
+}

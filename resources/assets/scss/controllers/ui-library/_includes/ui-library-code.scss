@@ -1,0 +1,82 @@
+@use '@environment' as *;
+@use 'highlight.js/styles/tokyo-night-dark.css' as *;
+@import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:wght@300..700&family=Inter:opsz,wght@14..32,100..900&display=swap');
+
+.code-example {
+    border-radius: steps(1);
+    display: inline-flex;
+    position: relative;
+    flex-grow: 0;
+    width: auto;
+    margin-right: auto;
+    margin-block: steps(1);
+
+    &,
+    pre {
+        max-width: 100%;
+    }
+
+    > * {
+        margin: 0;
+    }
+
+    pre code.hljs {
+        padding: steps(1.75) steps(3) steps(1.75) steps(2.5);
+
+        &,
+        * {
+            font-size: rem(15);
+            line-height: 1.5em;
+        }
+    }
+
+    &:has(.button[disabled]) {
+        pointer-events: none;
+
+        > code {
+            pointer-events: all;
+        }
+    }
+
+    &:hover {
+        button {
+            opacity: 1;
+        }
+    }
+
+    button {
+        --height: 1.4rem;
+        line-height: 1em;
+        padding-inline: steps(1);
+        font-size: 0.75rem;
+        border-radius: rem(4);
+        position: absolute;
+        right: rem(4);
+        top: rem(4);
+        font-weight: 600;
+        opacity: 0;
+        z-index: 1;
+        background-color: var(--color-ui-library-primary);
+        color: var(--color-white);
+        padding: steps(0.75) steps(1.5);
+
+        &:hover {
+            color: var(--color-white);
+            background-color: var(--color-ui-library-primary);
+        }
+
+        @include transition(
+            (
+                opacity: 0.2s,
+            )
+        );
+
+        &:disabled {
+            background-color: var(--color-ui-library-primary);
+            cursor: default;
+            transition: 0.6s all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+}

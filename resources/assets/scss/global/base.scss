@@ -1,0 +1,36 @@
+@use '@environment' as *;
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.preload-transitions * {
+    $null-transition: none !important;
+    transition: $null-transition;
+}
+
+body {
+    position: relative;
+    color: var(--color-text);
+    @include font-regular;
+    z-index: 1;
+
+    &::selection {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+
+    @include for-at-least($tablet) {
+        z-index: 2;
+    }
+
+    @include for-at-least($desktop) {
+        z-index: 3;
+    }
+}
+
+.container {
+    @include container;
+}

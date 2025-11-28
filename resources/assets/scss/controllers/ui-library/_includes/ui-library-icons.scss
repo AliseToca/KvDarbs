@@ -1,0 +1,27 @@
+@use '@environment' as *;
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(steps(16), 1fr));
+    gap: steps(1);
+    row-gap: steps(3);
+    margin-top: steps(3);
+    margin-bottom: steps(3);
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: steps(2);
+        text-align: center;
+    }
+
+    svg {
+        width: steps(4);
+        height: steps(4);
+    }
+
+    code {
+        margin-inline: 0;
+    }
+}

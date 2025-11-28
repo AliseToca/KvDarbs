@@ -1,0 +1,279 @@
+@use '@environment' as *;
+
+.tns-outer {
+    position: relative;
+
+    [hidden] {
+        display: none !important;
+    }
+
+    [aria-controls],
+    [data-action] {
+        cursor: pointer;
+    }
+}
+
+.tns-slider {
+    will-change: transform;
+    transition: all 0s;
+
+    > .tns-item {
+        user-select: none;
+        box-sizing: border-box;
+
+        /* stylelint-disable-next-line */
+        &.tns-fadeIn {
+            position: relative;
+            z-index: 5;
+        }
+    }
+
+    img,
+    svg {
+        pointer-events: none;
+    }
+}
+
+.tns-horizontal {
+    &.tns-subpixel {
+        white-space: nowrap;
+
+        > .tns-item {
+            display: inline-block;
+            white-space: normal;
+            vertical-align: top;
+        }
+    }
+
+    &.tns-no-subpixel {
+        &:after {
+            content: '';
+            clear: both;
+            display: table;
+        }
+
+        > .tns-item {
+            float: left;
+        }
+    }
+
+    &.tns-carousel {
+        &.tns-no-subpixel {
+            > .tns-item {
+                margin-right: -100%;
+            }
+        }
+    }
+}
+
+.tns-no-calc {
+    position: relative;
+    left: 0;
+}
+
+.tns-gallery {
+    position: relative;
+    left: 0;
+    min-height: 1px;
+
+    > .tns-item {
+        position: absolute;
+        left: -100%;
+        transition:
+            transform 0s,
+            opacity 0s;
+    }
+
+    > .tns-slide-active {
+        position: relative;
+        left: auto !important;
+    }
+
+    > .tns-moving {
+        transition: all 0.25s;
+    }
+}
+
+.tns-autowidth {
+    display: inline-block;
+}
+
+.tns-lazy-img {
+    opacity: 0.6;
+    transition: opacity 0.6s;
+
+    &.tns-complete {
+        opacity: 1;
+    }
+}
+
+.tns-ah {
+    transition: height 0s;
+}
+
+.tns-ovh {
+    overflow: hidden;
+}
+
+.tns-visually-hidden {
+    position: absolute;
+    left: -10000em;
+}
+
+.tns-transparent {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.tns-normal {
+    z-index: -1;
+    opacity: 0;
+}
+
+.tns-vpfix {
+    white-space: nowrap;
+
+    > div,
+    > li {
+        display: inline-block;
+    }
+}
+
+$width: 310px;
+$height: 10px;
+$count: 70;
+$perpage: 3;
+
+.tns-t {
+    &-subp2 {
+        position: relative;
+        overflow: hidden;
+        width: $width;
+        height: $height;
+        margin: 0 auto;
+    }
+
+    &-ct {
+        position: absolute;
+        right: 0;
+        width: calc(100% * #{$count} / #{$perpage});
+
+        &:after {
+            content: '';
+            clear: both;
+            display: table;
+        }
+
+        > div {
+            float: left;
+            width: calc(100% / #{$count});
+            height: $height;
+        }
+    }
+}
+
+.slider-controls {
+    display: flex;
+    gap: steps(2);
+    align-items: center;
+    justify-content: center;
+
+    button {
+        background-color: transparent;
+
+        &[data-controls='next'] {
+            order: 2;
+        }
+
+        &[data-controls='prev'] {
+            order: 0;
+        }
+
+        svg {
+            width: steps(5);
+            height: steps(5);
+        }
+    }
+
+    .slider-nav {
+        order: 1;
+    }
+}
+
+.tns-nav {
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    gap: steps(1.5);
+    align-items: center;
+    justify-content: center;
+
+    > * {
+        pointer-events: all;
+    }
+
+    button {
+        position: relative;
+        width: var(--dot-width);
+        height: var(--dot-height);
+        margin: 0;
+        border: none;
+        appearance: none;
+        background: none;
+        background-color: var(--color-gray);
+        transition: background 0.4s ease-in-out;
+
+        &.tns-nav-active {
+            background-color: var(--color-primary);
+        }
+    }
+}
+
+.slider {
+    --gutter: #{steps(4)};
+    display: flex;
+    gap: steps(2);
+    width: 100%;
+
+    .tns-outer {
+        flex-grow: 1;
+    }
+
+    .tns-nav {
+        button {
+            --dot-width: #{rem(6)};
+            --dot-height: #{rem(6)};
+            border-radius: rem(4);
+        }
+    }
+
+    [aria-hidden='true'] {
+        pointer-events: none;
+    }
+
+    &.vertical {
+        flex-direction: row;
+
+        .tns-slider,
+        .slider-controls,
+        .slider-nav {
+            flex-direction: column;
+        }
+    }
+
+    &.horizontal {
+        flex-direction: column;
+
+        .slider-nav {
+            flex-direction: row;
+
+            button {
+                @include transition;
+
+                &.tns-nav-active {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+@use '@environment' as *;
+@use 'global' as *;
+@use '@environment/variables/color';
+@use '_includes/header';
+@use 'components/picture';
+
+a.skip-main {
+    left: -999px;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: -999;
+}
+
+a.skip-main:focus,
+a.skip-main:active {
+    padding: 12px 0;
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 0;
+    top: 0;
+    z-index: 999;
+}

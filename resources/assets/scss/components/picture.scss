@@ -1,0 +1,38 @@
+@use '@environment' as *;
+
+figure.picture {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: steps(1);
+
+    picture {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+        background-color: var(--color-gray);
+
+        img {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: opacity 0.4s cubic-bezier(0.55, 0.09, 0.68, 0.53);
+            will-change: opacity;
+
+            &.loading {
+                transition: unset;
+                opacity: 0;
+            }
+        }
+    }
+
+    figcaption {
+        margin-top: steps(1);
+        font-size: 0.875rem;
+        color: var(--color-dimgray);
+        line-height: 1.5em;
+    }
+}

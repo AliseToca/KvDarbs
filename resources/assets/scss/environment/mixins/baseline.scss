@@ -1,0 +1,56 @@
+@use '../functions/baseline' as *;
+
+/* baseline-box mixin sets the font size, line-height and paddings
+* so that the baseline of the text in the box sits exactly on the baseline grid
+*
+* this mixin should be used inside every css rule
+* that alters the font-size, line-height or top/bottom paddings
+
+* baseline-box should be used only on the most inner block element
+* that contains the actual content
+*
+* also, baseline-boxes should not be nested
+* because the baseline paddings would accumulate and create a wrong result
+*
+* e.g.
+* in case of
+* <div class="foo"><p><strong>Lorem ipsum</strong></p></div>
+*
+* the baseline-box should be applied only to ".foo p"
+* and not ".foo" itself
+
+* if a more detailed padding definition is needed
+* set the font-size and line-height separately
+* and use the baseline padding methods from functions/baseline directly
+* so that additional padding can be added
+
+* NOTE: Trident engine truncates all units to two decimal places
+* which causes all relative sizes to gradually drift off due to rounding errors.
+* Therefore the baseline grid is NOT preserved in any version of IE up to and including at least IE11.
+*/
+
+@mixin baseline-box(
+    $font-size-in-px,
+    $line-height-in-px,
+    $letter-spacing-in-px: normal,
+    $extra-top-padding-in-px: 0,
+    $extra-bottom-padding-in-px: 0
+) {
+    @include font-dimensions($font-size-in-px, $line-height-in-px, $letter-spacing-in-px);
+    @include baseline-paddings(
+        $font-size-in-px,
+        $line-height-in-px,
+        $extra-top-padding-in-px,
+        $extra-bottom-padding-in-px
+    );
+}
+
+@mixin baseline-paddings(
+    $font-size-in-px,
+    $line-height-in-px,
+    $extra-top-padding-in-px: 0,
+    $extra-bottom-padding-in-px: 0
+) {
+    padding-top: baseline-top-padding($font-size-in-px, $line-height-in-px, $extra-top-padding-in-px);
+    padding-bottom: baseline-bottom-padding($font-size-in-px, $line-height-in-px, $extra-bottom-padding-in-px);
+}

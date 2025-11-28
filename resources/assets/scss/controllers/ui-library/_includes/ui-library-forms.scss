@@ -1,0 +1,13 @@
+@use '@environment' as *;
+
+.fields-container {
+    margin-top: steps(2);
+
+    > * {
+        @include grid-column(5);
+    }
+
+    .form-field {
+        margin-bottom: steps(1);
+    }
+}

@@ -1,0 +1,62 @@
+@use 'sass:map';
+@use '../variables/breakpoint' as *;
+@use '../mixins/media' as *;
+
+$button-sizes: () !default;
+
+/// Applies CSS vars for a size config (incl. responsive overrides)
+@mixin button-size-variables($cfg) {
+    --height: #{map.get($cfg, height)};
+    --font-size: #{map.get($cfg, font-size)};
+    --line-height: #{map.get($cfg, line-height)};
+    --icon-size: #{map.get($cfg, icon-size)};
+    --border-width: #{map.get($cfg, border-width)};
+    --padding-inline: calc(#{map.get($cfg, padding-inline)} - (var(--border-width) * 2));
+    --border-radius: #{map.get($cfg, border-radius)};
+    --padding-block: calc(((var(--height) - var(--line-height)) / 2) - (var(--border-width) * 2));
+    --gap: #{map.get($cfg, gap)};
+
+    $bps: $phone-lg, $tablet, $desktop;
+    @each $bp in $bps {
+        @if map.has-key($cfg, $bp) {
+            $over: map.get($cfg, $bp);
+            @include for-at-least(#{$bp}) {
+                @if map.has-key($over, height) {
+                    --height: #{map.get($over, height)};
+                }
+                @if map.has-key($over, font-size) {
+                    --font-size: #{map.get($over, font-size)};
+                }
+                @if map.has-key($over, line-height) {
+                    --line-height: #{map.get($over, line-height)};
+                }
+                @if map.has-key($over, icon-size) {
+                    --icon-size: #{map.get($over, icon-size)};
+                }
+                @if map.has-key($over, border-width) {
+                    --border-width: #{map.get($over, border-width)};
+                }
+                @if map.has-key($over, padding-inline) {
+                    --padding-inline: calc(#{map.get($over, padding-inline)} - (var(--border-width) * 2));
+                }
+                @if map.has-key($over, border-radius) {
+                    --border-radius: #{map.get($over, border-radius)};
+                }
+
+                --padding-block: calc(((var(--height) - var(--line-height)) / 2) - (var(--border-width) * 2));
+                @if map.has-key($over, gap) {
+                    --gap: #{map.get($over, gap)};
+                }
+            }
+        }
+    }
+}
+
+@mixin apply-button-size($name, $sizes: $button-sizes) {
+    // Accept a sizes map to decouple mixin file from consumer variable scope.
+    $cfg: map.get($sizes, $name);
+    @if not $cfg {
+        @error "Unknown button size `#{$name}`";
+    }
+    @include button-size-variables($cfg);
+}

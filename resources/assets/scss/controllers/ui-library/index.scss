@@ -1,0 +1,502 @@
+@use '@environment' as *;
+
+@use './_includes/ui-library-accordion';
+@use './_includes/ui-library-buttons';
+@use './_includes/ui-library-code';
+@use './_includes/ui-library-colors';
+@use './_includes/ui-library-fonts';
+@use './_includes/ui-library-forms';
+@use './_includes/ui-library-grid';
+@use './_includes/ui-library-icons';
+@use './_includes/ui-library-modal';
+@use './_includes/ui-library-slider';
+@use './_includes/ui-library-tabs';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+
+@mixin ui-font() {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0;
+}
+
+:root {
+    --color-ui-library-backdrop: #e7e9ec;
+    --color-ui-library-dimgray: #696969;
+    --color-ui-library-error: #dc3e26;
+    --color-ui-library-gray-1: hsl(218deg 13% 28%);
+    --color-ui-library-gray-2: hsl(0deg 0% 41%);
+    --color-ui-library-gray-3: hsl(0deg 0% 95%);
+    --color-ui-library-gray-4: hsl(0deg 0% 89%);
+    --color-ui-library-gray-5: #6f829e;
+    --color-ui-library-gray-border: hsl(0deg 0% 80%);
+    --color-ui-library-gray: #d1d5db;
+    --color-ui-library-primary: #6f3cce;
+    --color-ui-library-success: #9ece6a;
+    --color-ui-library-text-dark: hsl(218deg 13% 20%);
+    --color-ui-library-text: #000000;
+    --color-ui-library-white: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--color-ui-library-backdrop);
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+body {
+    &.blank-layout {
+        padding-block: steps(5);
+        background-color: var(--color-ui-library-backdrop);
+
+        main {
+            overflow: unset;
+        }
+
+        .container {
+            max-width: 100rem;
+        }
+
+        @include until($desktop) {
+            padding-block: 2vw;
+
+            .container {
+                --padding: 2vw;
+
+                nav[data-contents] {
+                    display: none;
+                }
+
+                .content {
+                    max-width: 100%;
+                    gap: 2vw;
+                }
+            }
+        }
+    }
+}
+
+code {
+    border-radius: rem(4);
+    padding: rem(0) rem(5) rem(1);
+    margin: rem(-2) rem(4);
+    box-shadow: inset 0 0 0 1px var(--color-ui-library-gray);
+    background-color: rgba(#666666, 0.05);
+    color: var(--color-ui-library-primary);
+    display: inline-flex;
+}
+
+pre {
+    box-shadow: none;
+    border-radius: 8px;
+    display: inline-flex;
+    white-space: pre-wrap;
+
+    code {
+        margin: 0;
+        border-radius: inherit;
+        box-shadow: none;
+    }
+}
+
+pre,
+code,
+pre code {
+    font-family: 'Intel One Mono', monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.container {
+    --padding: #{steps(8)};
+    max-width: rem(1560);
+    display: flex;
+    gap: steps(4);
+
+    .content {
+        max-width: calc(100% - steps(34));
+        flex-shrink: 1;
+        display: flex;
+        flex-direction: column;
+        row-gap: steps(3);
+    }
+
+    nav[data-contents] {
+        min-width: steps(30);
+        @include ui-font;
+
+        .ui-section {
+            position: sticky;
+            top: steps(5);
+
+            > ul > li:has(.active) {
+                > a {
+                    font-weight: 600;
+                }
+
+                ul {
+                    border-top: 1px solid var(--color-ui-library-gray-border);
+                    margin-block: steps(0.5);
+                    padding-block: steps(1);
+                }
+            }
+
+            ul,
+            ol {
+                list-style-type: none;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+
+                li {
+                    padding: 0;
+
+                    ol,
+                    ul {
+                        margin-block: steps(1.5);
+                        padding-left: steps(1.75);
+                    }
+                }
+            }
+
+            a {
+                text-decoration: none;
+                padding-block: steps(1);
+                display: block;
+                font-size: rem(14);
+                font-weight: 500;
+                letter-spacing: 0.02em;
+                @include transition(color);
+
+                &,
+                &:visited {
+                    color: var(--color-ui-library-gray-5);
+                }
+
+                &.active,
+                &:hover {
+                    color: var(--color-ui-library-primary);
+                }
+
+                &.active {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+.ui-section {
+    display: flex;
+    flex-direction: column;
+    row-gap: steps(1);
+    border-radius: steps(1.5);
+    padding: steps(4);
+    background-color: var(--color-ui-library-white);
+    color: var(--color-ui-library-text-dark);
+
+    > * {
+        &:not(.button) {
+            @include ui-font;
+            font-weight: 450;
+            margin-bottom: 0.5em;
+            line-height: 1.5em;
+        }
+    }
+
+    > .ui-h3 {
+        margin-top: steps(4);
+    }
+
+    b {
+        font-weight: 575;
+    }
+
+    code {
+        font-size: rem(14);
+        position: relative;
+        display: inline-block;
+        line-height: 1.5em;
+    }
+
+    th {
+        text-align: center;
+        color: var(--color-ui-library-gray-1);
+    }
+
+    th,
+    td {
+        padding: steps(0.5) steps(1);
+    }
+
+    button {
+        white-space: nowrap;
+    }
+
+    ul {
+        list-style: disc;
+    }
+
+    ol {
+        list-style: decimal;
+    }
+
+    ul,
+    ol {
+        padding-left: steps(4);
+        padding-right: steps(6);
+        padding-block: steps(1);
+
+        li {
+            padding-block: steps(0.5);
+            padding-left: steps(2);
+        }
+    }
+
+    a:not(.button) {
+        color: var(--color-ui-library-primary);
+        text-decoration: underline;
+    }
+
+    .ui-h1,
+    .ui-h2,
+    .ui-h3,
+    .ui-h4 {
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        line-height: 1.2em;
+        color: var(--color-ui-library-text-dark);
+        font-weight: 600;
+        text-transform: none;
+    }
+
+    .ui-h2 {
+        font-size: steps(3);
+        color: var(--color-ui-library-text);
+        @include ui-font;
+        margin-top: 0.5em;
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:first-letter {
+            text-transform: uppercase;
+        }
+    }
+
+    .ui-h3 {
+        font-size: steps(2.5);
+    }
+
+    .ui-h4 {
+        font-size: steps(2.25);
+    }
+
+    .ui-h5 {
+        font-size: steps(2);
+    }
+
+    strong {
+        color: var(--color-ui-library-gray-2);
+        font-weight: 600;
+    }
+
+    p,
+    ul,
+    ol {
+        & + table {
+            margin-top: steps(2);
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        line-height: 1.5em;
+        margin-bottom: steps(1);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        caption {
+            color: var(--color-ui-library-gray-2);
+            font-weight: 600;
+            margin-bottom: steps(1);
+            text-align: left;
+            padding-top: steps(2);
+        }
+
+        tr {
+            td,
+            th {
+                border-bottom: 1px solid var(--color-ui-library-gray-border);
+            }
+
+            &:last-child {
+                td,
+                th {
+                    border-color: transparent;
+                }
+            }
+        }
+
+        th {
+            @include ui-font;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        th,
+        td {
+            padding: steps(2) 0;
+            max-width: steps(40);
+        }
+
+        td {
+            font-size: rem(14);
+        }
+
+        td,
+        caption {
+            &:not(:has(.button)) {
+                @include ui-font;
+                font-weight: 450;
+            }
+        }
+    }
+
+    .underline {
+        text-decoration: underline;
+    }
+}
+
+.instructions {
+    display: flex;
+    flex-direction: column;
+    row-gap: steps(1);
+    padding: steps(4);
+    border-radius: steps(1);
+    border: 1px solid var(--color-ui-library-gray-border);
+    font-size: rem(14);
+
+    &:nth-last-child(1 of .instructions) {
+        margin-bottom: 0;
+    }
+
+    > ul,
+    > ol,
+    > p {
+        @include ui-font;
+        line-height: 1.6em;
+        font-weight: 500;
+        font-size: 1em;
+    }
+
+    ul,
+    ol {
+        padding-block: 0;
+        max-width: steps(120);
+
+        li {
+            margin-bottom: steps(1.25);
+            padding-top: 0;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .code-example {
+                margin-top: steps(1);
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .note {
+        font-style: italic;
+        padding: steps(3) 0;
+        margin-top: steps(3);
+        border-block: 1px solid var(--color-ui-library-gray-border);
+        letter-spacing: 0.04em;
+        display: flex;
+        gap: steps(4);
+        padding-right: steps(6);
+        font-size: rem(18);
+
+        & + .note {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        strong {
+            min-width: 10%;
+            font-style: normal;
+            font-weight: 600;
+            color: var(--color-ui-library-black);
+            display: inline-block;
+        }
+    }
+}
+
+.info-group {
+    padding: steps(2) steps(3);
+    border: 1px solid var(--color-ui-library-gray-border);
+    border-radius: 4px;
+    margin-block: steps(2);
+
+    table {
+        max-width: 100%;
+    }
+}
+
+.cookies-layer {
+    display: none;
+}
+
+.demo-card {
+    display: flex;
+    flex-direction: column;
+    gap: steps(3);
+
+    * {
+        @include ui-font;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: steps(1);
+    }
+
+    .ui-h3 {
+        font-size: steps(3);
+        font-weight: 600;
+    }
+
+    .description {
+        font-size: steps(3);
+        color: var(--color-ui-library-gray-1);
+        line-height: 1.5em;
+
+        &:before,
+        &:after {
+            display: inline-block;
+        }
+
+        &:before {
+            content: '“';
+        }
+
+        &:after {
+            content: '”';
+        }
+    }
+}

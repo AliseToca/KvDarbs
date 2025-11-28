@@ -1,0 +1,13 @@
+@use 'sass:math';
+
+@function steps($number) {
+    @return (0.5rem * $number);
+}
+
+@function rem($pixel) {
+    @if math.is-unitless($pixel) {
+        @return math.div($pixel, 16) + rem;
+    } @else {
+        @error 'Error';
+    }
+}

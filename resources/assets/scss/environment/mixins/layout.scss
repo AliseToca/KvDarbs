@@ -1,0 +1,25 @@
+@use '../variables' as *;
+@use '../mixins/media' as *;
+@use 'sass:math';
+
+@mixin container($max-width: $cont-max-width, $padding: $cont-padding) {
+    --padding: #{math.div($padding, 4)};
+
+    width: 100%;
+    max-width: calc($max-width + (2 * var(--padding)));
+    margin-inline: auto;
+    padding-right: var(--padding);
+    padding-left: var(--padding);
+
+    @include for-at-least($phone) {
+        --padding: #{math.div($padding, 3)};
+    }
+
+    @include for-at-least($tablet) {
+        --padding: #{math.div($padding, 2)};
+    }
+
+    @include for-at-least($desktop) {
+        --padding: #{$padding};
+    }
+}

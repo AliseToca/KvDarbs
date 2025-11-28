@@ -1,0 +1,23 @@
+@use '@environment' as *;
+
+.grid-container {
+    --grid-gap: #{$cont-padding};
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-gap);
+    grid-auto-flow: row;
+
+    @include until($phone-sm) {
+        --grid-gap: #{steps(1)};
+    }
+
+    > * {
+        @include grid-column(12);
+    }
+
+    @for $i from 1 through 12 {
+        .column-#{$i} {
+            @include grid-column($i);
+        }
+    }
+}

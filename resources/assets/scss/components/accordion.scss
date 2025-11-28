@@ -1,0 +1,36 @@
+@use '../environment.scss' as *;
+
+.accordion-item {
+    border-bottom: 1px solid gray;
+
+    &:first-of-type {
+        border-top: 1px solid gray;
+    }
+}
+
+.accordion-head {
+    @include font-dimensions(20px, 24px);
+    display: flex;
+    column-gap: rem(24);
+    align-items: center;
+    position: relative;
+
+    width: 100%;
+    padding: rem(24);
+
+    cursor: pointer;
+}
+
+.accordion-body {
+    padding: 0 rem(24) rem(16);
+}
+
+@include for-at-least($tablet) {
+    .accordion-head {
+        padding-inline: rem(32);
+    }
+
+    .accordion-body {
+        padding: 0 rem(32) rem(24);
+    }
+}

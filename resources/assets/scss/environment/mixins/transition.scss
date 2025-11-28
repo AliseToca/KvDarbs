@@ -1,0 +1,69 @@
+@use 'sass:list';
+@use 'sass:meta';
+@use 'sass:string';
+
+/* TRANSITIONS */
+$transition-animation: cubic-bezier(0.35, 0, 0, 1);
+$transition-timing: 0.3s;
+
+// How to use?
+// @include transition;                                -> sets transition to `all` with default timing
+// @include transition(background)                     -> sets transition to `background` with default timing
+// @include transition(background color)               -> sets transition to `background` & `color` with default timings
+// @include transition((background, color))            -> sets transition to `background` & `color` with default timings
+// @include transition((background: .15s, color: .2s)) -> sets transition to `background` & `color` with given timings
+
+@mixin transition($attributes: null) {
+    $default-duration: $transition-timing;
+    $default-easing: $transition-animation;
+
+    @if not $attributes or $attributes == () {
+        transition: all $default-duration $default-easing;
+        will-change: opacity, transform;
+    } @else if meta.type-of($attributes) == 'map' {
+        $segments: ();
+        $props: ();
+
+        @each $property, $config in $attributes {
+            $duration: $default-duration;
+            $easing: $default-easing;
+
+            @if meta.type-of($config) == 'list' {
+                $duration: list.nth($config, 1);
+                @if list.length($config) > 1 {
+                    $easing: list.nth($config, 2);
+                }
+            } @else if $config != null {
+                $duration: $config;
+            }
+
+            $segments: list.append($segments, string.unquote('#{$property} #{$duration} #{$easing}'), comma);
+            $props: list.append($props, string.unquote('#{$property}'), comma);
+        }
+
+        transition: $segments;
+        will-change: $props;
+    } @else {
+        $values: if(meta.type-of($attributes) == 'list', $attributes, ($attributes));
+        $segments: ();
+        $props: ();
+
+        @for $i from 1 through list.length($values) {
+            $property: list.nth($values, $i);
+            $segments: list.append(
+                $segments,
+                string.unquote('#{$property} #{$default-duration} #{$default-easing}'),
+                comma
+            );
+            $props: list.append($props, string.unquote('#{$property}'), comma);
+        }
+
+        transition: $segments;
+        will-change: $props;
+    }
+}
+
+@mixin transition-linear($duration: $transition-timing) {
+    transition: all $duration linear;
+    will-change: opacity, transform;
+}

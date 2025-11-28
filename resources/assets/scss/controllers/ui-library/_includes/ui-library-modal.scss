@@ -1,0 +1,15 @@
+@use '@environment' as *;
+
+.demo-modal {
+    display: flex;
+    flex-direction: column;
+    max-width: steps(90);
+    padding: steps(5);
+    border-radius: steps(1);
+    background-color: var(--color-ui-library-white);
+    gap: steps(3);
+
+    .demo-card {
+        padding: steps(1) steps(2);
+    }
+}

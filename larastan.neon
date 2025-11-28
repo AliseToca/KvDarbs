@@ -1,0 +1,17 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+parameters:
+	ignoreErrors:
+	    - '#PHPDoc tag @throws with type#'
+	    - '# but returns Illuminate\\Database\\Eloquent\\Model#'
+	    - '# but returns [a-zA-Z0-9\\_]|Illuminate\\Database\\Eloquent\\Model#'
+	    - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasOne::#'
+	    - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::#'
+	    - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::#'
+	    - '#::dynamicWhere\(\)#'
+	    - '#::toHierarchy\(\)#'
+	    - '#::withTrashed\(\)#'
+	    - '#Relation::getForeignKey\(\)#'
+	    - '#Relation::getForeignKeyName\(\)#'
+	    - '#Illuminate\\Support\\HigherOrderCollectionProxy#'
+	    - '#Static method SolutionForest\\FilamentTranslateField\\Facades\\FilamentTranslateField::defaultLocales\(\) invoked with 1 parameter, 0 required#'

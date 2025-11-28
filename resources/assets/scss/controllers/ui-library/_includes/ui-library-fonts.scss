@@ -1,0 +1,21 @@
+@use '@environment' as *;
+
+.fontface-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(steps(60), 1fr));
+    gap: steps(4);
+    padding: 0;
+
+    h3 {
+        margin-bottom: steps(1.5);
+        color: var(--color-ui-library-gray-1);
+    }
+
+    .font-face {
+        list-style: none;
+        padding: 0;
+        padding-block: 0;
+        margin-top: steps(3);
+        padding-left: 0;
+    }
+}

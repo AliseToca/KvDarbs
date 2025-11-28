@@ -1,0 +1,72 @@
+@use 'sass:meta';
+
+@function color-mix-percent($amount, $fn-name) {
+    @if meta.type-of($amount) != 'number' {
+        @error '#{$fn-name}(): amount must be a numeric value between 0 and 1.';
+    }
+
+    @if $amount < 0 or $amount > 1 {
+        @error '#{$fn-name}(): amount must be between 0 and 1.';
+    }
+
+    @return $amount * 100%;
+}
+
+@function color-opacity($color, $opacity, $background: transparent) {
+    $mix-percent: color-mix-percent($opacity, 'color-opacity');
+    @return color-mix(in srgb, $color $mix-percent, $background);
+}
+
+@function color-brighten($color, $amount, $target: #ffffff) {
+    $mix-percent: color-mix-percent($amount, 'color-brighten');
+    @return color-mix(in srgb, $color (100% - $mix-percent), $target $mix-percent);
+}
+
+@function color-darken($color, $amount, $target: #000000) {
+    $mix-percent: color-mix-percent($amount, 'color-darken');
+    @return color-mix(in srgb, $color (100% - $mix-percent), $target $mix-percent);
+}
+
+@function color-saturate($color, $amount, $target: null) {
+    @if $target or meta.type-of($color) == 'color' {
+        $mix-percent: color-mix-percent($amount, 'color-saturate');
+        $target-color: if($target, $target, saturate($color, 100%));
+
+        @return color-mix(in srgb, $color (100% - $mix-percent), $target-color $mix-percent);
+    }
+
+    $ratio: 1 + $amount;
+    @return unquote('color(from #{inspect($color)} oklch l calc(c * #{$ratio}) h)');
+}
+
+@mixin opacity($property, $color, $opacity, $background: transparent) {
+    @if not $property or $property == '' {
+        @error 'opacity(): $property must be provided (e.g. "background-color").';
+    }
+
+    #{$property}: color-opacity($color, $opacity, $background);
+}
+
+@mixin brighten($property, $color, $amount, $target: #ffffff) {
+    @if not $property or $property == '' {
+        @error 'brighten(): $property must be provided (e.g. "background-color").';
+    }
+
+    #{$property}: color-brighten($color, $amount, $target);
+}
+
+@mixin darken($property, $color, $amount, $target: #000000) {
+    @if not $property or $property == '' {
+        @error 'darken(): $property must be provided (e.g. "background-color").';
+    }
+
+    #{$property}: color-darken($color, $amount, $target);
+}
+
+@mixin saturate($property, $color, $amount, $target: null) {
+    @if not $property or $property == '' {
+        @error 'saturate(): $property must be provided (e.g. "color").';
+    }
+
+    #{$property}: color-saturate($color, $amount, $target);
+}

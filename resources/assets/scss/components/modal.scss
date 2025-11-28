@@ -1,0 +1,117 @@
+@use '@environment' as *;
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+.modal-container,
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+}
+
+.modal-container {
+    z-index: 10;
+    display: flex;
+    height: 100%; // fallback
+    height: 100dvh;
+    width: 100vw;
+    overflow-y: auto;
+    padding: steps(5) 0;
+    scroll-behavior: smooth;
+    flex-direction: column;
+    align-items: center;
+
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: steps(1.5);
+        padding-inline: steps(2.5);
+
+        @include for-at-least($tablet) {
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            justify-content: center;
+        }
+    }
+
+    &[aria-hidden='true'] {
+        display: none;
+    }
+
+    .button-close {
+        --button-height: steps(3);
+        background-color: transparent;
+        color: var(--color-white);
+        width: var(--button-height);
+        border: 1px solid var(--color-white);
+        padding: steps(1.5);
+        animation:
+            fade-in 800ms 200ms both,
+            slide-up 800ms 200ms both;
+
+        &:is(:hover, :focus) {
+            background-color: var(--color-primary-200);
+        }
+
+        &:active {
+            background-color: var(--color-primary-200);
+        }
+
+        svg {
+            height: steps(3);
+            width: steps(3);
+            color: var(--color-white);
+        }
+    }
+
+    @include until($phone-lg) {
+        padding-top: steps(3);
+    }
+}
+
+.modal-overlay {
+    background-color: var(--color-text);
+    opacity: 0.5;
+    animation: fade-in 200ms both;
+}
+
+.modal-inner {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: steps(1.5);
+    z-index: 2;
+    position: relative;
+    animation:
+        fade-in 400ms 200ms both,
+        slide-up 400ms 200ms both;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(10%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dialog-overlay,
+    .dialog-content {
+        animation: none;
+    }
+}
+
+.message-modal {
+    max-width: steps(50);
+    padding: steps(3);
+    border-radius: 8px;
+    background-color: var(--color-white);
+}

@@ -1,0 +1,187 @@
+@use 'sass:map';
+@use 'sass:list';
+
+/* methods for preserving the vertical rhythm by positioning text on the grid baselines
+*
+* when a box does not need extra top/bottom paddings
+* the baseline-paddings mixin should be used instead of these functions
+*
+* but in cases where actual extra padding is needed
+* these methods can be used directly
+*
+* e.g.
+* for a box that needs an extra 24px padding on top of the baseline padding:
+*
+* padding-top: baseline-top-padding( 16px, 24px ) + steps( 2 )
+*
+*
+*/
+
+@function baseline-top-padding($font-size-in-px, $line-height-in-px, $extra-top-padding-in-px: 0) {
+    @return baseline-padding('top', $font-size-in-px, $line-height-in-px, $extra-top-padding-in-px);
+}
+
+@function baseline-bottom-padding($font-size-in-px, $line-height-in-px, $extra-bottom-padding-in-px: 0) {
+    @return baseline-padding('bottom', $font-size-in-px, $line-height-in-px, $extra-bottom-padding-in-px);
+}
+
+@function baseline-padding($type, $font-size-in-px, $line-height-in-px, $extra-padding-in-px: 0) {
+    /*     to ensure that the baseline of the text always sits on the baseline grid
+    *     extra padding needs to be added to the top of each content box
+    *     the amount of padding needed depends on the font size and line height
+    *     and also on the properties of the font itself
+    *     therefore it has to be manually defined for each font-size / line-height combination
+    *     to avoid repeating this task, a map of needed paddings is defined here
+    *     that returns the needed padding for each combination
+    *
+    *     to ensure that the height of the box always stays a multiple of 12px
+    *     extra bottom padding is also needed and can be calculated
+    *     by subtracting the top padding from 12px
+    *
+    *     thus this function accepts font size and line height as arguments
+    *     as well as $type, specifying whether to return the top or the bottom padding
+    *
+    *     this function should not be used directly but via shorthand functions above
+    *
+    *     for each supported font size / line height combo $paddings gets sets to a list
+    *     the first item is the needed top padding
+    *     the second item is the bottom padding
+    *
+    *     the $padding-map has font-sizes as first level keys
+    *     and line-heights as second level keys
+    *     every font-size/line-height combination used in the site
+    *     must have an entry in this map
+    *
+    *     keys are prefixed with "fs" and "lh" respectively
+    *     so that the incoming values are always cast to strings
+    *     otherwise map.get( ( 30px: (...something...) ), steps(2.5) ) does not work
+    *     even though steps(2.5) evaluates to 30px and the 30px key is there
+    */
+    $padding-map: (
+        fs63px: (
+            lh72px: (
+                2px,
+                6px,
+            ),
+        ),
+        fs42px: (
+            lh48px: (
+                6px,
+                2px,
+            ),
+        ),
+        fs48px: (
+            lh56px: (
+                1px,
+                7px,
+            ),
+        ),
+        fs36px: (
+            lh32px: (
+                3px,
+                2px,
+            ),
+        ),
+        fs28px: (
+            lh32px: (
+                4px,
+                4px,
+            ),
+            lh40px: (
+                0px,
+                0px,
+            ),
+        ),
+        fs21px: (
+            lh24px: (
+                3px,
+                5px,
+            ),
+        ),
+        fs20px: (
+            lh24px: (
+                3px,
+                5px,
+            ),
+        ),
+        fs18px: (
+            lh24px: (
+                5px,
+                3px,
+            ),
+            lh32px: (
+                8px,
+                0px,
+            ),
+        ),
+        fs16px: (
+            lh16px: (
+                2px,
+                6px,
+            ),
+            lh18px: (
+                0px,
+                0px,
+            ),
+            lh20px: (
+                0px,
+                3px,
+            ),
+            lh24px: (
+                6px,
+                2px,
+            ),
+        ),
+        fs14px: (
+            lh16px: (
+                3px,
+                5px,
+            ),
+            lh18px: (
+                3px,
+                9px,
+            ),
+            lh24px: (
+                6px,
+                2px,
+            ),
+        ),
+        fs12px: (
+            lh16px: (
+                4px,
+                4px,
+            ),
+        ),
+    );
+    $font-size-paddings: map.get($padding-map, 'fs' + $font-size-in-px);
+
+    @if not($font-size-paddings) {
+        @error "Unrecognized font size / line height combination: #{$font-size-in-px} / #{$line-height-in-px}.";
+    }
+
+    $paddings: map.get($font-size-paddings, 'lh' + $line-height-in-px);
+
+    @if not($paddings) {
+        @error "Unrecognized font size / line height combination: #{$font-size-in-px} / #{$line-height-in-px}.";
+    }
+
+    $padding: 1000px;
+
+    @if $type == 'top' {
+        $padding: list.nth($paddings, 1);
+    } @else if $type == 'bottom' {
+        $padding: list.nth($paddings, 2);
+    } @else {
+        @error "Unrecognized baseline padding type: #{$type}.";
+    }
+
+    $padding: $padding + $extra-padding-in-px;
+
+    @return $padding;
+}
+
+@mixin font-dimensions($font-size, $line-height, $letter-spacing: normal) {
+    font-size: $font-size;
+    line-height: $line-height;
+    letter-spacing: $letter-spacing;
+}

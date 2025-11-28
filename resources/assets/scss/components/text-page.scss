@@ -1,0 +1,375 @@
+@use '@environment' as *;
+
+.text-page-container {
+    &.grid-container {
+        padding-bottom: steps(4);
+        padding-top: steps(8);
+    }
+
+    .breadcrumbs {
+        padding-block: steps(3);
+
+        .button {
+            --button-padding-inline: 0;
+        }
+
+        a {
+            color: var(--color-primary-400);
+            @include font-semibold;
+        }
+    }
+
+    > .card {
+        filter: var(--card-shadow);
+        padding: steps(4);
+
+        &.richtext {
+            padding: steps(5);
+
+            @include until($phone-lg) {
+                padding: steps(0);
+            }
+        }
+    }
+
+    > .richtext {
+        @include for-at-least($desktop) {
+            @include grid-column(10, 1);
+        }
+    }
+
+    .meta {
+        display: flex;
+        flex-flow: column wrap;
+        text-align: left;
+        margin-bottom: steps(1);
+
+        &:empty {
+            display: none;
+        }
+
+        p {
+            @include paragraph-secondary;
+            font-weight: 600;
+            color: var(--color-neutral-800);
+            margin-bottom: steps(0.5);
+
+            span {
+                font-weight: 400;
+            }
+
+            b {
+                @include font-semibold;
+            }
+
+            span:not(:last-child) {
+                &:after {
+                    content: ', ';
+                }
+            }
+        }
+    }
+}
+
+.richtext {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-neutral-850);
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    &.small {
+        gap: steps(1);
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+
+        .lead {
+            p {
+                @include paragraph-main;
+            }
+        }
+
+        p,
+        li {
+            @include paragraph-secondary;
+        }
+
+        p {
+            margin-bottom: steps(1);
+        }
+    }
+
+    small {
+        @include paragraph-tiny;
+        color: var(--color-neutral-800);
+    }
+
+    .lead {
+        p {
+            @include highlight-text;
+        }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--color-text);
+    }
+
+    h1 {
+        @include heading-h1;
+    }
+
+    h2 {
+        @include heading-h2;
+    }
+
+    h3 {
+        @include heading-h3;
+    }
+
+    h4 {
+        @include heading-h4;
+    }
+
+    h5,
+    h6 {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    p,
+    li {
+        @include paragraph-main;
+    }
+
+    p {
+        &:empty {
+            margin-bottom: steps(3);
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    ul,
+    ol {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: steps(1.5);
+
+        li:before {
+            display: block;
+            font-weight: 500;
+            width: steps(3.5);
+            min-width: steps(3.5);
+            color: var(--color-primary-400);
+            font-size: 1em;
+            margin-left: steps(1);
+        }
+    }
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: steps(1);
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    ul {
+        li:before {
+            content: '';
+            width: steps(1);
+            height: steps(1);
+            min-width: steps(1);
+            min-height: steps(1);
+            border-radius: steps(1);
+            margin-block: steps(1.5);
+            margin-right: steps(2.5);
+            background: var(--default-gradient);
+        }
+    }
+
+    ol {
+        counter-reset: item;
+
+        li:before {
+            content: counter(item) '.';
+            counter-increment: item;
+            text-align: left;
+        }
+    }
+
+    a {
+        color: var(--color-primary-400);
+
+        &:hover {
+            color: var(--color-primary-400);
+            text-decoration: underline;
+        }
+    }
+
+    blockquote {
+        border-left: steps(0.75) solid var(--color-neutral-200);
+        margin: steps(2) 0;
+        padding: steps(2);
+        quotes: '\201C' '\201D' '\2018' '\2019';
+
+        &:before {
+            color: var(--color-neutral-200);
+            content: open-quote;
+            font-size: 4em;
+            line-height: 0.1em;
+            margin-right: 0.25em;
+            vertical-align: -0.4em;
+        }
+
+        p {
+            @include highlight-text;
+            display: inline-block;
+        }
+    }
+
+    .table-wrapper {
+        width: 100%;
+
+        @include until($tablet) {
+            overflow-x: auto;
+        }
+    }
+
+    table {
+        display: block;
+        min-width: 100%;
+        overflow: auto;
+        border-collapse: collapse;
+        color: var(--color-text);
+        padding-bottom: steps(2);
+        margin-inline: calc(-1 * var(--grid-gap) - 0px);
+        padding-inline: var(--grid-gap);
+        filter: var(--card-shadow);
+
+        @include until($tablet) {
+            min-width: 100vw;
+        }
+
+        &.departments {
+            width: 100%;
+            min-width: 100%;
+        }
+
+        p {
+            margin-bottom: 0;
+
+            @include paragraph-secondary;
+        }
+
+        tbody {
+            display: table;
+            flex-direction: column;
+            width: 100%;
+            background-color: var(--color-white);
+            border-radius: steps(1);
+            min-width: steps(60);
+        }
+
+        tr {
+            width: 100%;
+            flex-grow: 1;
+            min-width: 100%;
+            position: relative;
+            border-bottom: none;
+
+            &:nth-child(odd) {
+                background-color: var(--color-neutral-075);
+            }
+        }
+
+        th,
+        td {
+            padding-block: steps(1);
+            padding-inline: steps(2);
+            flex-grow: 1;
+            text-align: left;
+
+            @include for-at-least($tablet) {
+                padding-block: steps(2);
+                padding-inline: steps(3);
+            }
+
+            @include for-at-least($desktop) {
+                &:first-child {
+                    padding-left: steps(5);
+                }
+
+                &:last-child {
+                    padding-right: steps(5);
+                }
+            }
+        }
+
+        td {
+            border: 1px solid var(--color-neutral-200);
+        }
+
+        tr:first-child {
+            margin: auto;
+            background: var(--default-gradient);
+            z-index: 0;
+        }
+
+        th {
+            color: var(--color-white);
+            border-bottom: none;
+            border: none;
+            border-color: transparent;
+            background-color: transparent;
+
+            &:first-child:before {
+                content: '';
+                position: absolute;
+                inset: -2px -1px 0;
+                margin: auto;
+                z-index: 0;
+                border-top-left-radius: steps(1);
+                border-top-right-radius: steps(1);
+                border: 1px solid var(--color-neutral-200);
+                border-bottom: none;
+                width: 100%;
+                height: 100%;
+            }
+
+            * {
+                position: relative;
+                z-index: 1;
+            }
+
+            p {
+                @include paragraph-secondary;
+                font-weight: 600;
+            }
+
+            svg {
+                color: var(--color-primary-400);
+            }
+        }
+    }
+
+    iframe {
+        width: 100%;
+        border: 0;
+    }
+}

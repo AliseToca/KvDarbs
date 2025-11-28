@@ -1,0 +1,84 @@
+@use '@environment' as *;
+
+.slider {
+    max-width: 100%;
+
+    .tns-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: steps(1);
+
+        > div {
+            min-height: rem(300);
+            display: flex;
+            justify-content: center;
+            background-color: var(--color-ui-library-backdrop);
+        }
+    }
+
+    &.vertical {
+        [data-slider-container] {
+            > div {
+                align-items: flex-start;
+            }
+        }
+    }
+
+    .demo-card {
+        padding: steps(4);
+        gap: steps(2);
+
+        h3 {
+            width: 100%;
+        }
+
+        > div {
+            flex-flow: wrap;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 0;
+
+            h3 {
+                margin-bottom: steps(1);
+            }
+
+            > *:not(h3) {
+                font-weight: 600;
+                font-size: steps(2.25);
+                padding-right: 0.5em;
+                margin: 0;
+            }
+
+            .role {
+                &:before {
+                    content: '(';
+                }
+
+                &:after {
+                    content: ')';
+                }
+            }
+        }
+
+        .description {
+            font-size: steps(2);
+        }
+    }
+}
+
+.slider-grid {
+    .code-example {
+        width: 100%;
+        flex-grow: 1;
+        margin: 0;
+
+        pre,
+        code {
+            width: 100%;
+            min-width: 100%;
+            flex-grow: 1;
+        }
+    }
+}

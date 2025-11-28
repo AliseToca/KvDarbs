@@ -1,0 +1,146 @@
+@use '@environment' as *;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    text-wrap: pretty;
+}
+
+.richtext {
+    * {
+        letter-spacing: 0.0213em;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    p,
+    ol,
+    ul {
+        @include paragraph;
+
+        &:not(:last-child) {
+            margin-bottom: 1em;
+        }
+    }
+
+    li {
+        &:before {
+            width: steps(3);
+            margin-right: steps(1);
+            display: inline-block;
+        }
+    }
+
+    ul {
+        padding-block: 1em;
+
+        li {
+            &:before {
+                content: '–';
+            }
+        }
+    }
+
+    ol {
+        counter-reset: ol-counter;
+        padding-block: 1em;
+
+        li {
+            counter-increment: ol-counter;
+
+            &:before {
+                content: counter(ol-counter) '. ';
+            }
+        }
+    }
+
+    li:not(:last-child) {
+        margin-bottom: rem(16);
+
+        @include for-at-least($tablet) {
+            margin-bottom: rem(24);
+        }
+    }
+
+    blockquote,
+    blockquote p {
+        font-size: rem(24);
+        line-height: 1.5em;
+    }
+
+    blockquote p {
+        &:before {
+            content: '“';
+            display: inline-block;
+        }
+
+        &:after {
+            content: '”';
+            display: inline-block;
+        }
+    }
+
+    blockquote {
+        margin-block: steps(2);
+        margin-inline: 0;
+        padding: steps(2) 0;
+        border-block: 1px solid var(--color-primary);
+        background-color: var(--color-gray-light);
+
+        @include for-at-least($tablet) {
+            margin-block: steps(4);
+            padding: steps(3) 0;
+        }
+
+        @include for-at-least($desktop) {
+            margin-block: steps(8);
+            padding: steps(4) 0;
+        }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin-bottom: 1em;
+
+        &:not(:first-child) {
+            margin-top: 2em;
+        }
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-block: steps(2);
+
+        td,
+        th {
+            padding-block: steps(1.5);
+            border-block: 1px solid var(--color-gray);
+            text-align: left;
+        }
+
+        @include for-at-least($tablet) {
+            margin-block: steps(3);
+
+            td,
+            th {
+                padding-block: steps(2);
+            }
+        }
+
+        @include for-at-least($desktop) {
+            margin-block: steps(4);
+        }
+    }
+}
