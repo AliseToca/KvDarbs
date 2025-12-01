@@ -6,6 +6,7 @@ import laravel from 'laravel-vite-plugin';
 import dotenv from 'dotenv';
 import path from 'node:path';
 import svgLoader from 'vite-svg-loader';
+import vue from '@vitejs/plugin-vue';
 
 const assetPath = `resources/assets`;
 const bladePath = `resources/views`;
@@ -28,12 +29,16 @@ export default defineConfig({
         {
             name: 'env-config',
             configResolved() {
-                dotenv.config({ quiet: true }); 
+                dotenv.config({ quiet: true });
             }
         },
+        vue(),
         laravel({
-            input: [],
+            input: [
+                'resources/js/app.js',
+            ],
             buildDirectory: 'front',
+            refresh: true,
         }),
         watcherPlugin({
             directories: [jsSource, scssSource, svgSource, bladePath],

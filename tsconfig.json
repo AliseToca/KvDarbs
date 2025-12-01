@@ -28,8 +28,8 @@
         }
     },
     "include": [
-        "resources/assets/js/**/*",
-        "resources/assets/scss/**/*",
+      "resources/js/**/*",
+      "resources/scss/**/*",
         "vite.config.ts",
         "vite/**/*.ts",
         "vite.admin.config.ts",

@@ -19,6 +19,7 @@
         "cube-agency/filament-translations": "^1.0",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
+        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "solution-forest/filament-translate-field": "^1.2",
