@@ -11,5 +11,9 @@ html {
 }
 
 body {
+    //min-heght: calc
     background-color: $color-body;
+    color: $color-text-primary;
+    font-family: 'Albert Sans';
+    //line-height
 }

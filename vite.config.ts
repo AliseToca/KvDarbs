@@ -90,6 +90,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
+            '@assets': path.resolve(__dirname, 'resources/assets'),
             '@root': path.resolve(__dirname, `${jsSource}`) + '/',
             '@controllers': path.resolve(__dirname, `${jsSource}/controllers`),
             '@helpers': path.resolve(__dirname, `${jsSource}/helpers`),

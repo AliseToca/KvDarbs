@@ -26,7 +26,7 @@ class StyleGuidePageController extends Controller
             'getter' => 'getSvgs'
         ],
         'fonts' => [
-            'path' => 'assets/scss/fonts.scss',
+            'path' => 'assets/scss/global/fonts.scss',
             'getter' => 'getFontFaces'
         ]
     ];
