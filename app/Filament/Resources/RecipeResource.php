@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Constructor\Blocks\ImageBlock;
 use App\Filament\Resources\RecipeResource\Pages;
 use App\Filament\Resources\RecipeResource\RelationManagers;
 use App\Models\Recipe;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +27,23 @@ class RecipeResource extends Resource
     {
         return $form
             ->schema([
-                //
+//                TextInput::make('name')
+//                    ->required(),
+//                CuratorPicker::make('image')
+//                    ->label('Image')
+////                    ->directory('blogs')
+////                    ->limitToDirectory(),                Textarea::make('content')
+//                    ->required(),
+//
+//                TextInput::make('time_needed_minutes')
+//                    ->label('Time needed (minutes)')
+//                    ->numeric()
+//                    ->minValue(1),
+//
+//                TextInput::make('servings')
+//                    ->label('Servings')
+//                    ->numeric()
+//                    ->minValue(1),
             ]);
     }
 

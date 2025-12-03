@@ -51,5 +51,6 @@ return [
 
     'locales' => [
         'en',
+        'lv',
     ],
 ];

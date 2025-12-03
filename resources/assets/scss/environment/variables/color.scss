@@ -1,9 +1,9 @@
-:root {
-    --color-text: #000000;
-    --color-white: #ffffff;
-    --color-gray: #d1d5db;
-    --color-dimgray: #696969;
-    --color-primary: #6f3cce;
-    --color-error: #dc3e26;
-    --color-success: #9ece6a;
-}
+$color-white: #ffffff;
+$color-black: #000000;
+
+$color-beige: #fdfaf0;
+
+$color-red: #ee4141;
+
+$color-body: $color-beige;
+$color-text-primary: $color-black;

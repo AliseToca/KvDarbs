@@ -36,6 +36,8 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
+                'resources/scss/style.scss',
+
             ],
             buildDirectory: 'front',
             refresh: true,

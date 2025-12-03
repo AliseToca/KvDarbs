@@ -7,18 +7,18 @@ use CubeAgency\FilamentConstructor\Constructor\ConstructorBlockRenderer;
 use CubeAgency\FilamentPageManager\Models\Page;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Inertia\Inertia;
 
 class ConstructorPageController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request)
     {
         $page = $this->loadPage($request);
         $renderer = new ConstructorBlockRenderer(config('filament-constructor.blocks'));
 
-        return view('controllers.constructor.index', [
+        return Inertia::render('ConstructorPage', [
             'page' => $page,
-            'blocks' => $renderer->render(json_decode($page->blocks) ?? [])
+            'blocks' => json_decode($page->blocks) ?? [],
         ]);
     }
 
@@ -31,4 +31,6 @@ class ConstructorPageController extends Controller
             ->where('template', ConstructorTemplate::class)
             ->findOrFail($action['pageId']);
     }
+
+
 }

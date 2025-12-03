@@ -17,11 +17,17 @@ class LanguagesSeeder extends Seeder
      */
     public function run(): void
     {
-        if ($this->languageRepository->getModel()->all()->isEmpty()) {
-            $this->languageRepository->create([
-                'locale' => 'en',
-                'name' => 'English',
-            ]);
+        $languages = [
+            ['locale' => 'en', 'name' => 'English'],
+            ['locale' => 'lv', 'name' => 'Latvian'],
+        ];
+
+        foreach ($languages as $lang) {
+            $this->languageRepository->getModel()->updateOrCreate(
+                ['locale' => $lang['locale']],
+                ['name' => $lang['name']]
+            );
         }
     }
+
 }
