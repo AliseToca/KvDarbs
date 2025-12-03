@@ -11,9 +11,10 @@ html {
 }
 
 body {
-    //min-heght: calc
+    min-heght: 100vh;
     background-color: $color-body;
     color: $color-text-primary;
     font-family: 'Albert Sans';
-    //line-height
+    font-weight: normal;
+    line-height: 120%;
 }

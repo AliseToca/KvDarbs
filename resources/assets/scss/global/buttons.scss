@@ -6,274 +6,295 @@ button {
     margin: 0;
     border: none;
     outline: none;
-    appearance: none;
-}
-
-$button-sizes: (
-    xs: (
-        height: steps(3),
-        font-size: rem(9),
-        padding-inline: steps(1.5),
-        border-radius: rem(6),
-        icon-size: steps(2),
-        border-width: 1px,
-        line-height: 1em,
-        gap: steps(0.5),
-        $tablet: (
-            height: steps(3.5),
-            font-size: rem(10),
-            padding-inline: steps(2),
-        ),
-
-        $desktop: (
-            height: steps(4),
-            font-size: rem(10),
-            padding-inline: steps(2.5),
-        ),
-    ),
-    sm: (
-        height: steps(4),
-        font-size: rem(10),
-        padding-inline: steps(2),
-        border-radius: rem(8),
-        icon-size: steps(2.5),
-        border-width: 1px,
-        line-height: 1em,
-        gap: steps(0.75),
-        $tablet: (
-            height: steps(4.5),
-            font-size: rem(12),
-            padding-inline: steps(2.5),
-        ),
-
-        $desktop: (
-            height: steps(5),
-            font-size: rem(14),
-            padding-inline: steps(3),
-        ),
-    ),
-    md: (
-        height: steps(4),
-        font-size: rem(12),
-        padding-inline: steps(2.5),
-        border-radius: rem(10),
-        icon-size: steps(3),
-        border-width: 1px,
-        line-height: 1em,
-        gap: steps(1),
-        $tablet: (
-            height: steps(5),
-            font-size: rem(14),
-            padding-inline: steps(3),
-        ),
-
-        $desktop: (
-            height: steps(6),
-            font-size: rem(16),
-            padding-inline: steps(3.5),
-        ),
-    ),
-    lg: (
-        height: steps(5),
-        font-size: rem(14),
-        padding-inline: steps(3),
-        border-radius: rem(12),
-        icon-size: steps(3.5),
-        border-width: 1px,
-        line-height: 1em,
-        gap: steps(1.25),
-        $tablet: (
-            height: steps(6),
-            font-size: rem(16),
-            padding-inline: steps(3.5),
-        ),
-
-        $desktop: (
-            height: steps(7),
-            font-size: rem(18),
-            padding-inline: steps(4),
-        ),
-    ),
-);
-
-%button-types {
-    &.primary {
-        --background-color: var(--color-primary);
-        color: var(--color-white);
-
-        &:hover {
-            --background-color: #{color-brighten(var(--color-primary), 0.3)};
-            color: var(--color-white);
-        }
-    }
-
-    &.secondary {
-        --background-color: var(--color-gray);
-        color: var(--color-dimgray);
-
-        &:hover {
-            --background-color: #{color-brighten(var(--color-gray), 0.3)};
-            color: var(--color-text);
-        }
-    }
-
-    &.dark {
-        --background-color: var(--color-dimgray);
-        color: var(--color-white);
-
-        &:hover {
-            --background-color: #{color-darken(var(--color-dimgray), 0.3)};
-            color: var(--color-white);
-        }
-    }
-
-    &.outline {
-        --background-color: transparent;
-        border: 1px solid #{color-brighten(var(--color-primary), 0.3)};
-        color: var(--color-primary);
-
-        &:hover {
-            background: #{color-brighten(var(--color-primary), 0.9)};
-            border-color: #{color-brighten(var(--color-primary), 0.3)};
-            color: #{color-brighten(var(--color-primary), 0.1)};
-        }
-    }
-
-    &.blank {
-        --background-color: transparent;
-        color: var(--color-dimgray);
-        font-weight: 400;
-        border-color: transparent;
-
-        &:hover {
-            --background-color: #{color-opacity(var(--color-primary), 0.1)};
-            color: var(--color-primary);
-        }
-    }
-
-    &.icon-only {
-        min-width: var(--height);
-        max-height: var(--height);
-        padding: 0;
-
-        .icon {
-            margin-inline: calc(var(--padding-inline) * -0.5);
-            margin-block: calc(var(--padding-inline) * -0.5);
-        }
-
-        &:hover {
-            --background-color: #{color-opacity(var(--color-primary), 0.1)};
-            color: var(--color-primary);
-        }
-    }
-}
-
-%button-base {
-    --background-color: var(--color-gray);
-    --border-color: var(--background-color);
-    --color: var(--color-dimgray);
-    @include font-semibold;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--gap);
-    position: relative;
-    min-height: var(--height);
-    inline-size: fit-content;
-    padding-block: calc(var(--padding-block) - var(--border-width));
-    padding-inline: calc(var(--padding-inline) - var(--border-width));
-    background: var(--background-color);
-    border: var(--border-width) solid;
-    border-color: var(--border-color);
-    border-radius: var(--border-radius);
-    color: var(--color);
     cursor: pointer;
-    text-decoration: none;
-    overflow: hidden;
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    @include transition;
-
-    &:hover {
-        --background-color: #{color-brighten(var(--color-primary), 0.9)};
-        color: var(--color-primary);
-    }
-
-    &:focus-visible {
-        outline: 2px solid var(--color-primary);
-        outline-offset: 2px;
-    }
-
-    > span {
-        line-height: var(--line-height);
-        font-size: 1em;
-        position: relative;
-        text-align: center;
-    }
-
-    .icon {
-        display: flex;
-        align-items: center;
-        block-size: var(--icon-size);
-        max-width: var(--icon-size);
-        max-height: var(--icon-size);
-        width: var(--icon-size);
-        height: var(--icon-size);
-        size: var(--icon-size);
-        margin-block: calc(var(--padding-block) * -1);
-        color: inherit;
-
-        &:first-child {
-            margin-left: calc(var(--padding-inline) / -2);
-        }
-
-        &:last-child {
-            margin-right: calc(var(--padding-inline) / -2);
-        }
-    }
-
-    svg {
-        display: block;
-        margin: auto;
-        max-width: 100%;
-        max-height: 100%;
-        width: var(--icon-size);
-        height: var(--icon-size);
-        fill: currentColor;
-    }
-
-    &:disabled,
-    &[aria-disabled='true'] {
-        background: var(--color-gray);
-        border-color: var(--color-gray);
-        opacity: 0.5;
-        color: var(--color-dimgray);
-        cursor: not-allowed;
-
-        &:hover {
-            --background-color: var(--color-gray);
-            color: var(--color-dimgray);
-        }
-    }
-
-    > * {
-        pointer-events: none;
-    }
-
-    &:before,
-    &:after {
-        @include transition;
-    }
-
-    @extend %button-types;
-
-    @each $size, $cfg in $button-sizes {
-        &.#{$size} {
-            @include apply-button-size($size, $button-sizes);
-        }
-    }
 }
 
 .button {
-    @extend %button-base;
+    padding: 10px 20px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
 }
+
+.button.primary {
+    background-color: $color-primary;
+    color: $color-white;
+
+    &:hover {
+        background-color: darken($color-primary, 10%);
+    }
+
+    &:disabled {
+        background-color: lighten($color-primary, 10%);
+        cursor: not-allowed;
+    }
+}
+
+//$button-sizes: (
+//    xs: (
+//        height: steps(3),
+//        font-size: rem(9),
+//        padding-inline: steps(1.5),
+//        border-radius: rem(6),
+//        icon-size: steps(2),
+//        border-width: 1px,
+//        line-height: 1em,
+//        gap: steps(0.5),
+//        $tablet: (
+//            height: steps(3.5),
+//            font-size: rem(10),
+//            padding-inline: steps(2),
+//        ),
+//
+//        $desktop: (
+//            height: steps(4),
+//            font-size: rem(10),
+//            padding-inline: steps(2.5),
+//        ),
+//    ),
+//    sm: (
+//        height: steps(4),
+//        font-size: rem(10),
+//        padding-inline: steps(2),
+//        border-radius: rem(8),
+//        icon-size: steps(2.5),
+//        border-width: 1px,
+//        line-height: 1em,
+//        gap: steps(0.75),
+//        $tablet: (
+//            height: steps(4.5),
+//            font-size: rem(12),
+//            padding-inline: steps(2.5),
+//        ),
+//
+//        $desktop: (
+//            height: steps(5),
+//            font-size: rem(14),
+//            padding-inline: steps(3),
+//        ),
+//    ),
+//    md: (
+//        height: steps(4),
+//        font-size: rem(12),
+//        padding-inline: steps(2.5),
+//        border-radius: rem(10),
+//        icon-size: steps(3),
+//        border-width: 1px,
+//        line-height: 1em,
+//        gap: steps(1),
+//        $tablet: (
+//            height: steps(5),
+//            font-size: rem(14),
+//            padding-inline: steps(3),
+//        ),
+//
+//        $desktop: (
+//            height: steps(6),
+//            font-size: rem(16),
+//            padding-inline: steps(3.5),
+//        ),
+//    ),
+//    lg: (
+//        height: steps(5),
+//        font-size: rem(14),
+//        padding-inline: steps(3),
+//        border-radius: rem(12),
+//        icon-size: steps(3.5),
+//        border-width: 1px,
+//        line-height: 1em,
+//        gap: steps(1.25),
+//        $tablet: (
+//            height: steps(6),
+//            font-size: rem(16),
+//            padding-inline: steps(3.5),
+//        ),
+//
+//        $desktop: (
+//            height: steps(7),
+//            font-size: rem(18),
+//            padding-inline: steps(4),
+//        ),
+//    ),
+//);
+//
+//%button-types {
+//    &.primary {
+//        --background-color: var(--color-primary);
+//        color: var(--color-white);
+//
+//        &:hover {
+//            --background-color: #{color-brighten(var(--color-primary), 0.3)};
+//            color: var(--color-white);
+//        }
+//    }
+//
+//    &.secondary {
+//        --background-color: var(--color-gray);
+//        color: var(--color-dimgray);
+//
+//        &:hover {
+//            --background-color: #{color-brighten(var(--color-gray), 0.3)};
+//            color: var(--color-text);
+//        }
+//    }
+//
+//    &.dark {
+//        --background-color: var(--color-dimgray);
+//        color: var(--color-white);
+//
+//        &:hover {
+//            --background-color: #{color-darken(var(--color-dimgray), 0.3)};
+//            color: var(--color-white);
+//        }
+//    }
+//
+//    &.outline {
+//        --background-color: transparent;
+//        border: 1px solid #{color-brighten(var(--color-primary), 0.3)};
+//        color: var(--color-primary);
+//
+//        &:hover {
+//            background: #{color-brighten(var(--color-primary), 0.9)};
+//            border-color: #{color-brighten(var(--color-primary), 0.3)};
+//            color: #{color-brighten(var(--color-primary), 0.1)};
+//        }
+//    }
+//
+//    &.blank {
+//        --background-color: transparent;
+//        color: var(--color-dimgray);
+//        font-weight: 400;
+//        border-color: transparent;
+//
+//        &:hover {
+//            --background-color: #{color-opacity(var(--color-primary), 0.1)};
+//            color: var(--color-primary);
+//        }
+//    }
+//
+//    &.icon-only {
+//        min-width: var(--height);
+//        max-height: var(--height);
+//        padding: 0;
+//
+//        .icon {
+//            margin-inline: calc(var(--padding-inline) * -0.5);
+//            margin-block: calc(var(--padding-inline) * -0.5);
+//        }
+//
+//        &:hover {
+//            --background-color: #{color-opacity(var(--color-primary), 0.1)};
+//            color: var(--color-primary);
+//        }
+//    }
+//}
+//
+//%button-base {
+//    --background-color: var(--color-gray);
+//    --border-color: var(--background-color);
+//    --color: var(--color-dimgray);
+//    @include font-semibold;
+//    display: inline-flex;
+//    align-items: center;
+//    justify-content: center;
+//    gap: var(--gap);
+//    position: relative;
+//    min-height: var(--height);
+//    inline-size: fit-content;
+//    padding-block: calc(var(--padding-block) - var(--border-width));
+//    padding-inline: calc(var(--padding-inline) - var(--border-width));
+//    background: var(--background-color);
+//    border: var(--border-width) solid;
+//    border-color: var(--border-color);
+//    border-radius: var(--border-radius);
+//    color: var(--color);
+//    cursor: pointer;
+//    text-decoration: none;
+//    overflow: hidden;
+//    font-size: var(--font-size);
+//    line-height: var(--line-height);
+//    @include transition;
+//
+//    &:hover {
+//        --background-color: #{color-brighten(var(--color-primary), 0.9)};
+//        color: var(--color-primary);
+//    }
+//
+//    &:focus-visible {
+//        outline: 2px solid var(--color-primary);
+//        outline-offset: 2px;
+//    }
+//
+//    > span {
+//        line-height: var(--line-height);
+//        font-size: 1em;
+//        position: relative;
+//        text-align: center;
+//    }
+//
+//    .icon {
+//        display: flex;
+//        align-items: center;
+//        block-size: var(--icon-size);
+//        max-width: var(--icon-size);
+//        max-height: var(--icon-size);
+//        width: var(--icon-size);
+//        height: var(--icon-size);
+//        size: var(--icon-size);
+//        margin-block: calc(var(--padding-block) * -1);
+//        color: inherit;
+//
+//        &:first-child {
+//            margin-left: calc(var(--padding-inline) / -2);
+//        }
+//
+//        &:last-child {
+//            margin-right: calc(var(--padding-inline) / -2);
+//        }
+//    }
+//
+//    svg {
+//        display: block;
+//        margin: auto;
+//        max-width: 100%;
+//        max-height: 100%;
+//        width: var(--icon-size);
+//        height: var(--icon-size);
+//        fill: currentColor;
+//    }
+//
+//    &:disabled,
+//    &[aria-disabled='true'] {
+//        background: var(--color-gray);
+//        border-color: var(--color-gray);
+//        opacity: 0.5;
+//        color: var(--color-dimgray);
+//        cursor: not-allowed;
+//
+//        &:hover {
+//            --background-color: var(--color-gray);
+//            color: var(--color-dimgray);
+//        }
+//    }
+//
+//    > * {
+//        pointer-events: none;
+//    }
+//
+//    &:before,
+//    &:after {
+//        @include transition;
+//    }
+//
+//    @extend %button-types;
+//
+//    @each $size, $cfg in $button-sizes {
+//        &.#{$size} {
+//            @include apply-button-size($size, $button-sizes);
+//        }
+//    }
+//}
+//
+//.button {
+//    @extend %button-base;
+//}

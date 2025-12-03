@@ -12,7 +12,7 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'fluentui-document-one-page-24-o';
 
     public static function getPages(): array
     {

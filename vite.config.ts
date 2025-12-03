@@ -24,6 +24,12 @@ export default defineConfig({
     css: {
         devSourcemap: true,
         transformer: 'postcss',
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "@environment" as *;`
+            }
+        }
+
     },
     plugins: [
         {

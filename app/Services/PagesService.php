@@ -27,7 +27,7 @@ class PagesService
         'slug',
         'template',
         'related_pages',
-        'content->blocks as blocks',
+        'content',
         'meta',
     ];
 

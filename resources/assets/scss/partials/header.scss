@@ -1,0 +1,17 @@
+@use '@environment' as *;
+
+.site-header {
+    background-color: $color-body;
+    padding: 45px 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    //TODO make text size configurable
+    nav {
+        ul {
+            display: flex;
+            gap: 50px;
+        }
+    }
+}

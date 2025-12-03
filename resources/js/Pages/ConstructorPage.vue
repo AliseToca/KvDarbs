@@ -7,7 +7,6 @@
     <div>
         <h1>{{page.name}}</h1>
 
-
     </div>
 </template>
 
