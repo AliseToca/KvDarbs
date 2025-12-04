@@ -5,10 +5,9 @@
 <template>
     <div>
         <Header/>
-        <div>
+        <main>
             <slot></slot>
-        </div>
+        </main>
     </div>
-
 </template>
 
