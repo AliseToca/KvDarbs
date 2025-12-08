@@ -1,0 +1,43 @@
+@use '@environment' as *;
+
+.auth-wrapper {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .image-wrapper,
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .content-wrapper {
+        align-items: center;
+        justify-content: space-between;
+        padding: 40px 0 20px 0;
+    }
+
+    .content {
+        max-width: 60%;
+        gap: 10px;
+    }
+
+    .content-info {
+        text-align: center;
+    }
+
+    .content form input {
+        margin-bottom: 17px;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+
+        .image-wrapper {
+            display: none;
+        }
+    }
+}

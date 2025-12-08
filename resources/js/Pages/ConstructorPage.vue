@@ -1,11 +1,11 @@
-<!--<script>-->
-<!--    import AppLayout from '@/Layouts/Main.vue';-->
+<script>
+    import AppLayout from '@/Layouts/Main.vue';
 
-<!--    export default {-->
-<!--        layout: AppLayout,-->
-<!--    };-->
+    export default {
+        layout: AppLayout,
+    };
 
-<!--</script>-->
+</script>
 
 <script setup>
     const props = defineProps(['page'])
