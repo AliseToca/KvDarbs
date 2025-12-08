@@ -14,19 +14,25 @@ button {
     border-radius: 8px;
     justify-content: center;
     align-items: center;
-}
+    background-color: $color-muted;
+    color: $color-text-muted;
 
-.button.primary {
-    background-color: $color-primary;
-    color: $color-white;
+    &.primary {
+        background-color: $color-primary;
+        color: $color-white;
 
-    &:hover {
-        background-color: darken($color-primary, 10%);
+        &:hover {
+            background-color: darken($color-primary, 10%);
+        }
+
+        &:disabled {
+            background-color: lighten($color-primary, 10%);
+            cursor: not-allowed;
+        }
     }
 
-    &:disabled {
-        background-color: lighten($color-primary, 10%);
-        cursor: not-allowed;
+    &.full-width {
+        width: 100%;
     }
 }
 

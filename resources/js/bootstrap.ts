@@ -9,6 +9,8 @@ const w = window as ProjectWindow;
 // Axios global setup
 w.axios = axios;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;
+
 
 let token = document.querySelector('meta[name="csrf-token"]');
 

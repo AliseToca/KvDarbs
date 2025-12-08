@@ -3,10 +3,8 @@
 .form-field {
     display: block;
     margin-bottom: steps(2);
-
-    --field-padding-inline: #{steps(1.5)};
-    --field-border-color: var(--color-dimgray);
-    --field-outline-color: var(--color-primary);
+    padding: 5px;
+    gap: 5px;
 
     span.label {
         display: block;
@@ -19,9 +17,10 @@
         height: steps(5);
         padding: 0 steps(2);
         border: none;
-        border-radius: 0;
+        border-radius: 8px;
         outline: none;
-        background-color: var(--color-white);
+        background-color: $color-body-dark;
+        color: $color-text-muted;
         appearance: none;
     }
 

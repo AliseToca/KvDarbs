@@ -1,15 +1,16 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import AppLayout from './Layouts/Main.vue';
+import MainLayout from './Layouts/Main.vue';
 import '../assets/scss/style.scss';
+import './bootstrap.ts';
 
 createInertiaApp({
     resolve: (name) => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
         const page = pages[`./Pages/${name}.vue`];
 
-        page.default.layout ??= AppLayout;
+        page.default.layout = page.default.layout || MainLayout;
         return page;
     },
 

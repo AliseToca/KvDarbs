@@ -8,18 +8,20 @@ use CubeAgency\FilamentPageManager\Models\Page;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class LanguagePageController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $page = $this->loadPage($request);
         $renderer = new ConstructorBlockRenderer(config('filament-constructor.language_blocks'));
 
-        return view('controllers.language.index', [
+        return Inertia::render('Language/Index', [
             'page' => $page,
             'content' => $page->content,
-            'blocks' => $renderer->render(json_decode($page->blocks) ?? [])
+            'blocks' => $renderer->render(json_decode($page->blocks) ?? []),
         ]);
     }
 

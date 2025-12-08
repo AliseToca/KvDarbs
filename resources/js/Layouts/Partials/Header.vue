@@ -1,5 +1,7 @@
 <script setup>
+import sos from "../../Components/TempLogoutButton.vue";
 import { usePage } from '@inertiajs/vue3'
+import TempLogoutButton from "../../Components/TempLogoutButton.vue";
 const page = usePage()
 
 const { headerMenu, languagePage } = usePage().props;
@@ -9,9 +11,9 @@ console.log('Inertia props:', page.props)
 
 <template>
     <header class="site-header">
-        <a>{{ languagePage.content.site_name}}</a>
+        <a>{{ languagePage?.content?.site_name}}</a>
 
-        <nav>
+        <nav v-if="headerMenu">
             <ul>
                 <li
                     v-for="item in headerMenu.items"
@@ -26,5 +28,6 @@ console.log('Inertia props:', page.props)
             </ul>
         </nav>
         <button class="button primary" >Poga</button>
+        <TempLogoutButton></TempLogoutButton>
     </header>
 </template>

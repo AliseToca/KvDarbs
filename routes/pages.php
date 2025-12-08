@@ -10,7 +10,7 @@ use CubeAgency\FilamentPageManager\Models\Page;
 use CubeAgency\FilamentPageManager\Services\PageRoutes;
 use Illuminate\Support\Facades\Route;
 
-//Route::get('/', [LanguagePageController::class, 'index']);
+Route::get('/', [LanguagePageController::class, 'index']);
 Route::post('/save-selected-cookies', CookiesPageController::class . '@saveSelectedCookies')->name('saveSelectedCookies');
 Route::get('/accept-all-cookies', CookiesPageController::class . '@acceptAllCookies')->name('acceptAllCookies');
 Route::get('/reject-all-cookies', CookiesPageController::class . '@rejectAllCookies')->name('rejectAllCookies');
