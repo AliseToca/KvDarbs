@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\RegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,12 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+            public function toResponse($request)
+            {
+                return redirect('/home');
+            }
+        });
     }
 
     /**
@@ -47,8 +53,13 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        Fortify::loginView(function () {
+            return Inertia::render('Auth/Login');
+        });
+
         Fortify::registerView(function () {
             return Inertia::render('Auth/Register');
         });
+
     }
 }

@@ -17,9 +17,6 @@
     const submit = () => {
         // form.post('/register');
         form.post('/register', {
-            onSuccess: () => {
-                window.location.href = '/home';
-            },
             onError: (errors) => {
                 console.log('Validation errors:', errors);
             },
@@ -47,7 +44,7 @@
                                 type="text"
                                 id="full_name"
                                 name="name"
-                                label="Full name"
+                                label="Name"
                                 placeholderValue="Your full name"
                     />
                     <InputField v-model="form.email"
