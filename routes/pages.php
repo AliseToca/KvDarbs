@@ -21,10 +21,12 @@ PageRoutes::for(LanguageTemplate::class, static function (Page $page) {
         ->name('index');
 });
 
-PageRoutes::for(ConstructorTemplate::class, static function (Page $page) {
-    Route::get($page->getUri(), ['pageId' => $page->getKey()])
-        ->uses([ConstructorPageController::class, 'index'])
-        ->name('index');
+PageRoutes::for(ConstructorTemplate::class, function (Page $page) {
+    Route::middleware('auth')->group(function () use ($page) {
+        Route::get($page->getUri(), ['pageId' => $page->getKey()])
+            ->uses([ConstructorPageController::class, 'index'])
+            ->name('index');
+    });
 });
 
 PageRoutes::for(CookiesTemplate::class, static function (Page $page) {

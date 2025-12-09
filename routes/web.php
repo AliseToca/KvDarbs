@@ -16,9 +16,6 @@ Route::middleware('guest')->group(function () {
     Route::inertia('/register', 'Auth/Register')->name('register');
 });
 
-// Authenticated routes
-Route::inertia('/home', 'Home')->middleware('auth');
-
 Route::middleware(LocalOnly::class)->group(function () {
     Route::get('/ui-library', [StyleGuidePageController::class, 'index']);
 

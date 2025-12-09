@@ -23,12 +23,12 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
-            public function toResponse($request)
-            {
-                return redirect('/home');
-            }
-        });
+//        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+//            public function toResponse($request)
+//            {
+//                return redirect('/home');
+//            }
+//        });
     }
 
     /**
