@@ -11,7 +11,6 @@
 
 
     const submit = () => {
-        // form.post('/register');
         form.post('/login', {
             onError: (errors) => {
                 console.log('Validation errors:', errors);

@@ -10,14 +10,12 @@ class FrontController extends Controller
 {
     protected function sharedProps(): void
     {
-        $languageRepository = app(LanguageRepository::class);
-
         Inertia::share([
             'locale' => app()->getLocale(),
             'headerMenu' => $this->getMenuItems('header'),
             'footerMenu' => $this->getMenuItems('footer'),
-            'availableLocales' => $languageRepository->availableLocales(),
-            'languagePage' => fn() => app(PagesService::class)->getLanguagePage()->only(['content', 'slug']),
+            'availableLocales' => app(LanguageRepository::class)->availableLocales(),
+            'languagePage' => app(PagesService::class)->getLanguagePage()->only(['content', 'slug']),
         ]);
     }
 

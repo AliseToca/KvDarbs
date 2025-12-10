@@ -9,8 +9,6 @@ use Inertia\Inertia;
 //    return redirect(route('filament.admin.auth.login'));
 //})->name('login');
 
-//TODO FIX AUTH NOT BEING UNDER LANGUAGE PAGE
-
 Route::middleware('guest')->group(function () {
     Route::inertia('/login', 'Auth/Login')->name('login');
     Route::inertia('/register', 'Auth/Register')->name('register');
