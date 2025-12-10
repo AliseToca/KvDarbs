@@ -1,9 +1,9 @@
 <script>
-import AppLayout from '@/Layouts/Main.vue';
+    import AppLayout from '@/Layouts/Main.vue';
 
-export default {
-    layout: AppLayout,
-};
+    export default {
+        layout: AppLayout,
+    };
 
 </script>
 

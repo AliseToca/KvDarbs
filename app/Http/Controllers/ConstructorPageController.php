@@ -9,12 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ConstructorPageController extends FrontController
+class ConstructorPageController extends Controller
 {
     public function index(Request $request)
     {
-        $this->sharedProps();
-
         $page = $this->loadPage($request);
         $renderer = new ConstructorBlockRenderer(config('filament-constructor.blocks'));
 

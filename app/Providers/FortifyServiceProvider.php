@@ -16,6 +16,8 @@ use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Contracts\LoginResponse;
+use App\Services\PagesService;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -27,14 +29,24 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                return redirect('/');
+                $page = app(PagesService::class)->getLanguagePage();
+                return Inertia::location('/' . $page->slug . '/');
+            }
+        });
+
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request)
+            {
+                $page = app(PagesService::class)->getLanguagePage();
+                return Inertia::location('/' . $page->slug . '/');
             }
         });
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
             public function toResponse($request)
             {
-                return redirect('/');
+                $page = app(PagesService::class)->getLanguagePage();
+                return Inertia::location('/' . $page->slug . '/');
             }
         });
     }
@@ -68,6 +80,5 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return Inertia::render('Auth/Register');
         });
-
     }
 }

@@ -1,15 +1,9 @@
 <script setup>
-import axios from 'axios';
-import { useForm } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3'
 
-const logout = async () => {
-    try {
-        await axios.post('/logout'); // send POST to Fortify logout route
-        window.location.href = '/register'; // redirect to registration page
-    } catch (error) {
-        console.error('Logout failed', error);
-    }
-};
+const logout = () => {
+    router.post('/logout')
+}
 </script>
 
 <template>
