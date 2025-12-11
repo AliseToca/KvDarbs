@@ -11,7 +11,7 @@
         email: '',
         username: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
     });
 
     const submit = () => {
@@ -41,39 +41,49 @@
 
                 <form class="form-field" @submit.prevent="submit">
                     <InputField v-model="form.name"
+                                class="form-field-item"
                                 type="text"
                                 id="full_name"
                                 name="name"
                                 label="Name"
                                 placeholderValue="Your full name"
+                                :error="form.errors.name"
                     />
                     <InputField v-model="form.email"
+                                class="form-field-item"
                                 type="email"
                                 id="email"
                                 name="email"
                                 label="Email"
                                 placeholderValue="Your email"
+                                :error="form.errors.email"
                     />
                     <InputField v-model="form.username"
+                                class="form-field-item"
                                 type="text"
                                 id="username"
                                 name="username"
                                 label="Username"
                                 placeholderValue="Your username"
+                                :error="form.errors.username"
                     />
                     <InputField v-model="form.password"
+                                class="form-field-item"
                                 type="password"
                                 id="password"
                                 name="password"
                                 label="Password"
                                 placeholderValue="Your password"
+                                :error="form.errors.password"
                     />
                     <InputField v-model="form.password_confirmation"
+                                class="form-field-item"
                                 type="password"
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 label="Confirm password"
                                 placeholderValue="Confirm your password"
+                                :error="form.errors.password_confirmation"
                     />
                     <button type="submit" class="button full-width primary">Register</button>
                 </form>

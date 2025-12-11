@@ -4,7 +4,6 @@
     display: grid;
     height: 100vh;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
 
     .image-wrapper,
     .content-wrapper {
@@ -21,16 +20,12 @@
     }
 
     .content {
-        max-width: 60%;
+        max-width: 80%;
         gap: 10px;
     }
 
     .content-info {
         text-align: center;
-    }
-
-    .content form input {
-        margin-bottom: 17px;
     }
 
     @media (max-width: 768px) {

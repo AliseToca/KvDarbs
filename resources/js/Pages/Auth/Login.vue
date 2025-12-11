@@ -35,18 +35,22 @@
 
                 <form class="form-field" @submit.prevent="submit">
                     <InputField v-model="form.email"
+                                class="form-field-item"
                                 type="email"
                                 id="email"
                                 name="email"
                                 label="Email"
                                 placeholderValue="Your email"
+                                :error="form.errors.email"
                     />
                     <InputField v-model="form.password"
+                                class="form-field-item"
                                 type="password"
                                 id="password"
                                 name="password"
                                 label="Password"
                                 placeholderValue="Your password"
+                                :error="form.errors.password"
                     />
 
                     <button type="submit" class="button full-width primary">Login</button>

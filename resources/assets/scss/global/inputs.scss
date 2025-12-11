@@ -5,6 +5,10 @@
     margin-bottom: steps(2);
     gap: 5px;
 
+    .form-field-item {
+        margin-bottom: 10px;
+    }
+
     span.label {
         display: block;
     }
@@ -124,9 +128,12 @@
     .hint-container,
     .error-container {
         display: block;
-        padding-top: 4px;
-        padding-bottom: 4px;
-        color: var(--color-dimgray);
+        color: $color-text-error;
+
+        li {
+            color: $color-text-error;
+            font-size: 13px;
+        }
 
         &:empty {
             display: none;
@@ -137,10 +144,6 @@
         .control {
             border-color: var(--color-error);
         }
-    }
-
-    .error-container {
-        color: var(--color-error);
     }
 
     &.radio-button {

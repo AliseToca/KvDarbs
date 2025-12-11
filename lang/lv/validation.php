@@ -1,0 +1,185 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Language Lines
+    |--------------------------------------------------------------------------
+    */
+
+    'accepted' => ':attribute jābūt pieņemtam.',
+    'accepted_if' => ':attribute jābūt pieņemtam, ja :other ir :value.',
+    'active_url' => ':attribute nav derīgs URL.',
+    'after' => ':attribute jābūt datumam pēc :date.',
+    'after_or_equal' => ':attribute jābūt datumam pēc vai vienādam ar :date.',
+    'alpha' => ':attribute drīkst saturēt tikai burtus.',
+    'alpha_dash' => ':attribute drīkst saturēt tikai burtus, ciparus, defisus un pasvītrojumus.',
+    'alpha_num' => ':attribute drīkst saturēt tikai burtus un ciparus.',
+    'array' => ':attribute jābūt masīvam.',
+    'ascii' => ':attribute drīkst saturēt tikai vienbaitu alfabētiskos simbolus un ciparus.',
+    'before' => ':attribute jābūt datumam pirms :date.',
+    'before_or_equal' => ':attribute jābūt datumam pirms vai vienādam ar :date.',
+    'between' => [
+        'array' => ':attribute jābūt starp :min un :max vienumiem.',
+        'file' => ':attribute jābūt starp :min un :max kilobaitiem.',
+        'numeric' => ':attribute jābūt starp :min un :max.',
+        'string' => ':attribute jābūt starp :min un :max rakstzīmēm.',
+    ],
+    'boolean' => ':attribute jābūt patiesam vai nepatiesam.',
+    'can' => ':attribute satur neatļautu vērtību.',
+    'confirmed' => ':attribute apstiprinājums nesakrīt.',
+    'current_password' => 'Parole nav pareiza.',
+    'date' => ':attribute nav derīgs datums.',
+    'date_equals' => ':attribute jābūt datumam vienādam ar :date.',
+    'date_format' => ':attribute neatbilst formātam :format.',
+    'decimal' => ':attribute jābūt ar :decimal decimālām vietām.',
+    'declined' => ':attribute jābūt noraidītam.',
+    'declined_if' => ':attribute jābūt noraidītam, ja :other ir :value.',
+    'different' => ':attribute un :other jābūt atšķirīgiem.',
+    'digits' => ':attribute jābūt :digits cipariem.',
+    'digits_between' => ':attribute jābūt starp :min un :max cipariem.',
+    'dimensions' => ':attribute satur nederīgus attēla izmērus.',
+    'distinct' => ':attribute satur dublikāta vērtību.',
+    'doesnt_end_with' => ':attribute nedrīkst beigties ar: :values.',
+    'doesnt_start_with' => ':attribute nedrīkst sākties ar: :values.',
+    'email' => ':attribute jābūt derīgai e-pasta adresei.',
+    'ends_with' => ':attribute jābeidzas ar vienu no šiem: :values.',
+    'enum' => 'Izvēlētais :attribute ir nederīgs.',
+    'exists' => 'Izvēlētais :attribute ir nederīgs.',
+    'extensions' => ':attribute jābūt ar vienu no šīm paplašinājumiem: :values.',
+    'file' => ':attribute jābūt failam.',
+    'filled' => ':attribute jābūt aizpildītam.',
+    'gt' => [
+        'array' => ':attribute jābūt vairāk nekā :value vienumiem.',
+        'file' => ':attribute jābūt lielākam par :value kilobaitiem.',
+        'numeric' => ':attribute jābūt lielākam par :value.',
+        'string' => ':attribute jābūt garākam par :value rakstzīmēm.',
+    ],
+    'gte' => [
+        'array' => ':attribute jābūt :value vienumiem vai vairāk.',
+        'file' => ':attribute jābūt lielākam vai vienādam ar :value kilobaitiem.',
+        'numeric' => ':attribute jābūt lielākam vai vienādam ar :value.',
+        'string' => ':attribute jābūt garākam vai vienādam ar :value rakstzīmēm.',
+    ],
+    'hex_color' => ':attribute jābūt derīgai heksadecimālai krāsai.',
+    'image' => ':attribute jābūt attēlam.',
+    'in' => 'Izvēlētais :attribute ir nederīgs.',
+    'in_array' => ':attribute jāeksistē :other.',
+    'integer' => ':attribute jābūt veselam skaitlim.',
+    'ip' => ':attribute jābūt derīgai IP adresei.',
+    'ipv4' => ':attribute jābūt derīgai IPv4 adresei.',
+    'ipv6' => ':attribute jābūt derīgai IPv6 adresei.',
+    'json' => ':attribute jābūt derīgai JSON virknei.',
+    'list' => ':attribute jābūt sarakstam.',
+    'lowercase' => ':attribute jābūt ar mazajiem burtiem.',
+    'lt' => [
+        'array' => ':attribute jābūt mazāk nekā :value vienumiem.',
+        'file' => ':attribute jābūt mazāk nekā :value kilobaitiem.',
+        'numeric' => ':attribute jābūt mazākam par :value.',
+        'string' => ':attribute jābūt mazākam par :value rakstzīmēm.',
+    ],
+    'lte' => [
+        'array' => ':attribute nedrīkst būt vairāk nekā :value vienumi.',
+        'file' => ':attribute jābūt mazākam vai vienādam ar :value kilobaitiem.',
+        'numeric' => ':attribute jābūt mazākam vai vienādam ar :value.',
+        'string' => ':attribute jābūt mazākam vai vienādam ar :value rakstzīmēm.',
+    ],
+    'mac_address' => ':attribute jābūt derīgai MAC adresei.',
+    'max' => [
+        'array' => ':attribute nedrīkst saturēt vairāk nekā :max vienumus.',
+        'file' => ':attribute nedrīkst būt lielāks par :max kilobaitiem.',
+        'numeric' => ':attribute nedrīkst būt lielāks par :max.',
+        'string' => ':attribute nedrīkst būt garāks par :max rakstzīmēm.',
+    ],
+    'max_digits' => ':attribute nedrīkst saturēt vairāk nekā :max ciparus.',
+    'mimes' => ':attribute jābūt failam ar tipu: :values.',
+    'mimetypes' => ':attribute jābūt failam ar tipu: :values.',
+    'min' => [
+        'array' => ':attribute jābūt vismaz :min vienumiem.',
+        'file' => ':attribute jābūt vismaz :min kilobaitiem.',
+        'numeric' => ':attribute jābūt vismaz :min.',
+        'string' => ':attribute jābūt vismaz :min rakstzīmēm.',
+    ],
+    'min_digits' => ':attribute jābūt vismaz :min cipariem.',
+    'missing' => ':attribute jābūt neatstātam.',
+    'missing_if' => ':attribute jābūt neatstātam, ja :other ir :value.',
+    'missing_unless' => ':attribute jābūt neatstātam, ja vien :other nav :value.',
+    'missing_with' => ':attribute jābūt neatstātam, ja :values eksistē.',
+    'missing_with_all' => ':attribute jābūt neatstātam, ja :values eksistē.',
+    'multiple_of' => ':attribute jābūt :value reizinājumam.',
+    'not_in' => 'Izvēlētais :attribute ir nederīgs.',
+    'not_regex' => ':attribute formāts ir nederīgs.',
+    'numeric' => ':attribute jābūt skaitlim.',
+    'password' => [
+        'letters' => ':attribute jāietver vismaz viens burts.',
+        'mixed' => ':attribute jāietver vismaz viens lielais un viens mazais burts.',
+        'numbers' => ':attribute jāietver vismaz viens cipars.',
+        'symbols' => ':attribute jāietver vismaz viens simbols.',
+        'uncompromised' => ':attribute ir atrasts nopludinātos datos. Izvēlieties citu :attribute.',
+    ],
+    'present' => ':attribute jābūt klāt.',
+    'present_if' => ':attribute jābūt klāt, ja :other ir :value.',
+    'present_unless' => ':attribute jābūt klāt, ja vien :other nav :value.',
+    'present_with' => ':attribute jābūt klāt, ja :values eksistē.',
+    'present_with_all' => ':attribute jābūt klāt, ja :values eksistē.',
+    'prohibited' => ':attribute ir aizliegts.',
+    'prohibited_if' => ':attribute ir aizliegts, ja :other ir :value.',
+    'prohibited_unless' => ':attribute ir aizliegts, ja vien :other nav :values.',
+    'prohibits' => ':attribute aizliedz :other būt klāt.',
+    'regex' => ':attribute formāts ir nederīgs.',
+    'required' => ':attribute ir obligāts.',
+    'required_array_keys' => ':attribute jāietver ieraksti priekš: :values.',
+    'required_if' => ':attribute ir obligāts, ja :other ir :value.',
+    'required_if_accepted' => ':attribute ir obligāts, ja :other ir pieņemts.',
+    'required_if_declined' => ':attribute ir obligāts, ja :other ir noraidīts.',
+    'required_unless' => ':attribute ir obligāts, ja vien :other nav :values.',
+    'required_with' => ':attribute ir obligāts, ja :values eksistē.',
+    'required_with_all' => ':attribute ir obligāts, ja :values eksistē.',
+    'required_without' => ':attribute ir obligāts, ja :values neeksistē.',
+    'required_without_all' => ':attribute ir obligāts, ja neviens no :values neeksistē.',
+    'same' => ':attribute jābūt vienādam ar :other.',
+    'size' => [
+        'array' => ':attribute jābūt :size vienumiem.',
+        'file' => ':attribute jābūt :size kilobaitiem.',
+        'numeric' => ':attribute jābūt :size.',
+        'string' => ':attribute jābūt :size rakstzīmēm.',
+    ],
+    'starts_with' => ':attribute jābūt sākumā ar vienu no šiem: :values.',
+    'string' => ':attribute jābūt tekstam.',
+    'timezone' => ':attribute jābūt derīgai laika zonai.',
+    'unique' => ':attribute jau pastāv.',
+    'uploaded' => ':attribute neizdevās augšupielādēt.',
+    'uppercase' => ':attribute jābūt lielajiem burtiem.',
+    'url' => ':attribute jābūt derīgam URL.',
+    'ulid' => ':attribute jābūt derīgam ULID.',
+    'uuid' => ':attribute jābūt derīgam UUID.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Lines
+    |--------------------------------------------------------------------------
+    */
+    'custom' => [
+        'attribute-name' => [
+            'rule-name' => 'custom-message',
+        ],
+        'password.min' => 'Jābūt vismaz :min rakstzīmju garai.',
+        'password.regex' => 'Jābūt vismaz 1 lielais burts, 1 mazais burts, 1 cipars un 1 simbols.',
+        'password.confirmed' => 'Paroles nesakrīt.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    */
+    'attributes' => [
+        'name' => 'Vārds',
+        'email' => 'E-pasts',
+        'username' => 'Lietotājvārds',
+        'password' => 'Parole',
+        'password_confirmation' => 'Paroles apstiprinājums',
+    ],
+
+];
