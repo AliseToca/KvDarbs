@@ -17,11 +17,15 @@
         align-items: center;
         justify-content: space-between;
         padding: 40px 0 20px 0;
+
+        h2 {
+            text-align: center;
+        }
     }
 
     .content {
-        max-width: 80%;
-        gap: 10px;
+        width: 70%;
+        max-width: 400px;
     }
 
     .content-info {
