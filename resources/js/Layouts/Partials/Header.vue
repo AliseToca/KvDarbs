@@ -1,6 +1,5 @@
 <script setup>
 import {router, usePage} from '@inertiajs/vue3'
-import Button from "../../Components/Button.vue";
 
 const { headerMenu, languagePage, auth} = usePage().props;
 console.log('Inertia props:', usePage().props)
