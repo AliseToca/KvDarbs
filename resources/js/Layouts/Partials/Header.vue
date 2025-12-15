@@ -2,7 +2,6 @@
 import {router, usePage} from '@inertiajs/vue3'
 
 const { headerMenu, languagePage, auth} = usePage().props;
-console.log('Inertia props:', usePage().props)
 
 const login = () => {
     router.get('/login')
@@ -16,7 +15,7 @@ const logout = () => {
 
 <template>
     <header class="site-header">
-        <a :href="`/${languagePage.slug}/`">{{languagePage.content.site_name}}</a>
+        <a :href="`/${languagePage.slug}/`"><strong>{{languagePage.content.site_name}}</strong></a>
 
         <nav v-if="headerMenu.length && auth.user">
             <ul>

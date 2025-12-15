@@ -22,14 +22,21 @@ const submit = () => {
 };
 </script>
 
+<script>
+import AuthLayout from '@/Layouts/Auth.vue';
+
+export default {
+    layout: AuthLayout,
+};
+</script>
+
 <template>
     <div class="auth-wrapper">
         <div class="image-wrapper">
-            <img src="">
+            <img src="../../../assets/images/placeholder.jpg">
         </div>
 
         <div class="content-wrapper">
-<!--            TODO: get name from language page-->
             <div></div>
 
             <div class="content">

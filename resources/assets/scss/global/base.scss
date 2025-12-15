@@ -11,10 +11,21 @@ html {
 }
 
 body {
-    min-heght: 100vh;
+    min-height: 100vh;
     background-color: $color-body;
     color: $color-text-primary;
     font-family: 'Albert Sans';
     font-weight: normal;
     line-height: 120%;
+}
+
+.main-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    display: flex;
 }

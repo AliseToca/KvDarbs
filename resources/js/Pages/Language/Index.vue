@@ -17,8 +17,6 @@
 </script>
 
 <template>
-    <div>
-        <h1>{{ page.name }}</h1>
-        <p>{{ content }}</p>
-    </div>
+    <h1>{{ page.name }}</h1>
+    <p>{{ content }}</p>
 </template>

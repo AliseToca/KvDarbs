@@ -2,8 +2,9 @@
 
 .auth-wrapper {
     display: grid;
-    height: 100vh;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 55% 45%;
+    flex: 1;
+    padding: 0 35px 35px;
 
     .image-wrapper,
     .content-wrapper {
@@ -11,8 +12,17 @@
         flex-direction: column;
         align-items: center;
         box-sizing: border-box;
+        height: 100%;
     }
 
+    .image-wrapper {
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    }
     .content-wrapper {
         align-items: center;
         justify-content: space-between;

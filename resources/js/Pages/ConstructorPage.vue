@@ -1,8 +1,8 @@
 <script>
-    import AppLayout from '@/Layouts/Main.vue';
+    import MainLayout from '@/Layouts/Main.vue';
 
     export default {
-        layout: AppLayout,
+        layout: MainLayout,
     };
 
 </script>
@@ -13,10 +13,8 @@
 </script>
 
 <template>
-    <div>
         <h1>{{page.name}}</h1>
 
-    </div>
 </template>
 
 

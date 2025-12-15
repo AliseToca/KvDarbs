@@ -6,7 +6,7 @@ return [
     'logout' => 'Iziet',
 
 
-    'login_title' => 'Pieslēgties',
+    'login_title' => 'Pieteikšanās',
     'register_title' => 'Reģistrācija',
 
     'name' => 'Vārds',
