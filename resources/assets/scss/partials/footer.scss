@@ -1,7 +1,8 @@
 @use '@environment' as *;
 
-.site-header {
-    background-color: $color-body;
+.site-footer {
+    background-color: $color-primary;
+    color: $color-white;
     padding: 45px;
     display: flex;
     align-items: center;
