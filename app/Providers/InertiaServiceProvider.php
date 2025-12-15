@@ -24,10 +24,14 @@ class InertiaServiceProvider extends ServiceProvider
     {
         Inertia::share([
             'locale' => fn () => app()->getLocale(),
+            'translations' => fn () => [
+                'auth' => trans('auth'),
+                'validation' => trans('validation'),
+            ],
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),
             'auth' => fn () => ['user' => auth()->user()],
-            'availableLocales' => fn () => app(LanguageRepository::class)->availableLocales(),
+//            'availableLocales' => fn () => app(LanguageRepository::class)->availableLocales(),
             'languagePage' => fn () => app(PagesService::class)
                 ->getLanguagePage()
                 ->only(['content', 'slug']),

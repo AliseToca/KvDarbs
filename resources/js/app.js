@@ -1,9 +1,10 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-// import MainLayout from './Layouts/Main.vue';
 import '../assets/scss/style.scss';
 import './bootstrap.ts';
+// import MainLayout from './Layouts/Main.vue';
+
 
 createInertiaApp({
     resolve: (name) => {
