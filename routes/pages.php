@@ -9,6 +9,8 @@ use App\Http\Controllers\LanguagePageController;
 use CubeAgency\FilamentPageManager\Models\Page;
 use CubeAgency\FilamentPageManager\Services\PageRoutes;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecipeController;
+use App\Filament\Templates\RecipeTemplate;
 
 Route::get('/', [LanguagePageController::class, 'index']);
 Route::post('/save-selected-cookies', CookiesPageController::class . '@saveSelectedCookies')->name('saveSelectedCookies');
@@ -32,5 +34,11 @@ PageRoutes::for(ConstructorTemplate::class, function (Page $page) {
 PageRoutes::for(CookiesTemplate::class, static function (Page $page) {
     Route::get($page->getUri(), ['pageId' => $page->getKey()])
         ->uses([CookiesPageController::class, 'index'])
+        ->name('index');
+});
+
+PageRoutes::for(RecipeTemplate::class, static function (Page $page) {
+    Route::get($page->getUri(), ['pageId' => $page->getKey()])
+        ->uses([RecipeController::class, 'index'])
         ->name('index');
 });

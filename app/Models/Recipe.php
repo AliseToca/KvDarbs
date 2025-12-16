@@ -17,11 +17,13 @@ use App\Models\RecipeType;
 class Recipe extends Model
 {
     protected $fillable = [
+        'slug',
         'name',
         'image',
         'content',
         'time_needed_minutes',
         'servings',
+        'product_id',
     ];
 
     public function users(){
@@ -36,9 +38,13 @@ class Recipe extends Model
         return $this->belongsToMany(Folder::class);
     }
 
-    public function products(){
-        return $this->belongsToMany(Product::class);
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_recipe_unit')
+            ->withPivot(['amount', 'unit_id'])
+            ->withTimestamps();
     }
+
 
     public function recipeCategories(){
         return $this->belongsToMany(RecipeCategory::class);

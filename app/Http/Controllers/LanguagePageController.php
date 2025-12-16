@@ -16,14 +16,21 @@ class LanguagePageController extends Controller
     public function index(Request $request): Response
     {
         $page = $this->loadPage($request);
-        $renderer = new ConstructorBlockRenderer(config('filament-constructor.language_blocks'));
+
+        $renderer = new ConstructorBlockRenderer(
+            config('filament-constructor.language_blocks')
+        );
+
+        $blocks = data_get($page->content, 'blocks', []);
+        $blocks = json_decode(json_encode($blocks));
 
         return Inertia::render('Language/Index', [
-            'page' => $page,
+            'page'    => $page,
             'content' => $page->content,
-            'blocks' => $renderer->render(json_decode($page->blocks) ?? []),
+            'blocks'  => $renderer->render($blocks),
         ]);
     }
+
 
     protected function loadPage(Request $request): Model
     {

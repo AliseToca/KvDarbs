@@ -14,6 +14,7 @@ class Product extends Model
 {
     protected $fillable = [
         'name',
+        'product_category_id',
     ];
 
     public function households(){
@@ -24,11 +25,14 @@ class Product extends Model
         return $this->belongsToMany(ShoppingList::class);
     }
 
-    public function recipes(){
-        return $this->belongsToMany(Recipe::class);
+    public function recipes()
+    {
+        return $this->belongsToMany(Recipe::class, 'product_recipe_unit')
+            ->withPivot(['amount', 'unit_id'])
+            ->withTimestamps();
     }
 
-    public function productCategories(){
+    public function productCategory(){
         return $this->belongsTo(ProductCategory::class);
     }
 }

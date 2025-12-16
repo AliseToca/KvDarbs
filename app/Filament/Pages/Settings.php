@@ -18,6 +18,7 @@ class Settings extends SettingsPage
 
     protected static ?string $navigationGroup = 'Settings';
 
+
     public function form(Form $form): Form
     {
         return $form

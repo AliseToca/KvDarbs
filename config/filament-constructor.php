@@ -7,5 +7,6 @@ return [
     ],
     'language_blocks' => [
         'image' => App\Filament\Constructor\Blocks\ImageBlock::class,
+        'simple_text' => App\Filament\Constructor\Blocks\SimpleTextBlock::class,
     ]
 ];

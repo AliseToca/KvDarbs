@@ -8,15 +8,16 @@
 </script>
 
 <script setup>
-    const {page,content,blocks} = defineProps({
+    const { page, content, blocks } = defineProps({
         page: Object,
         content: [String, Object],
-        blocks: Array
-    })
-
+        blocks: String,
+    });
 </script>
+
 
 <template>
     <h1>{{ page.name }}</h1>
-    <p>{{ content }}</p>
+    <div class="blocks" v-html="blocks"></div>
+
 </template>

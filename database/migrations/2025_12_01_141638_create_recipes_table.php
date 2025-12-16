@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('time_needed_minutes')->nullable();
             $table->integer('servings')->nullable();
 
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained();
 
             $table->timestamps();
         });
