@@ -29,10 +29,6 @@ class UserResource extends Resource
         return __('resources.users.plural');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.users.plural');
-    }
     public static function form(Form $form): Form
     {
         return $form

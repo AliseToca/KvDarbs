@@ -27,11 +27,6 @@ class ProductResource extends Resource
         return __('resources.label');
     }
 
-    public static function getPluralModelLabel(): string
-    {
-        return __('resources.product.plural');
-    }
-
     public static function getNavigationLabel(): string
     {
         return __('resources.product.plural');

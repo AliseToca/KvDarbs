@@ -29,11 +29,6 @@ class ProductCategoryResource extends Resource
         return __('resources.product_category.plural');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.product_category.plural');
-    }
-
     public static function form(Form $form): Form
     {
         return $form

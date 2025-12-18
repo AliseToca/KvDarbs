@@ -24,11 +24,6 @@ class PageResource extends Resource
         return __('resources.pages.plural');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.pages.plural');
-    }
-
     public static function getPages(): array
     {
         return [

@@ -35,11 +35,6 @@ class CookieGroupResource extends Resource
         return __('resources.cookie_groups.plural');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.cookie_groups.plural');
-    }
-
     public static function form(Form $form): Form
     {
         return $form

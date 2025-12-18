@@ -32,11 +32,6 @@ class CookieResource extends Resource
     {
         return __('resources.cookies.plural');
     }
-
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.cookies.plural');
-    }
     public static function form(Form $form): Form
     {
         return $form

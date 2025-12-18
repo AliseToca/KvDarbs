@@ -33,10 +33,6 @@ class MenuResource extends Resource
         return __('resources.menus.plural');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.menus.plural');
-    }
     public static function form(Form $form): Form
     {
         return $form
