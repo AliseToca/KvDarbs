@@ -1,4 +1,5 @@
 <script setup>
+import AuthLayout from '../../Layouts/Auth.vue';
 import InputField from "../../Components/Inputs/InputField.vue";
 import { useForm, usePage } from "@inertiajs/vue3";
 
@@ -20,59 +21,53 @@ const submit = () => {
 };
 </script>
 
-<script>
-import AuthLayout from '@/Layouts/Auth.vue';
-
-export default {
-    layout: AuthLayout,
-};
-</script>
-
 <template>
-    <div class="auth-wrapper">
-        <div class="image-wrapper">
-            <img src="../../../assets/images/placeholder.jpg">
-        </div>
-
-        <div class="content-wrapper">
-            <div></div>
-
-            <div class="content">
-                <div class="content-info">
-                    <h3>{{ translations.auth.login_title }}</h3>
-                </div>
-
-                <form class="form-field" @submit.prevent="submit">
-                    <InputField
-                        v-model="form.email"
-                        class="form-field-item"
-                        type="email"
-                        id="email"
-                        name="email"
-                        :label="translations.auth.email"
-                        :error="form.errors.email"
-                    />
-
-                    <InputField
-                        v-model="form.password"
-                        class="form-field-item"
-                        type="password"
-                        id="password"
-                        name="password"
-                        :label="translations.auth.password"
-                        :error="form.errors.password"
-                    />
-
-                    <button type="submit" class="button full-width primary">
-                        {{ translations.auth.login }}
-                    </button>
-                </form>
+    <AuthLayout>
+        <div class="auth-wrapper">
+            <div class="image-wrapper">
+                <img src="../../../assets/images/placeholder.jpg">
             </div>
 
-            <p>
-                {{ translations.auth.no_account }}
-                <a href="/register">{{ translations.auth.register_title }}</a>
-            </p>
+            <div class="content-wrapper">
+                <div></div>
+
+                <div class="content">
+                    <div class="content-info">
+                        <h3>{{ translations.auth.login_title }}</h3>
+                    </div>
+
+                    <form class="form-field" @submit.prevent="submit">
+                        <InputField
+                            v-model="form.email"
+                            class="form-field-item"
+                            type="email"
+                            id="email"
+                            name="email"
+                            :label="translations.auth.email"
+                            :error="form.errors.email"
+                        />
+
+                        <InputField
+                            v-model="form.password"
+                            class="form-field-item"
+                            type="password"
+                            id="password"
+                            name="password"
+                            :label="translations.auth.password"
+                            :error="form.errors.password"
+                        />
+
+                        <button type="submit" class="button full-width primary">
+                            {{ translations.auth.login }}
+                        </button>
+                    </form>
+                </div>
+
+                <p>
+                    {{ translations.auth.no_account }}
+                    <a href="/register">{{ translations.auth.register_title }}</a>
+                </p>
+            </div>
         </div>
-    </div>
+    </AuthLayout>
 </template>

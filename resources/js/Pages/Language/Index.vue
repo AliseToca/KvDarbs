@@ -1,14 +1,7 @@
-<script>
-    import AppLayout from '@/Layouts/Main.vue';
-
-    export default {
-        layout: AppLayout,
-    };
-
-</script>
-
 <script setup>
-    const { page, content, blocks } = defineProps({
+import MainLayout from '../../Layouts/Main.vue';
+
+const { page, content, blocks } = defineProps({
         page: Object,
         content: [String, Object],
         blocks: String,
@@ -17,7 +10,8 @@
 
 
 <template>
-    <h1>{{ page.name }}</h1>
-    <div class="blocks" v-html="blocks"></div>
-
+    <MainLayout>
+        <h1>{{ page.name }}</h1>
+        <div class="blocks" v-html="blocks"></div>
+    </MainLayout>
 </template>
