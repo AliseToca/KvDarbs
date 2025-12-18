@@ -14,7 +14,7 @@ class SimpleTextBlock extends BlockRenderer
 
     public function title(): string
     {
-        return __('Text');
+        return __('forms.field_labels.text');
     }
 
     public function schema(): array

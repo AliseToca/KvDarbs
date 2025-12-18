@@ -10,5 +10,6 @@ class CreatePage extends FilamentCreatePage
 {
     use PageFormTrait;
 
+
     protected static string $resource = PageResource::class;
 }

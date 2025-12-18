@@ -17,18 +17,19 @@ class ImageBlock extends BlockRenderer
 
     public function title(): string
     {
-        return __('Image');
+        return __('forms.field_labels.image');
     }
 
     public function schema(): array
     {
         return [
             CuratorPicker::make('image')
-                ->label('Image')
+                ->label(__('forms.field_labels.image'))
                 ->directory('pages')
                 ->limitToDirectory()
                 ->rules('required'),
-            TextInput::make('image_alt'),
+            TextInput::make('image_alt')
+                ->label(__('forms.field_labels.image_alt')),
         ];
     }
 

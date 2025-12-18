@@ -22,13 +22,29 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'fluentui-food-chicken-leg-16-o';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.product.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.product.plural');
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(__('forms.field_labels.name'))
                     ->required(),
                 Select::make('product_category_id')
+                    ->label(__('forms.field_labels.category'))
                     ->relationship('productCategory', 'name')
                     ->required(),
             ]);
@@ -38,8 +54,10 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->label(__('forms.field_labels.name')),
                 TextColumn::make('productCategory.name')
+                    ->label(__('forms.field_labels.category'))
                     ->badge(),
             ])
             ->filters([

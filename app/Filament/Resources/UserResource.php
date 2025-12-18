@@ -19,22 +19,40 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.users.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.users.plural');
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(__('auth.name'))
                     ->required(),
                 TextInput::make('email')
+                    ->label(__('auth.email'))
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true),
                 TextInput::make('password')
+                    ->label(__('auth.password'))
                     ->password()
                     ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
                     ->dehydrated(fn(?string $state): bool => filled($state))
                     ->required(fn(string $operation): bool => $operation === 'create'),
                 Select::make('roles')
+                    ->label(__('forms.field_labels.roles'))
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload()
@@ -46,8 +64,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('auth.name')),
+                Tables\Columns\TextColumn::make('email')
+                    ->label(__('auth.email')),
             ])
             ->filters([
                 //

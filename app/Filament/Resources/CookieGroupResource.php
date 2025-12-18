@@ -25,6 +25,21 @@ class CookieGroupResource extends Resource
 
     protected static ?string $navigationGroup = 'Settings';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.cookie_groups.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.cookie_groups.plural');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

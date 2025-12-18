@@ -14,6 +14,21 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'fluentui-document-one-page-24-o';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.pages.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.pages.plural');
+    }
+
     public static function getPages(): array
     {
         return [

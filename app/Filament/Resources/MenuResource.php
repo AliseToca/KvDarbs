@@ -23,27 +23,45 @@ class MenuResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.menus.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.menus.plural');
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('language_id')
+                    ->label(__('resources.languages.singular'))
                     ->relationship('language', 'name')
                     ->required(),
                 TextInput::make('name')
+                    ->label(__('forms.field_labels.name'))
                     ->required(),
                 Select::make('type')
+                    ->label(__('forms.field_labels.type'))
                     ->options([
                         'header' => 'Header',
                         'footer' => 'Footer',
                     ])
                     ->required(),
                 Repeater::make('items')
+                    ->label(__('forms.field_labels.items'))
                     ->relationship('items')
                     ->orderColumn('sort_order')
                     ->schema([
                         Select::make('page')
-                            ->label('Page')
+                            ->label(__( 'resources.pages.singular' ))
                             ->relationship('page', 'name')
                             ->nullable()
                             ->required(),
@@ -60,9 +78,11 @@ class MenuResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('language.name')
-                    ->label('Language'),
-                TextColumn::make('name'),
+                    ->label(__( 'resources.languages.singular')),
+                TextColumn::make('name')
+                    ->label(__('forms.field_labels.name')),
                 TextColumn::make('type')
+                    ->label(__('forms.field_labels.type'))
                     ->badge(),
             ]);
     }

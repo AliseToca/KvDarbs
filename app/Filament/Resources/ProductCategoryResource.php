@@ -19,11 +19,27 @@ class ProductCategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.product_category.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.product_category.plural');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(__('forms.field_labels.name'))
                     ->required(),
             ]);
     }
@@ -32,7 +48,8 @@ class ProductCategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->label(__('forms.field_labels.name')),
             ])
             ->filters([
                 //

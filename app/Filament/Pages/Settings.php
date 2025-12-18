@@ -18,6 +18,20 @@ class Settings extends SettingsPage
 
     protected static ?string $navigationGroup = 'Settings';
 
+    public static function getModelLabel(): string
+    {
+        return __('resources.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.settings.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resources.settings.plural');
+    }
 
     public function form(Form $form): Form
     {
