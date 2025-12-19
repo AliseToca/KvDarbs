@@ -8,6 +8,11 @@ const recipes = usePage().props.recipes;
 
 <template>
     <MainLayout>
-
+        <RecipeCard
+            name = "Test"
+            :rating = 4.5
+            :time_minutes = 70
+            :compatibility = 70
+        />
     </MainLayout>
 </template>
