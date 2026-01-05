@@ -34,7 +34,7 @@ class ProductCategoryResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label(__('forms.field_labels.name'))
+                    ->label(__('fields.labels.name'))
                     ->required(),
             ]);
     }
@@ -44,7 +44,7 @@ class ProductCategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('forms.field_labels.name')),
+                    ->label(__('fields.labels.name')),
             ])
             ->filters([
                 //

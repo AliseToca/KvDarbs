@@ -42,17 +42,17 @@ class MenuResource extends Resource
                     ->relationship('language', 'name')
                     ->required(),
                 TextInput::make('name')
-                    ->label(__('forms.field_labels.name'))
+                    ->label(__('fields.labels.name'))
                     ->required(),
                 Select::make('type')
-                    ->label(__('forms.field_labels.type'))
+                    ->label(__('fields.type'))
                     ->options([
                         'header' => 'Header',
                         'footer' => 'Footer',
                     ])
                     ->required(),
                 Repeater::make('items')
-                    ->label(__('forms.field_labels.items'))
+                    ->label(__('fields.labels.items'))
                     ->relationship('items')
                     ->orderColumn('sort_order')
                     ->schema([
@@ -76,9 +76,9 @@ class MenuResource extends Resource
                 TextColumn::make('language.name')
                     ->label(__( 'resources.languages.singular')),
                 TextColumn::make('name')
-                    ->label(__('forms.field_labels.name')),
+                    ->label(__('fields.labels.name')),
                 TextColumn::make('type')
-                    ->label(__('forms.field_labels.type'))
+                    ->label(__('fields.labels.type'))
                     ->badge(),
             ]);
     }

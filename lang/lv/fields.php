@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'field_labels' => [
+    'labels' => [
         'name' => 'Nosaukums',
         'image' => 'Attēls',
         'image_alt' => 'Attēla alternatīvais teksts',
@@ -15,5 +15,6 @@ return [
         'content' => 'Saturs',
         'cook_time' => 'Pagatavošanas laiks',
         'servings' => 'Porcijas',
+        'created_at' => 'Izveidots',
     ],
 ];

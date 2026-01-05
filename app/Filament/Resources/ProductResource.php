@@ -36,10 +36,10 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label(__('forms.field_labels.name'))
+                    ->label(__('fields.labels.name'))
                     ->required(),
                 Select::make('product_category_id')
-                    ->label(__('forms.field_labels.category'))
+                    ->label(__('fields.labels.category'))
                     ->relationship('productCategory', 'name')
                     ->required(),
             ]);
@@ -50,9 +50,9 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('forms.field_labels.name')),
+                    ->label(__('fields.labels.name')),
                 TextColumn::make('productCategory.name')
-                    ->label(__('forms.field_labels.category'))
+                    ->label(__('fields.labels.category'))
                     ->badge(),
             ])
             ->filters([
