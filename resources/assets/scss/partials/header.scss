@@ -2,7 +2,7 @@
 
 .site-header {
     background-color: $color-body;
-    padding: 45px;
+    padding: $cont-padding-base;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -10,7 +10,7 @@
     nav {
         ul {
             display: flex;
-            gap: 50px;
+            gap: $cont-padding-base;
         }
     }
 }
