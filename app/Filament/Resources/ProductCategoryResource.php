@@ -21,7 +21,7 @@ class ProductCategoryResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('resources.label');
+        return __('resources.product_category.singular');
     }
 
     public static function getPluralModelLabel(): string

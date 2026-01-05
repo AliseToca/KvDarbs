@@ -9,6 +9,7 @@ const props = defineProps({
     compatibility: Number,
 })
 
+// Laika aprēķins no stundām uz minutēm
 const hours = computed(() => Math.floor(props.time_minutes / 60));
 const mins = computed(() => props.time_minutes % 60);
 </script>

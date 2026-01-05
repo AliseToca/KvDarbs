@@ -24,7 +24,7 @@ class ProductResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('resources.label');
+        return __('resources.product.singular');
     }
 
     public static function getNavigationLabel(): string

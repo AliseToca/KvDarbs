@@ -27,7 +27,7 @@ class CookieGroupResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('resources.label');
+        return __('resources.cookie_groups.singular');
     }
 
     public static function getPluralModelLabel(): string

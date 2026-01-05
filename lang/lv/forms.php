@@ -10,5 +10,10 @@ return [
         'category' => 'Kategorija',
         'roles' => 'Lomas',
         'items' => 'Vienības',
+        'slug' => 'Slug',
+        'description' => 'Apraksts',
+        'content' => 'Saturs',
+        'cook_time' => 'Pagatavošanas laiks',
+        'servings' => 'Porcijas',
     ],
 ];
