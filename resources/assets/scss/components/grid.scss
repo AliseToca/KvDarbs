@@ -1,23 +1,21 @@
 @use '@environment' as *;
 
 .grid-container {
-    --grid-gap: #{$cont-padding};
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: var(--grid-gap);
+    width: 100%;
+    padding-inline: $cont-padding-lg;
+
+    gap: $cont-padding;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
     grid-auto-flow: row;
 
+    @include until($tablet) {
+        padding-inline: $cont-padding-base;
+    }
+
     @include until($phone-sm) {
-        --grid-gap: #{steps(1)};
-    }
-
-    > * {
-        @include grid-column(12);
-    }
-
-    @for $i from 1 through 12 {
-        .column-#{$i} {
-            @include grid-column($i);
-        }
+        justify-content: center;
+        padding-inline: $cont-padding-sm;
     }
 }
