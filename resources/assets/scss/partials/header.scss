@@ -2,15 +2,63 @@
 
 .site-header {
     background-color: $color-body;
-    padding: $cont-padding-base;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    height: 140px;
+    padding-inline: $cont-padding-base;
 
     nav {
         ul {
             display: flex;
             gap: $cont-padding-base;
+        }
+    }
+
+    &.mobile {
+        height: 100px;
+        padding-inline: $cont-padding-sm;
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100%;
+            background-color: $color-body;
+
+            header {
+                height: 100px;
+                padding-inline: $cont-padding-sm;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            nav {
+                padding: $cont-padding-sm;
+
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 20px;
+
+                    li {
+                        font-size: 24px;
+                        text-align: right;
+                    }
+                }
+            }
+        }
+
+        .menu-overlay.animate__slideInRight {
+            --animate-duration: 0.4s;
+        }
+
+        .menu-overlay.animate__slideOutRight {
+            --animate-duration: 0.3s;
         }
     }
 }

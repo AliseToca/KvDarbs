@@ -17,6 +17,13 @@ console.log(recipes);
                 :time_minutes = recipe.time_minutes
                 :compatibility = 70
             />
+            <RecipeCard
+                v-for="test in 10"
+                name = "Test"
+                :rating = 4.5
+                :time_minutes = 70
+                :compatibility = 70
+            />
         </div>
     </MainLayout>
 </template>
