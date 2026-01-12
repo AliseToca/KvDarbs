@@ -45,7 +45,7 @@ class MenuResource extends Resource
                     ->label(__('fields.labels.name'))
                     ->required(),
                 Select::make('type')
-                    ->label(__('fields.type'))
+                    ->label(__('fields.labels.type'))
                     ->options([
                         'header' => 'Header',
                         'footer' => 'Footer',

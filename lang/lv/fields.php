@@ -13,8 +13,17 @@ return [
         'slug' => 'Slug',
         'description' => 'Apraksts',
         'content' => 'Saturs',
-        'cook_time' => 'Pagatavošanas laiks',
+        'prep_time' => 'Sagatavošanas laiks',
+        'cook_time' => 'Gatavošanas laiks',
         'servings' => 'Porcijas',
         'created_at' => 'Izveidots',
+        'recipe' => [
+            'prep_time' => 'Sagatavošanas laiks',
+            'cook_time' => 'Gatavošanas laiks',
+            'ingredients' => 'Sastāvdaļas',
+            'instructions' => 'Pagatavošanas norādes',
+            'servings' => 'Porcijas',
+            'step' => 'Solis',
+        ],
     ],
 ];

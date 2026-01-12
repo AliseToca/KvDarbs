@@ -3,14 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
-use Illuminate\Http\Request;
+use CubeAgency\FilamentPageManager\Models\Page;
+use Inertia\Response;
 use Inertia\Inertia;
 class RecipeController extends Controller
 {
-    public function index()
+    public function index(Page $page): Response
     {
         return Inertia::render('Recipe/Index', [
-            'recipes' => Recipe::all(),
+            'recipes' => Recipe::select('name','image_src', 'slug', 'prep_time', 'cook_time')
+                ->get()
+                ->append('url')
+                ->append('total_time'),
+        ]);
+    }
+
+    public function show(Page $page, Recipe $recipe)
+    {
+        return Inertia::render('Recipe/Show', [
+            'page' => $page,
+            'recipe' => $recipe
         ]);
     }
 }

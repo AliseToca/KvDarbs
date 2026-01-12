@@ -14,7 +14,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 });
 
-
 Route::middleware(LocalOnly::class)->group(function () {
     Route::get('/ui-library', [StyleGuidePageController::class, 'index']);
 

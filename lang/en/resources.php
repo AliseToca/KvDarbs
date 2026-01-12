@@ -55,4 +55,8 @@ return [
         'singular' => 'Content',
         'plural' => 'Content',
     ],
+    'recipes' => [
+        'singular' => 'Recipe',
+        'plural' => 'Recipes',
+    ]
 ];

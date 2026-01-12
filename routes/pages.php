@@ -38,7 +38,12 @@ PageRoutes::for(CookiesTemplate::class, static function (Page $page) {
 });
 
 PageRoutes::for(RecipeTemplate::class, static function (Page $page) {
+    //Recepšu lapu katalogs
     Route::get($page->getUri(), ['pageId' => $page->getKey()])
         ->uses([RecipeController::class, 'index'])
         ->name('index');
+    //Individuālā receptes lapa
+    Route::get($page->getUri().'/{recipe:slug}', ['pageId' => $page->getKey()])
+        ->uses([RecipeController::class, 'show'])
+        ->name('show');
 });

@@ -12,18 +12,26 @@ use App\Models\Folder;
 use App\Models\Product;
 use App\Models\RecipeCategory;
 use App\Models\RecipeType;
-
+use App\Services\PagesService;
 
 class Recipe extends Model
 {
     protected $fillable = [
         'slug',
         'name',
-        'image',
+        'image_src',
         'content',
-        'time_needed_minutes',
+        'prep_time',
+        'cook_time',
         'servings',
+        'instructions',
         'product_id',
+    ];
+
+    protected $casts = [
+        'image_src' => 'string',
+        'ingredients' => 'array',
+        'instructions' => 'array',
     ];
 
     public function users(){
@@ -45,12 +53,31 @@ class Recipe extends Model
             ->withTimestamps();
     }
 
-
     public function recipeCategories(){
         return $this->belongsToMany(RecipeCategory::class);
     }
 
     public function recipeTypes(){
         return $this->belongsToMany(RecipeType::class);
+    }
+
+    public function getUrlAttribute(): string
+    {
+        $pages = app(PagesService::class);
+
+        $language = $pages->getLanguagePage();
+        $page = $pages->getCurrentPage();
+
+        return url(sprintf(
+            '/%s/%s/%s',
+            $language->slug,
+            $page->slug,
+            $this->slug
+        ));
+    }
+
+    public function getTotalTimeAttribute(): int
+    {
+        return ($this->prep_time ?? 0) + ($this->cook_time ?? 0);
     }
 }

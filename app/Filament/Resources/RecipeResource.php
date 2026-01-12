@@ -3,10 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RecipeResource\Pages;
-use App\Filament\Resources\RecipeResource\RelationManagers;
 use App\Models\Recipe;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,8 +15,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 
 class RecipeResource extends Resource
 {
@@ -36,23 +41,77 @@ class RecipeResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label(__('fields.labels.name'))
-                    ->required(),
-                //TO DO check cube agency if has slug comp
-                TextInput::make('slug')
-                    ->label(__('fields.labels.slug'))
-                    ->required(),
-                CuratorPicker::make('image')
-                    ->label(__('fields.labels.image')),
-                TextArea::make('content')
-                    ->label(__('fields.labels.content'))
-                    ->required(),
-                TextInput::make('time_needed_minutes')
-                    ->label(__('fields.labels.cook_time')),
-                TextInput::make('servings')
-                    ->label(__('fields.labels.servings'))
-                    ->integer(),
+                Section::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('fields.labels.name'))
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                if (($get('slug') ?? '') !== Str::slug($old)) {
+                                    return;
+                                }
+
+                                $set('slug', Str::slug($state));
+                            }),
+                        TextInput::make('slug')
+                            ->label(__('fields.labels.slug'))
+                            ->prefix(function ($record) {
+                                return '';
+                            })
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                        FileUpload::make('image_src')
+                            ->image()
+                            ->maxFiles(1)
+                            ->imageCropAspectRatio('16:9')
+                            ->imageEditor()
+                            ->label(__('fields.labels.image')),
+                        RichEditor::make('content')
+                            ->label(__('fields.labels.content'))
+                            ->columnSpanFull()
+                            ->required(),
+                        Fieldset::make('Cooking information')
+                            ->columns(3)
+                            ->schema([
+                                TextInput::make('prep_time')
+                                    ->label(__('fields.labels.recipe.prep_time'))
+                                    ->integer(),
+                                TextInput::make('cook_time')
+                                    ->label(__('fields.labels.recipe.cook_time'))
+                                    ->integer(),
+                                TextInput::make('servings')
+                                    ->label(__('fields.labels.recipe.servings'))
+                                    ->integer(),
+                                //TO DO make recipe instruction/ingredient work
+                                Repeater::make('ingredients')
+                                    ->label(__('fields.labels.recipe.ingredients'))
+                                    ->schema([
+                                        Select::make('ingredient')
+                                            ->columnSpan(6),
+                                        TextInput::make('quantity')
+                                            ->columnSpan(3),
+                                        TextInput::make('unit')
+                                            ->columnSpan(3),
+                                    ])
+                                    ->columns(12)
+                                    ->defaultItems(1)
+                                    ->reorderable()
+                                    ->columnSpanFull(),
+                                Repeater::make('instructions')
+                                    ->label(__('fields.labels.recipe.instructions'))
+                                    ->schema([
+                                        Textarea::make('text')
+                                            ->label(__('fields.labels.description'))
+                                            ->required()
+                                            ->rows(3),
+                                    ])
+                                    ->itemLabel(fn (array $state, $uuid, $component): string => __('fields.labels.recipe.step') . ' ' . (array_search($uuid, array_keys($component->getState())) + 1))
+                                    ->defaultItems(1)
+                                    ->reorderable()
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
             ]);
     }
 
