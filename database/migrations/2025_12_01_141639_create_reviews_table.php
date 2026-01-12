@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->string('image')->nullable();
-            $table->integer('rating');
+            $table->unsignedSmallInteger('rating');
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('recipe_id')->constrained()->cascadeOnDelete();

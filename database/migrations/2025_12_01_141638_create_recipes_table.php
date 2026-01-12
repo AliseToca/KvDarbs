@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('image')->nullable();
+            $table->string('image_src')->nullable();
             $table->text('content');
-            $table->integer('time_needed_minutes')->nullable();
-            $table->integer('servings')->nullable();
+            $table->json('instructions')->nullable();
+            $table->unsignedSmallInteger('prep_time')->nullable();
+            $table->unsignedSmallInteger('cook_time')->nullable();
+            $table->unsignedSmallInteger('servings')->nullable();
 
             $table->foreignId('user_id')->nullable()->constrained();
 
