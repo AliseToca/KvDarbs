@@ -11,7 +11,9 @@ class RecipeController extends Controller
     public function index(Page $page): Response
     {
         return Inertia::render('Recipe/Index', [
-            'recipes' => Recipe::select('name','image_src', 'slug', 'prep_time', 'cook_time')->get(),
+            'recipes' => Recipe::select('name','image_src', 'slug', 'prep_time', 'cook_time')
+                ->get()
+                ->append('url'),
         ]);
     }
 

@@ -35,7 +35,6 @@ class Recipe extends Model
     ];
 
     protected $appends = [
-        'url',
         'total_time'
     ];
 
