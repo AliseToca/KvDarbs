@@ -6,7 +6,7 @@
 <template>
     <div class="main-layout">
         <Header/>
-        <main>
+        <main class="container">
             <slot></slot>
         </main>
         <Footer/>

@@ -5,9 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     height: 140px;
-    padding-inline: $cont-padding-base;
 
     nav {
         ul {
@@ -15,10 +13,12 @@
             gap: $cont-padding-base;
         }
     }
+    &.auth {
+        padding-inline: 35px;
+    }
 
     &.mobile {
         height: 100px;
-        padding-inline: $cont-padding-sm;
 
         .menu-overlay {
             position: fixed;
@@ -30,7 +30,6 @@
 
             header {
                 height: 100px;
-                padding-inline: $cont-padding-sm;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;

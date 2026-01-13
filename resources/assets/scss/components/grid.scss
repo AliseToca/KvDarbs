@@ -3,19 +3,13 @@
 .grid-container {
     display: grid;
     width: 100%;
-    padding-inline: $cont-padding-lg;
 
     gap: $cont-padding;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
     grid-auto-flow: row;
 
-    @include until($tablet) {
-        padding-inline: $cont-padding-base;
-    }
-
     @include until($phone-sm) {
         justify-content: center;
-        padding-inline: $cont-padding-sm;
     }
 }

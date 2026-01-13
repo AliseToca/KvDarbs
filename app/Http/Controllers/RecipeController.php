@@ -18,10 +18,9 @@ class RecipeController extends Controller
         ]);
     }
 
-    public function show(Page $page, Recipe $recipe)
+    public function show(Recipe $recipe)
     {
         return Inertia::render('Recipe/Show', [
-            'page' => $page,
             'recipe' => $recipe
         ]);
     }

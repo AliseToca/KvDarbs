@@ -47,7 +47,7 @@ const logout = () => router.post('/logout')
 
 
 <template>
-    <header :class="['site-header', { mobile: isMobile }]">
+    <header :class="['container', 'site-header', { mobile: isMobile }]">
         <a :href="`/${languagePage.slug}/`">
             <strong>{{ languagePage.content.site_name }}</strong>
         </a>
