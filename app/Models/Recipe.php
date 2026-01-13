@@ -34,6 +34,11 @@ class Recipe extends Model
         'instructions' => 'array',
     ];
 
+    protected $appends = [
+        'url',
+        'total_time'
+    ];
+
     public function users(){
         return $this->belongsTo(User::class);
     }

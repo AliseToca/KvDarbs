@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import {Link} from "@inertiajs/vue3";
+import FormatTime from "./FormatTime.vue";
 
 const props = defineProps({
     url: String,
@@ -11,11 +12,6 @@ const props = defineProps({
     time_minutes: Number,
     compatibility: Number,
 })
-
-// Laika pārveidošana uz stundām un minutēm
-const hours = computed(() => Math.floor(props.time_minutes / 60));
-const mins = computed(() => props.time_minutes % 60);
-
 </script>
 
 <template>
@@ -33,8 +29,7 @@ const mins = computed(() => props.time_minutes % 60);
             </div>
             <div class="recipe-card-item tags">
                 <div class="tag">
-                    <span v-if="hours > 0">{{hours}}h </span>
-                    <span v-if="mins > 0">{{mins}}min</span>
+                    <FormatTime :timeMinutes="time_minutes"/>
                 </div>
                 <div class="tag">Nav 2 sastāvdaļu</div>
             </div>

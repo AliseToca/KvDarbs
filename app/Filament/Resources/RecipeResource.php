@@ -62,8 +62,8 @@ class RecipeResource extends Resource
                             ->required()
                             ->unique(ignoreRecord: true),
                         FileUpload::make('image_src')
+                            ->directory('recipes')
                             ->image()
-                            ->maxFiles(1)
                             ->imageCropAspectRatio('16:9')
                             ->imageEditor()
                             ->label(__('fields.labels.image')),
