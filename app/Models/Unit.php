@@ -8,5 +8,7 @@ class Unit extends Model
 {
     protected $fillable = [
         'name',
+        'type',
+        'conversion_factor',
     ];
 }

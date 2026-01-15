@@ -52,9 +52,15 @@ class Recipe extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_recipe_unit')
-            ->withPivot(['amount', 'unit_id'])
-            ->withTimestamps();
+        return $this->belongsToMany(Product::class, 'recipe_products')
+            ->using(RecipeProduct::class)
+            ->withPivot(['amount', 'unit_id']);
+    }
+
+    // Priekš Filament repeater
+    public function ingredients()
+    {
+        return $this->hasMany(RecipeProduct::class);
     }
 
     public function recipeCategories(){

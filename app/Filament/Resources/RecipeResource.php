@@ -67,6 +67,7 @@ class RecipeResource extends Resource
                             ->imageCropAspectRatio('16:9')
                             ->imageEditor()
                             ->label(__('fields.labels.image')),
+                        //TO DO decide is content needed
                         RichEditor::make('content')
                             ->label(__('fields.labels.content'))
                             ->columnSpanFull()
@@ -76,27 +77,43 @@ class RecipeResource extends Resource
                             ->schema([
                                 TextInput::make('prep_time')
                                     ->label(__('fields.labels.recipe.prep_time'))
-                                    ->integer(),
+                                    ->integer()
+                                    ->default(0)
+                                    ->required(),
                                 TextInput::make('cook_time')
                                     ->label(__('fields.labels.recipe.cook_time'))
-                                    ->integer(),
+                                    ->integer()
+                                    ->default(0)
+                                    ->required(),
                                 TextInput::make('servings')
                                     ->label(__('fields.labels.recipe.servings'))
-                                    ->integer(),
-                                //TO DO make recipe instruction/ingredient work
+                                    ->integer()
+                                    ->default(1)
+                                    ->required(),
                                 Repeater::make('ingredients')
+                                    ->relationship()
                                     ->label(__('fields.labels.recipe.ingredients'))
                                     ->schema([
-                                        Select::make('ingredient')
+                                        Select::make('product_id')
+                                            ->label('Ingredient')
+                                            ->relationship('product', 'name')
+                                            ->preload()
+                                            ->searchable()
+                                            ->required()
                                             ->columnSpan(6),
-                                        TextInput::make('quantity')
+                                        TextInput::make('amount')
+                                            ->numeric()
+                                            ->required()
                                             ->columnSpan(3),
-                                        TextInput::make('unit')
+                                        Select::make('unit_id')
+                                            ->label('Unit')
+                                            ->relationship('unit', 'name')
+                                            ->required()
                                             ->columnSpan(3),
                                     ])
                                     ->columns(12)
-                                    ->defaultItems(1)
                                     ->reorderable()
+                                    ->defaultItems(1)
                                     ->columnSpanFull(),
                                 Repeater::make('instructions')
                                     ->label(__('fields.labels.recipe.instructions'))
