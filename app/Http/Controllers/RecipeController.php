@@ -19,6 +19,8 @@ class RecipeController extends Controller
 
     public function show(Recipe $recipe)
     {
+        $recipe->load(['recipeProducts.product', 'recipeProducts.unit']);
+
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe
         ]);

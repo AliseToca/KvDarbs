@@ -35,7 +35,7 @@ const props = defineProps({
             </div>
             <div class="compatibility-bar">
                 <div
-                    class="compatibility-bar fill"
+                    class="compatibility-fill"
                     :style="{ width: compatibility + '%' }"
                 ></div>
             </div>

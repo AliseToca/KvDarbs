@@ -27,6 +27,7 @@ class InertiaServiceProvider extends ServiceProvider
             'translations' => fn () => [
                 'auth' => trans('auth'),
                 'validation' => trans('validation'),
+                'recipe' => trans('recipe'),
             ],
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),

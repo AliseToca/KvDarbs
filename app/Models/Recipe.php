@@ -50,15 +50,14 @@ class Recipe extends Model
         return $this->belongsToMany(Folder::class);
     }
 
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'recipe_products')
-            ->using(RecipeProduct::class)
-            ->withPivot(['amount', 'unit_id']);
-    }
+//    public function products()
+//    {
+//        return $this->belongsToMany(Product::class, 'recipe_products')
+//            ->using(RecipeProduct::class)
+//            ->withPivot(['amount', 'unit_id']);
+//    }
 
-    // Priekš Filament repeater
-    public function ingredients()
+    public function recipeProducts()
     {
         return $this->hasMany(RecipeProduct::class);
     }

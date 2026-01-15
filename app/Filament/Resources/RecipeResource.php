@@ -64,7 +64,7 @@ class RecipeResource extends Resource
                         FileUpload::make('image_src')
                             ->directory('recipes')
                             ->image()
-                            ->imageCropAspectRatio('16:9')
+                            ->imageCropAspectRatio('4:3')
                             ->imageEditor()
                             ->label(__('fields.labels.image')),
                         //TO DO decide is content needed
@@ -90,7 +90,7 @@ class RecipeResource extends Resource
                                     ->integer()
                                     ->default(1)
                                     ->required(),
-                                Repeater::make('ingredients')
+                                Repeater::make('recipeProducts')
                                     ->relationship()
                                     ->label(__('fields.labels.recipe.ingredients'))
                                     ->schema([
