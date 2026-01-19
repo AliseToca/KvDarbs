@@ -15,12 +15,11 @@ button {
     border-radius: 8px;
     justify-content: center;
     align-items: center;
-    background-color: $color-muted;
-    color: $color-text-muted;
+    background-color: $color-gray-dark;
+    color: $color-white;
 
     &.primary {
         background-color: $color-primary;
-        color: $color-white;
 
         &:hover {
             background-color: darken($color-primary, 10%);

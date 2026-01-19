@@ -3,16 +3,20 @@ $color-black: #000000;
 
 $color-beige: #fdfaf0;
 $color-beige-dark: #f1edde;
+$color-beige-light: #c7b08f;
 
 $color-red: #ee4141;
 
 $color-gray: #979292;
+$color-gray-dark: #2a2525;
 
 $color-body: $color-beige;
 $color-body-dark: $color-beige-dark;
+
 $color-text-primary: $color-black;
 $color-text-muted: $color-gray;
 $color-text-error: $color-red;
+$color-text-muted: #7b6959;
 
 $color-primary: $color-red;
-$color-muted: $color-beige-dark;
+$color-muted: $color-beige-light;

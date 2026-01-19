@@ -64,7 +64,7 @@ class RecipeResource extends Resource
                         FileUpload::make('image_src')
                             ->directory('recipes')
                             ->image()
-                            ->imageCropAspectRatio('4:3')
+                            ->imageCropAspectRatio('16:9')
                             ->imageEditor()
                             ->label(__('fields.labels.image')),
                         //TO DO decide is content needed
