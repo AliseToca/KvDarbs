@@ -25,5 +25,7 @@ return [
             'servings' => 'Porcijas',
             'step' => 'Solis',
         ],
+        'hours' => 'Stundas',
+        'minutes' => 'Minūtes',
     ],
 ];

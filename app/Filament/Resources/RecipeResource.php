@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RecipeResource\Pages;
 use App\Models\Recipe;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -21,6 +20,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use App\Forms\Components\DurationPicker;
 
 class RecipeResource extends Resource
 {
@@ -73,22 +73,19 @@ class RecipeResource extends Resource
                             ->columnSpanFull()
                             ->required(),
                         Fieldset::make('Cooking information')
-                            ->columns(3)
+                            ->columns(2)
                             ->schema([
-                                TextInput::make('prep_time')
+                                DurationPicker::make('prep_time')
                                     ->label(__('fields.labels.recipe.prep_time'))
-                                    ->integer()
-                                    ->default(0)
-                                    ->required(),
-                                TextInput::make('cook_time')
+                                    ->columnSpan(1),
+                                DurationPicker::make('cook_time')
                                     ->label(__('fields.labels.recipe.cook_time'))
-                                    ->integer()
-                                    ->default(0)
-                                    ->required(),
+                                    ->columnSpan(1),
                                 TextInput::make('servings')
                                     ->label(__('fields.labels.recipe.servings'))
                                     ->integer()
                                     ->default(1)
+                                    ->columnSpan(1)
                                     ->required(),
                                 Repeater::make('recipeProducts')
                                     ->relationship()
