@@ -18,18 +18,18 @@ class CubeInstallSeeder extends Seeder
     {
         if ($this->languageRepository->getModel()->all()->isEmpty()) {
             $this->languageRepository->create([
-                'locale' => 'en',
-                'name' => 'English',
+                'locale' => 'lv',
+                'name' => 'Latvian',
             ]);
         }
 
         if (Page::all()->isEmpty()) {
             Page::create([
-                'name' => 'EN',
-                'slug' => 'en',
+                'name' => 'LV',
+                'slug' => 'lv',
                 'template' => LanguageTemplate::class,
                 'content' => [
-                    'locale' => 'en',
+                    'locale' => 'lv',
                 ],
                 'activate_at' => now(),
             ]);
