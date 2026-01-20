@@ -11,28 +11,29 @@ const recipe = usePage().props.recipe;
 const currentServings = ref(recipe.servings);
 
 function decrementServings() {
-    if (currentServings.value > 1) {
-        currentServings.value--;
-    }
+    currentServings.value > 1 ? currentServings.value-- : null;
 }
 
 function incrementServings() {
     currentServings.value++;
 }
 
+//Sastāvdaļas atbilstoši pašreizējam porciju skaitam
 const scaledIngredients = computed(() => {
     return recipe.recipe_products.map(ingredient =>{
         const baseServings = recipe.servings;
 
+        //Daudzuma aprēķins
         const scaledAmount = ((ingredient.amount / baseServings) * currentServings.value).toFixed(2);
 
         return {
-            ...ingredient,
+            ...ingredient, //sastāvdaļas lauki
             scaledAmount,
         };
     });
 });
 
+// Sastāvdaļu daudzuma noapaļošana ar 2 cipariem aiz komata, ja ir daļskaitlis
 function formatAmount(value) {
     const number = Number(value);
 
@@ -56,10 +57,24 @@ function formatAmount(value) {
                         <p>Rating & Comments</p>
                     </div>
                     <div>
-                        <p><strong>{{ trans.recipe.prep_time }}: </strong><FormatTime :timeMinutes="recipe.prep_time"/></p>
-                        <p><strong>{{ trans.recipe.cook_time }}: </strong><FormatTime :timeMinutes="recipe.cook_time"/></p>
-                        <p><strong>{{ trans.recipe.total_time }}: </strong><FormatTime :timeMinutes="recipe.total_time"/></p>
-                        <p><strong>{{ trans.recipe.author }}: </strong><span>autors</span></p>
+                        <!--Receptes gatavošanas ilgumi stundās un minūtēs-->
+                        <p>
+                            <strong>{{ trans.recipe.prep_time }}:</strong>
+                            <FormatTime :timeMinutes="recipe.prep_time"/>
+                        </p>
+                        <p>
+                            <strong>{{ trans.recipe.cook_time }}: </strong>
+                            <FormatTime :timeMinutes="recipe.cook_time"/>
+                        </p>
+                        <p>
+                            <strong>{{ trans.recipe.total_time }}: </strong>
+                            <FormatTime :timeMinutes="recipe.total_time"/>
+                        </p>
+                        <!--Receptes autors-->
+                        <p>
+                            <strong>{{ trans.recipe.author }}: </strong>
+                            <span>autors</span>
+                        </p>
                     </div>
                 </div>
                 <img :src="'/storage/'+ recipe.image_src">
@@ -71,12 +86,15 @@ function formatAmount(value) {
             <section class="recipe ingredients">
                 <div class="ingredients-header">
                     <h3>{{ trans.recipe.ingredients }}</h3>
+
+                    <!--Porciju skaita samazināšana/palielināšana-->
                     <div class="servings">
                         <button @click="decrementServings">-</button>
-                        <span>{{currentServings}}</span>
+                        <span>{{ currentServings }}</span>
                         <button @click="incrementServings">+</button>
                     </div>
                 </div>
+                <!--Sastāvdaļus saraksts atbilstoši poricju skaitam-->
                 <div v-for="ingredient in scaledIngredients" :key="ingredient.id">
                     {{ formatAmount(ingredient.scaledAmount) }}{{ ingredient.unit.name }} {{ ingredient.product.name }}
                 </div>
@@ -84,6 +102,7 @@ function formatAmount(value) {
             <section>
                 <h3>{{ trans.recipe.instructions }}</h3>
                 <ol>
+                    <!--Izvada pagatavošanas soļus ar numuru-->
                     <li v-for="(step, index) in recipe.instructions" :key="index">
                         {{index + 1}}. {{ step.text }}
                     </li>

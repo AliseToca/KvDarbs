@@ -3,8 +3,7 @@ import AuthLayout from '../../Layouts/Auth.vue';
 import InputField from "../../Components/Inputs/InputField.vue";
 import { useForm, usePage } from "@inertiajs/vue3";
 
-const { props } = usePage();
-const translations = props.translations;
+const translations = usePage().translations;
 
 const form = useForm({
     email: '',
