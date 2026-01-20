@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { router, usePage } from '@inertiajs/vue3'
+import NavBar from "../../Components/NavBar.vue";
 
 const { props } = usePage()
 const translations = props.translations
@@ -9,25 +10,28 @@ const { headerMenu, languagePage, auth } = usePage().props
 const isMenuOpen = ref(false)
 const isMobile = ref(false)
 
+//Mobilā režīma noteikšana
 let mediaQuery
-
 const setupMobile = () => {
     mediaQuery = window.matchMedia('(max-width: 768px)')
     isMobile.value = mediaQuery.matches
 
+    // Novēro ekrāna platuma izmaiņas
     mediaQuery.addEventListener('change', e => {
         isMobile.value = e.matches
     })
 }
 
+//Mobilās izvēlnes vadība
 const openMenu = () => (isMenuOpen.value = true)
 const closeMenu = () => (isMenuOpen.value = false)
 
-
-watch(isMobile, mobile => {
-    if (!mobile) isMenuOpen.value = false
+// Ja pārslēdzas uz darbavirsmu, aizver mobilo izvēlni
+watch(isMobile, isMobileNow => {
+    if (!isMobileNow) isMenuOpen.value = false
 })
 
+// Bloķē lapas ritināšanu, kad izvēlne ir atvērta
 watch(isMenuOpen, open => {
     document.body.style.overflow = open ? 'hidden' : ''
 })
@@ -38,6 +42,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+    //Noņem ekrāna izmaiņas vērošanu
     mediaQuery?.removeEventListener('change')
 })
 
@@ -48,20 +53,20 @@ const logout = () => router.post('/logout')
 
 <template>
     <header :class="['container', 'site-header', { mobile: isMobile }]">
+        <!--Logo/mājaslapas nosaukuma saite  uz sākumlapu-->
         <a :href="`/${languagePage.slug}/`">
             <strong>{{ languagePage.content.site_name }}</strong>
         </a>
 
-        <nav v-if="!isMobile && headerMenu.length && auth.user">
-            <ul>
-                <li v-for="item in headerMenu" :key="item.id">
-                    <a :href="`/${languagePage.slug}/${item.page.slug}`">
-                        {{ item.page.name }}
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <!--Navigācijas josla darbvirsmas izmēra ekrāniem -->
+        <NavBar
+            v-if="!isMobile"
+            :auth="auth"
+            :language-page="languagePage"
+            :menu="headerMenu"
+        />
 
+        <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
         <div v-if="!isMobile">
             <button v-if="auth.user" @click="logout" class="button primary">
                 {{ translations.auth.logout }}
@@ -71,6 +76,7 @@ const logout = () => router.post('/logout')
             </button>
         </div>
 
+        <!--Mobilās izvēlnes poga-->
         <button v-if="isMobile" @click="openMenu" aria-label="Open menu">
             <i class="pi pi-bars"></i>
         </button>
@@ -79,6 +85,7 @@ const logout = () => router.post('/logout')
             enter-active-class="animate__animated animate__slideInRight"
             leave-active-class="animate__animated animate__slideOutRight"
         >
+            <!-- Mobilās izvēlnes pārklājums -->
             <div v-if="isMobile && isMenuOpen" class="menu-overlay">
                 <header>
                     <strong>{{ languagePage.content.site_name }}</strong>
@@ -87,16 +94,14 @@ const logout = () => router.post('/logout')
                     </button>
                 </header>
 
-                <nav v-if="headerMenu.length && auth.user">
-                    <ul>
-                        <li v-for="item in headerMenu" :key="item.id">
-                            <a :href="`/${languagePage.slug}/${item.page.slug}`">
-                                {{ item.page.name }}
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <!-- Mobilā navigācijas josla -->
+                <NavBar
+                    :auth="auth"
+                    :language-page="languagePage"
+                    :menu="headerMenu"
+                />
 
+                <!--Pieslēgšanās/izrakstīšanās mobilās pogas-->
                 <button v-if="auth.user" @click="logout" class="button primary">
                     {{ translations.auth.logout }}
                 </button>
