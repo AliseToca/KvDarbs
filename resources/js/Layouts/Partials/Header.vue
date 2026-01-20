@@ -12,14 +12,18 @@ const isMobile = ref(false)
 
 //Mobilā režīma noteikšana
 let mediaQuery
+let mediaQueryHandler
+
 const setupMobile = () => {
     mediaQuery = window.matchMedia('(max-width: 768px)')
     isMobile.value = mediaQuery.matches
 
+    mediaQueryHandler = (event) => {
+        isMobile.value = event.matches
+    }
+
     // Novēro ekrāna platuma izmaiņas
-    mediaQuery.addEventListener('change', e => {
-        isMobile.value = e.matches
-    })
+    mediaQuery.addEventListener('change', mediaQueryHandler)
 }
 
 //Mobilās izvēlnes vadība
@@ -42,8 +46,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    //Noņem ekrāna izmaiņas vērošanu
-    mediaQuery?.removeEventListener('change')
+    // Noņem ekrāna izmēra klausītāju
+    if (mediaQuery && mediaQueryHandler) {
+        mediaQuery.removeEventListener('change', mediaQueryHandler)
+    }
 })
 
 const login = () => router.get('/login')
