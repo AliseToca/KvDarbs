@@ -26,7 +26,8 @@
         "laravel/tinker": "^2.10.1",
         "solution-forest/filament-translate-field": "^1.2",
         "spatie/laravel-glide": "^3.8",
-        "spatie/laravel-translatable": "^6.11"
+        "spatie/laravel-translatable": "^6.11",
+        "tightenco/ziggy": "^2.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
