@@ -41,7 +41,15 @@ class InertiaServiceProvider extends ServiceProvider
 
     protected function getMenuItems(string $type)
     {
-        $menu = Menu::with('items.page')->where('type', $type)->first();
+        $currentLanguage = app(PagesService::class)->getLanguagePage();
+
+        //Iegūst izvēlnes vienības atkarība no pašreizējās valodas un tipa (galvene/kājene)
+        $menu = Menu::with('items.page')
+            ->where('type', $type)
+            ->whereHas('items.page', function($query) use ($currentLanguage) {
+                $query->where('parent_id', $currentLanguage->id);
+            })
+            ->first();
 
         return $menu ? $menu->items : collect();
     }
