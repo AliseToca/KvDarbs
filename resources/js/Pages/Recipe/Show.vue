@@ -5,8 +5,7 @@ import FormatTime from '../../Components/FormatTime.vue';
 import Checkbox from "../../Components/Inputs/Checkbox.vue";
 import {computed, ref} from 'vue';
 
-const trans = usePage().props.translations;
-const recipe = usePage().props.recipe;
+const { translations, recipe } = usePage().props;
 
 const currentServings = ref(recipe.servings);
 

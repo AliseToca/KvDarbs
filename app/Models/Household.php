@@ -13,11 +13,13 @@ class Household extends Model
         'name',
     ];
 
-    public function users(){
+    public function users(): HasMany
+    {
         return $this->hasMany(User::class);
     }
 
-    public function products(){
+    public function products(): HasMany
+    {
         return $this->hasMany(Product::class);
     }
 }

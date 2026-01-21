@@ -4,14 +4,23 @@ use App\Http\Middleware\LocalOnly;
 use App\Http\Controllers\UI\StyleGuidePageController;
 use App\Http\Controllers\UI\ComponentPageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HouseholdController;
 
 //Route::get('/login', function () {
 //    return redirect(route('filament.admin.auth.login'));
 //})->name('login');
 
+//Viesa adresācija
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+});
+
+//Reģistrēta lietotāja adresācija
+Route::middleware('auth')->group(function(){
+    //Mājsaimniecības izveide
+    Route::post('/households', [HouseholdController::class, 'store'])
+        ->name('households.store');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

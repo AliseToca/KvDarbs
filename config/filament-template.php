@@ -6,6 +6,6 @@ return [
          App\Filament\Templates\LanguageTemplate::class,
          App\Filament\Templates\CookiesTemplate::class,
          App\Filament\Templates\RecipeTemplate::class,
+         App\Filament\Templates\HouseholdTemplate::class,
     ]
 ];
-

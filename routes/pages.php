@@ -11,6 +11,8 @@ use CubeAgency\FilamentPageManager\Services\PageRoutes;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Filament\Templates\RecipeTemplate;
+use App\Filament\Templates\HouseholdTemplate;
+use App\Http\Controllers\HouseholdController;
 
 Route::get('/', [LanguagePageController::class, 'index']);
 Route::post('/save-selected-cookies', CookiesPageController::class . '@saveSelectedCookies')->name('saveSelectedCookies');
@@ -45,5 +47,17 @@ PageRoutes::for(RecipeTemplate::class, static function (Page $page) {
     //Individuālā receptes lapa
     Route::get($page->getUri().'/{recipe:slug}', ['pageId' => $page->getKey()])
         ->uses([RecipeController::class, 'show'])
+        ->name('show');
+});
+
+PageRoutes::for(HouseholdTemplate::class, static function (Page $page) {
+    // Mājsaimniecības lapa nepiesaistītiem lietotājiem
+    Route::get($page->getUri(), ['pageId' => $page->getKey()])
+        ->uses([HouseholdController::class, 'index'])
+        ->name('index');
+
+    // Mājsaimniecības lapa ar lietotāja mājsaimniecību
+    Route::get($page->getUri().'/{user:username}', ['pageId' => $page->getKey()])
+        ->uses([HouseholdController::class, 'show'])
         ->name('show');
 });
