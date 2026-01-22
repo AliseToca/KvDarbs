@@ -11,6 +11,10 @@ p {
     text-wrap: pretty;
 }
 
+.capitalize {
+    text-transform: capitalize;
+}
+
 .richtext {
     * {
         letter-spacing: 0.0213em;
