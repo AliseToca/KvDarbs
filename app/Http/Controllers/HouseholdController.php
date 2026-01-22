@@ -25,7 +25,7 @@ class HouseholdController extends Controller
     }
 
     /**
-     * Ģenerē mājsaimniecības lietotāja mājsaimniecības URL, izmantojot lietotāja username,
+     * Izveido mājsaimniecības lietotāja mājsaimniecības saiti, izmantojot lietotāja username,
      * balstoties uz pašreizējo valodas lapu
      */
     protected function householdShowUrl(User $user): string
@@ -39,7 +39,7 @@ class HouseholdController extends Controller
             ->where('parent_id', $currentLanguage->id)
             ->firstOrFail();
 
-        // Izveidojam URL ar {user:username} parametru
+        // Izveidojam saiti ar {user:username} parametru
         return $page->getUrl('show', [
             'user' => $user->username,
         ]);
@@ -64,15 +64,33 @@ class HouseholdController extends Controller
     }
 
     /**
-     * Konkrētas mājsaimniecības skats,
-     * balstīts uz lietotāja username URLā
+     * Konkrētas mājsaimniecības skats
      */
     public function show(User $user)
     {
         // $this->authorize('view', $user->household);
 
+        $household = $user->household;
+
+        //Visi mājsaimniecības produkti ar tā saistītajiem modeļiem
+        $householdProducts = $user->household->householdProducts()
+            ->with(['product.productCategory', 'unit'])
+            ->get()
+            //Pārveidojam modeļu datus uz vienkārsu masīvu front-end
+            ->map(function ($householdProduct) {
+                return [
+                    'id' => $householdProduct->id,
+                    'productName' => $householdProduct->product->name,
+                    'amount' => $householdProduct->amount,
+                    'unitName' => $householdProduct->unit->name,
+                    'expirationDate' => $householdProduct->expiration_date,
+                    'categoryName' => $householdProduct->product->productCategory->name,
+                ];
+            });
+
         return Inertia::render('Household/Show', [
-            'household' => $user->household,
+            'householdName' => $household->name,
+            'householdProducts' => $householdProducts,
             'user' => $user,
         ]);
     }

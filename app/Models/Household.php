@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
-use App\Models\Product;
+use App\Models\HouseholdProduct;
 
 class Household extends Model
 {
@@ -18,8 +18,8 @@ class Household extends Model
         return $this->hasMany(User::class);
     }
 
-    public function products(): HasMany
+    public function householdProducts(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(HouseholdProduct::class);
     }
 }
