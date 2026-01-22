@@ -38,35 +38,33 @@ class Recipe extends Model
         'total_time'
     ];
 
-    public function users(){
+    public function users(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function reviews(){
+    public function reviews(): HasMany
+    {
         return $this->hasMany(Review::class);
     }
 
-    public function folders(){
+    public function folders(): BelongsToMany
+    {
         return $this->belongsToMany(Folder::class);
     }
 
-//    public function products()
-//    {
-//        return $this->belongsToMany(Product::class, 'recipe_products')
-//            ->using(RecipeProduct::class)
-//            ->withPivot(['amount', 'unit_id']);
-//    }
-
-    public function recipeProducts()
+    public function recipeProducts(): HasMany
     {
         return $this->hasMany(RecipeProduct::class);
     }
 
-    public function recipeCategories(){
+    public function recipeCategories(): BelongsToMany
+    {
         return $this->belongsToMany(RecipeCategory::class);
     }
 
-    public function recipeTypes(){
+    public function recipeTypes(): BelongsToMany
+    {
         return $this->belongsToMany(RecipeType::class);
     }
 
