@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('household_product_unit', function (Blueprint $table) {
+        Schema::create('household_products', function (Blueprint $table) {
             $table->id();
             $table->double('amount');
+            $table->date('expiration_date')->nullable();
 
             $table->foreignId('household_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();

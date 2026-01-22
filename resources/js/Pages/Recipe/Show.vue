@@ -2,7 +2,6 @@
 import MainLayout from '../../Layouts/Main.vue';
 import { usePage } from '@inertiajs/vue3';
 import FormatTime from '../../Components/FormatTime.vue';
-import Checkbox from "../../Components/Inputs/Checkbox.vue";
 import {computed, ref} from 'vue';
 
 const { translations, recipe } = usePage().props;
@@ -58,20 +57,20 @@ function formatAmount(value) {
                     <div>
                         <!--Receptes gatavošanas ilgumi stundās un minūtēs-->
                         <p>
-                            <strong>{{ trans.recipe.prep_time }}:</strong>
+                            <strong>{{ translations.recipe.prep_time }}:</strong>
                             <FormatTime :timeMinutes="recipe.prep_time"/>
                         </p>
                         <p>
-                            <strong>{{ trans.recipe.cook_time }}: </strong>
+                            <strong>{{ translations.recipe.cook_time }}: </strong>
                             <FormatTime :timeMinutes="recipe.cook_time"/>
                         </p>
                         <p>
-                            <strong>{{ trans.recipe.total_time }}: </strong>
+                            <strong>{{ translations.recipe.total_time }}: </strong>
                             <FormatTime :timeMinutes="recipe.total_time"/>
                         </p>
                         <!--Receptes autors-->
                         <p>
-                            <strong>{{ trans.recipe.author }}: </strong>
+                            <strong>{{ translations.recipe.author }}: </strong>
                             <span>autors</span>
                         </p>
                     </div>
@@ -84,7 +83,7 @@ function formatAmount(value) {
             </section>
             <section class="recipe ingredients">
                 <div class="ingredients-header">
-                    <h3>{{ trans.recipe.ingredients }}</h3>
+                    <h3>{{ translations.recipe.ingredients }}</h3>
 
                     <!--Porciju skaita samazināšana/palielināšana-->
                     <div class="servings">
@@ -99,7 +98,7 @@ function formatAmount(value) {
                 </div>
             </section>
             <section>
-                <h3>{{ trans.recipe.instructions }}</h3>
+                <h3>{{ translations.recipe.instructions }}</h3>
                 <ol>
                     <!--Izvada pagatavošanas soļus ar numuru-->
                     <li v-for="(step, index) in recipe.instructions" :key="index">

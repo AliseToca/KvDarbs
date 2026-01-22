@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\Unit;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RecipeProduct extends Model
 {
@@ -17,12 +18,16 @@ class RecipeProduct extends Model
         'amount',
     ];
 
-    public function product()
+    public function recipe(): BelongsTo
+    {
+        return $this->belongsTo(Recipe::class);
+    }
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function unit()
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
     }
