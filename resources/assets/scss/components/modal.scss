@@ -8,6 +8,10 @@ body.no-scroll {
 .modal-overlay {
     position: fixed;
     inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-container {
@@ -21,6 +25,7 @@ body.no-scroll {
     scroll-behavior: smooth;
     flex-direction: column;
     align-items: center;
+    color: $color-text-primary;
 
     .content-wrapper {
         display: flex;
@@ -41,28 +46,22 @@ body.no-scroll {
     }
 
     .button-close {
+        position: absolute;
+        top: 0px;
+        right: 0px;
         --button-height: steps(3);
-        background-color: transparent;
-        color: var(--color-white);
         width: var(--button-height);
-        border: 1px solid var(--color-white);
         padding: steps(1.5);
         animation:
             fade-in 800ms 200ms both,
             slide-up 800ms 200ms both;
 
         &:is(:hover, :focus) {
-            background-color: var(--color-primary-200);
+            //background-color: var(--color-primary-200);
         }
 
         &:active {
-            background-color: var(--color-primary-200);
-        }
-
-        svg {
-            height: steps(3);
-            width: steps(3);
-            color: var(--color-white);
+            //background-color: var(--color-primary-200);
         }
     }
 
@@ -72,8 +71,7 @@ body.no-scroll {
 }
 
 .modal-overlay {
-    background-color: var(--color-text);
-    opacity: 0.5;
+    background-color: rgba(0, 0, 0, 0.5);
     animation: fade-in 200ms both;
 }
 
@@ -88,6 +86,15 @@ body.no-scroll {
     animation:
         fade-in 400ms 200ms both,
         slide-up 400ms 200ms both;
+
+    background-color: $color-body;
+    color: $color-text-primary;
+    border-radius: 8px;
+    min-height: 200px;
+    min-width: 400px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 }
 
 @keyframes fade-in {
@@ -113,5 +120,5 @@ body.no-scroll {
     max-width: steps(50);
     padding: steps(3);
     border-radius: 8px;
-    background-color: var(--color-white);
+    background-color: $color-body;
 }

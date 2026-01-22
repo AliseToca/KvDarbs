@@ -9,5 +9,6 @@
 </head>
 <body class="antialiased">
     @inertia
+    <div id="modals"></div>
 </body>
 </html>
