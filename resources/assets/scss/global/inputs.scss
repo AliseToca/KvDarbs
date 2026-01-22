@@ -13,6 +13,12 @@
         display: block;
     }
 
+    .char-count {
+        text-align: right;
+        color: $color-text-muted;
+        font-size: 14px;
+    }
+
     input,
     select,
     textarea {
