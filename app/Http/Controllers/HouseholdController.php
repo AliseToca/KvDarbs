@@ -60,7 +60,7 @@ class HouseholdController extends Controller
             );
         }
 
-        return Inertia::render('Household/Select');
+        return Inertia::render('Household/Index');
     }
 
     /**
