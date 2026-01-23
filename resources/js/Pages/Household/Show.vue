@@ -3,34 +3,35 @@ import MainLayout from '../../Layouts/Main.vue';
 import { usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import Modal from "../../Components/Modal.vue";
+import AcordionItem from "../../Components/AcordionItem.vue";
 
 const { householdName, householdProducts, productCategories, translations } = usePage().props;
 
+const isModalOpen = ref(false);
+
 //Sagrupēti produkti pēc kategorijas
 const categorizedProducts = computed(() => {
-    const map = {}
+    const map = {};
 
     //Ielasam visas produktu kateogrijas
     productCategories.forEach(category => {
-        map[category.name] = []
+        map[category.name] = [];
     })
 
     // Pievienojam katru produktu atbilstošajai kategorijai
     householdProducts.forEach(product => {
-        const category = product.categoryName ?? 'Uncategorized'
+        const category = product.categoryName ?? 'Uncategorized';
 
         if (!map[category]) {
-            map[category] = []
+            map[category] = [];
         }
 
-        map[category].push(product)
+        map[category].push(product);
     })
 
-    return map
-})
+    return map;
+});
 
-
-const isModalOpen = ref(false);
 </script>
 
 <template>
@@ -46,19 +47,28 @@ const isModalOpen = ref(false);
                 </Modal>
             </header>
 
-            <div v-for="(products, category) in categorizedProducts" :key="category">
-                <h2>{{ category }}</h2>
+
+            <AcordionItem
+                v-for="(products, category) in categorizedProducts"
+                :key="category"
+            >
+                <template #header>
+                    <h2>{{ category }}</h2>
+                </template>
 
                 <ul v-if="products.length">
                     <li v-for="product in products" :key="product.id">
-                        {{ product.productName }} - {{ product.amount }} {{ product.unitName }}
+                        {{ product.amount }}{{ product.unitName }} {{ product.productName }}
+                        <span class="tag">
+                            {{product.expirationDate}}
+                        </span>
                     </li>
                 </ul>
 
                 <p v-else>
                     {{ translations.household.no_products }}
                 </p>
-            </div>
+            </AcordionItem>
         </section>
     </MainLayout>
 </template>
