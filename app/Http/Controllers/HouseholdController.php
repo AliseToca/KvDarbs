@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Household;
+use App\Models\ProductCategory;
 use App\Models\User;
 use App\Services\PagesService;
 use Illuminate\Http\Request;
@@ -72,6 +73,8 @@ class HouseholdController extends Controller
 
         $household = $user->household;
 
+        $productCategories = ProductCategory::select('id', 'name')->get();
+
         //Visi mājsaimniecības produkti ar tā saistītajiem modeļiem
         $householdProducts = $user->household->householdProducts()
             ->with(['product.productCategory', 'unit'])
@@ -91,7 +94,7 @@ class HouseholdController extends Controller
         return Inertia::render('Household/Show', [
             'householdName' => $household->name,
             'householdProducts' => $householdProducts,
-            'user' => $user,
+            'productCategories' => $productCategories,
         ]);
     }
 

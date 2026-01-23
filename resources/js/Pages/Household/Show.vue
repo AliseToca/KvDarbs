@@ -4,19 +4,31 @@ import { usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import Modal from "../../Components/Modal.vue";
 
-const { householdName, householdProducts } = usePage().props;
+const { householdName, householdProducts, productCategories, translations } = usePage().props;
 
 //Sagrupēti produkti pēc kategorijas
-const groupedProducts = computed(() => {
-    return householdProducts.reduce((groups, item) => {
-        const category = item.categoryName ?? 'Uncategorized'
+const categorizedProducts = computed(() => {
+    const map = {}
 
-        groups[category] ??= [] //ja nav kategorijas, tad izveido jaunu
-        groups[category].push(item)
+    //Ielasam visas produktu kateogrijas
+    productCategories.forEach(category => {
+        map[category.name] = []
+    })
 
-        return groups
-    }, {})
+    // Pievienojam katru produktu atbilstošajai kategorijai
+    householdProducts.forEach(product => {
+        const category = product.categoryName ?? 'Uncategorized'
+
+        if (!map[category]) {
+            map[category] = []
+        }
+
+        map[category].push(product)
+    })
+
+    return map
 })
+
 
 const isModalOpen = ref(false);
 </script>
@@ -34,15 +46,19 @@ const isModalOpen = ref(false);
                 </Modal>
             </header>
 
-            <div v-for="(products, category) in groupedProducts" :key="category">
+            <div v-for="(products, category) in categorizedProducts" :key="category">
                 <h2>{{ category }}</h2>
-                <ul>
+
+                <ul v-if="products.length">
                     <li v-for="product in products" :key="product.id">
                         {{ product.productName }} - {{ product.amount }} {{ product.unitName }}
                     </li>
                 </ul>
+
+                <p v-else>
+                    {{ translations.household.no_products }}
+                </p>
             </div>
         </section>
-
     </MainLayout>
 </template>
