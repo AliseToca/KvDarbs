@@ -18,20 +18,11 @@ const close = () => emit('update:modelValue', false);
 
 <template>
     <Teleport to="#modals">
-        <Transition name="modal">
-            <div
-                v-if="modelValue"
-                class="modal-container"
-                aria-hidden="false"
-            >
-                <div class="modal-overlay" @click="close">
-                    <div class="modal-inner" @click.stop>
+        <div v-if="modelValue" class="modal-container">
+            <div class="modal-overlay" @click="close">
+                <div class="modal-inner" @click.stop>
                         <div class="content-wrapper">
-                            <button
-                                class="button-close"
-                                @click="close"
-                                aria-label="Close modal"
-                            >
+                            <button class="button-close" @click="close">
                                 <i class="pi pi-times"></i>
                             </button>
 
@@ -40,6 +31,5 @@ const close = () => emit('update:modelValue', false);
                     </div>
                 </div>
             </div>
-        </Transition>
     </Teleport>
 </template>

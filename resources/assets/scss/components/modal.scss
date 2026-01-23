@@ -55,14 +55,6 @@ body.no-scroll {
         animation:
             fade-in 800ms 200ms both,
             slide-up 800ms 200ms both;
-
-        &:is(:hover, :focus) {
-            //background-color: var(--color-primary-200);
-        }
-
-        &:active {
-            //background-color: var(--color-primary-200);
-        }
     }
 
     @include until($phone-lg) {
