@@ -5,6 +5,7 @@ import {computed, reactive, ref} from 'vue';
 import Modal from "../../Components/Modal.vue";
 import AcordionItem from "../../Components/AcordionItem.vue";
 import InputField from "../../Components/Inputs/InputField.vue";
+import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 
 const { householdName, householdProducts, productCategories, translations } = usePage().props;
 
@@ -105,27 +106,7 @@ const categorizedProducts = computed(() => {
                 </Modal>
             </header>
 
-            <AcordionItem
-                v-for="(products, category) in categorizedProducts"
-                :key="category"
-            >
-                <template #header>
-                    <h2>{{ category }}</h2>
-                </template>
-
-                <ul v-if="products.length">
-                    <li v-for="product in products" :key="product.id">
-                        {{ product.amount }}{{ product.unitName }} {{ product.productName }}
-                        <span class="tag">
-                            {{product.expirationDate}}
-                        </span>
-                    </li>
-                </ul>
-
-                <p v-else>
-                    {{ translations.household.no_products }}
-                </p>
-            </AcordionItem>
+            <HouseholdProducts :categorizedProducts="categorizedProducts" :no-product-text="translations.household.no_products"/>
         </section>
     </MainLayout>
 </template>
