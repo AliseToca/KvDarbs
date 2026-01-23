@@ -30,6 +30,7 @@ class InertiaServiceProvider extends ServiceProvider
                 'recipe' => trans('recipe'),
                 'household' => trans('household'),
                 'button' => trans('button'),
+                'fields' => trans('fields'),
             ],
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),

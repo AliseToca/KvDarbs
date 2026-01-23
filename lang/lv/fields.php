@@ -13,9 +13,8 @@ return [
         'slug' => 'Slug',
         'description' => 'Apraksts',
         'content' => 'Saturs',
-        'prep_time' => 'Sagatavošanas laiks',
-        'cook_time' => 'Gatavošanas laiks',
-        'servings' => 'Porcijas',
+        'hours' => 'Stundas',
+        'minutes' => 'Minūtes',
         'created_at' => 'Izveidots',
         'recipe' => [
             'prep_time' => 'Sagatavošanas laiks',
@@ -25,7 +24,11 @@ return [
             'servings' => 'Porcijas',
             'step' => 'Solis',
         ],
-        'hours' => 'Stundas',
-        'minutes' => 'Minūtes',
+        'product' => [
+            'amount' => 'Daudzums',
+            'unit' => 'Mērvienība',
+            'expiration_date' => "Derīguma termiņš",
+        ],
+
     ],
 ];

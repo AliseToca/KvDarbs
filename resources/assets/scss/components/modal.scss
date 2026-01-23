@@ -27,30 +27,11 @@ body.no-scroll {
     align-items: center;
     color: $color-text-primary;
 
-    .content-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: steps(1.5);
-        padding-inline: steps(2.5);
-
-        @include for-at-least($tablet) {
-            flex-direction: row-reverse;
-            align-items: flex-start;
-            justify-content: center;
-        }
-    }
-
-    &[aria-hidden='true'] {
-        display: none;
-    }
-
     .button-close {
         position: absolute;
         top: 0px;
         right: 0px;
-        --button-height: steps(3);
-        width: var(--button-height);
+        font-size: 20px;
         padding: steps(1.5);
         animation:
             fade-in 800ms 200ms both,
@@ -69,10 +50,8 @@ body.no-scroll {
 
 .modal-inner {
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: steps(1.5);
+    flex-direction: column;
+    justify-content: space-between;
     z-index: 2;
     position: relative;
     animation:
@@ -82,11 +61,20 @@ body.no-scroll {
     background-color: $color-body;
     color: $color-text-primary;
     border-radius: 8px;
-    min-height: 200px;
-    min-width: 400px;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+    min-height: 300px;
+    max-height: 90%;
+    min-width: 500px;
+    padding: 20px;
+    padding-bottom: 15px;
+
+    .modal-header {
+        padding: 15px;
+        padding-inline: 0;
+        margin-bottom: 15px;
+    }
+    .modal-footer {
+        width: 100%;
+    }
 }
 
 @keyframes fade-in {

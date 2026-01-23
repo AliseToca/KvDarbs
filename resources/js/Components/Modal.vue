@@ -21,15 +21,23 @@ const close = () => emit('update:modelValue', false);
         <div v-if="modelValue" class="modal-container">
             <div class="modal-overlay" @click="close">
                 <div class="modal-inner" @click.stop>
-                        <div class="content-wrapper">
-                            <button class="button-close" @click="close">
-                                <i class="pi pi-times"></i>
-                            </button>
+                    <div class="modal-header">
+                        <slot name="header"/>
 
-                            <slot />
-                        </div>
+                        <button class="button-close" @click="close">
+                            <i class="pi pi-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <slot name="body"/>
+                    </div>
+
+                    <div class="modal-footer">
+                        <slot name= "footer"/>
                     </div>
                 </div>
             </div>
+        </div>
     </Teleport>
 </template>

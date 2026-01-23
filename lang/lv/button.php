@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'join' => 'Pievienoties',
+    'join' => 'Piebiedroties',
     'create' => 'Izveidot',
+    'add' => 'Pievienot',
 ];

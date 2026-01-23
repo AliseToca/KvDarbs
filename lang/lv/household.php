@@ -2,6 +2,7 @@
 
 return [
     'household' => 'Mājsaimniecība',
-    'name' => 'Mājsaimniecības nosaukums',
+    'ur_household' => 'Tava mājsaimniecība',
     'no_products' => 'Tukšs :(',
+    'add_product' => 'Produkta pievienošana',
 ];
