@@ -13,12 +13,6 @@
         display: block;
     }
 
-    .char-count {
-        text-align: right;
-        color: $color-text-muted;
-        font-size: 14px;
-    }
-
     input,
     select,
     textarea {
@@ -38,6 +32,34 @@
         padding-top: steps(1);
         padding-bottom: steps(1);
         height: steps(20);
+    }
+
+    .char-count {
+        text-align: right;
+        color: $color-text-muted;
+        font-size: 14px;
+    }
+
+    .select {
+        position: relative;
+    }
+
+    .dropdown {
+        position: absolute;
+        z-index: 10;
+        max-height: 150px;
+        width: 100%;
+        overflow-y: auto;
+        background-color: $color-body-dark;
+
+        li {
+            padding: 7px;
+            cursor: pointer;
+        }
+
+        .empty {
+            cursor: default;
+        }
     }
 
     .control {

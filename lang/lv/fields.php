@@ -27,7 +27,8 @@ return [
         'product' => [
             'amount' => 'Daudzums',
             'unit' => 'Mērvienība',
-            'expiration_date' => "Derīguma termiņš",
+            'expiration_date' => 'Derīguma termiņš',
+            'not_found' => 'Produkts nav atrasts',
         ],
 
     ],
