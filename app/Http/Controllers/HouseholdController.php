@@ -92,6 +92,7 @@ class HouseholdController extends Controller
                     'productName' => $householdProduct->product->name,
                     'amount' => $householdProduct->amount,
                     'unitName' => $householdProduct->unit->name,
+                    'unitConversionFactor' => $householdProduct->unit->conversion_factor,
                     'expirationDate' => $householdProduct->expiration_date,
                     'categoryName' => $householdProduct->product->productCategory->name,
                 ];

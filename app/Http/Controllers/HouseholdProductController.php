@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Household;
 use App\Models\HouseholdProduct;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class HouseholdProductController extends Controller
@@ -29,14 +30,29 @@ class HouseholdProductController extends Controller
             'expiration_date' => 'nullable|date'
         ]);
 
+        $unit = Unit::findOrFail($validated['unit_id']);
+
+        $amountInBaseUnit = $validated['amount'] * $unit->conversion_factor;
+
         $household = Household::findOrFail($validated['household_id']);
 
-        $household->householdProducts()->create([
-            'product_id' => $validated['product_id'],
-            'amount' => $validated['amount'],
-            'unit_id' => $validated['unit_id'],
-            'expiration_date' => $validated['expiration_date'] ?? null
-        ]);
+        $existingProduct = $household->householdProducts()
+            ->where('product_id', $validated['product_id'])
+            ->whereHas('unit', function ($query) use ($unit) {
+                $query->where('type', $unit->type);
+            })
+            ->first();
+
+        if ($existingProduct ) {
+            $existingProduct->increment('amount', $amountInBaseUnit);
+        }else{
+            $household->householdProducts()->create([
+                'product_id' => $validated['product_id'],
+                'amount' => $amountInBaseUnit,
+                'unit_id' => $validated['unit_id'],
+                'expiration_date' => $validated['expiration_date'] ?? null
+            ]);
+        }
 
         return back();
     }

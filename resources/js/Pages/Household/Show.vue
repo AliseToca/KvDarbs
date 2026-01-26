@@ -10,7 +10,7 @@ import SearchableSelect from "../../Components/Inputs/SearchableSelect.vue";
 
 const { household, householdProducts, products, productCategories, units, translations } = usePage().props;
 
-const isModalOpen = ref(true);
+const isModalOpen = ref(false);
 
 const form = reactive({
     name: '',
