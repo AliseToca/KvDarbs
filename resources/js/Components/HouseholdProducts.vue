@@ -19,7 +19,7 @@ defineProps({
         <ul v-if="products.length">
             <li v-for="product in products" :key="product.id">
                 {{ product.amount }}{{ product.unitName }} {{ product.productName }}
-                <span class="tag">
+                <span class="tag" v-if="product.expirationDate">
                     {{product.expirationDate}}
                 </span>
             </li>

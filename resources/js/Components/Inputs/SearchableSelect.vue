@@ -22,9 +22,16 @@ const isOpen = ref(false);
 
 watch(
     () => props.modelValue,
-    (value) => {
-        search.value = value;
-    }
+    (id) => {
+        if (!id) {
+            search.value = '';
+            return;
+        }
+
+        const item = props.items.find(i => i.id === id);
+        search.value = item ? item.name : '';
+    },
+    { immediate: true }
 );
 
 const filteredItems = computed(() => {
@@ -37,7 +44,7 @@ const filteredItems = computed(() => {
 
 function selectItems(item) {
     search.value = item.name;
-    emit('update:modelValue', item.name);
+    emit('update:modelValue', item.id);
     isOpen.value = false;
 }
 </script>
@@ -51,7 +58,7 @@ function selectItems(item) {
                 v-model="search"
                 :placeholder="placeholderValue"
                 @focus="isOpen = true"
-                @input="emit('update:modelValue', search)"
+                @input="emit('update:modelValue', search.value)"
             />
 
             <ul v-if="isOpen" class="dropdown">

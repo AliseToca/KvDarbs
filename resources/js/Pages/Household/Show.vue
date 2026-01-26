@@ -1,20 +1,21 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import { usePage } from '@inertiajs/vue3';
+import {router, usePage} from '@inertiajs/vue3';
 import {computed, reactive, ref} from 'vue';
 import Modal from "../../Components/Modal.vue";
 import AcordionItem from "../../Components/AcordionItem.vue";
 import InputField from "../../Components/Inputs/InputField.vue";
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
+import SearchableSelect from "../../Components/Inputs/SearchableSelect.vue";
 
-const { householdName, householdProducts, productCategories, translations } = usePage().props;
+const { household, householdProducts, products, productCategories, units, translations } = usePage().props;
 
 const isModalOpen = ref(true);
 
 const form = reactive({
     name: '',
     amount: 1,
-    unit: 'g',
+    unit: '',
     expirationDate: '',
     errors: {},
 });
@@ -42,13 +43,40 @@ const categorizedProducts = computed(() => {
     return map;
 });
 
+function submit() {
+    form.errors = {};
+
+    router.post(route('household-products.store'),
+        {
+            household_id: usePage().props.household.id,
+            product_id: form.name,
+            amount: form.amount,
+            unit_id: form.unit,
+            expiration_date: form.expirationDate,
+        },
+        {
+            onSuccess: () => {
+                isModalOpen.value = false;
+
+                router.visit(window.location.href, {
+                    preserveScroll: true,
+                    preserveState: false,
+                });
+            },
+            onError: (errors) => {
+                form.errors = errors;
+                console.log(errors);
+            }
+        }
+    );
+}
 </script>
 
 <template>
     <MainLayout>
         <section class="household">
             <header>
-                <h1 class="capitalize">{{ householdName }}</h1>
+                <h1 class="capitalize">{{ household.name }}</h1>
                 <button class="button primary" @click="isModalOpen = true">
                     <i class="pi pi-plus"></i>
                 </button>
@@ -59,14 +87,14 @@ const categorizedProducts = computed(() => {
 
                     <template #body>
                         <form class="form-field" id="add-product-form" @submit.prevent="submit">
-                            <InputField
-                                v-model = "form.name"
+                            <SearchableSelect
+                                v-model="form.name"
                                 class="form-field-item"
-                                type="text"
+                                :items="products"
                                 id="name"
-                                name="name"
                                 :label="translations.fields.labels.name"
-                                :error="form.errors.name"
+                                :placeholderValue="translations.household.search_products"
+                                :notFoundMessage="translations.fields.labels.product.not_found"
                             />
                             <InputField
                                 v-model="form.amount"
@@ -77,14 +105,14 @@ const categorizedProducts = computed(() => {
                                 :label="translations.fields.labels.product.amount"
                                 :error="form.errors.amount"
                             />
-                            <InputField
+                            <SearchableSelect
                                 v-model="form.unit"
                                 class="form-field-item"
-                                type="text"
+                                :items="units"
                                 id="unit"
-                                name="unit"
                                 :label="translations.fields.labels.product.unit"
-                                :error="form.errors.unit"
+                                :placeholderValue="translations.household.search_units"
+                                :notFoundMessage="translations.fields.labels.product.not_found"
                             />
                             <InputField
                                 v-model="form.expirationDate"

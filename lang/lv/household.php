@@ -6,4 +6,5 @@ return [
     'no_products' => 'Tukšs :(',
     'add_product' => 'Produkta pievienošana',
     'search_products' => 'Meklē produktus...',
+    'search_units' => 'Mekle mērvienības...'
 ];

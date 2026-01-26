@@ -13,6 +13,7 @@ use App\Models\ProductCategory;
 class Product extends Model
 {
     protected $fillable = [
+        'id',
         'name',
         'product_category_id',
     ];

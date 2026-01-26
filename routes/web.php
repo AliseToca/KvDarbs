@@ -5,6 +5,7 @@ use App\Http\Controllers\UI\StyleGuidePageController;
 use App\Http\Controllers\UI\ComponentPageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HouseholdController;
+use App\Http\Controllers\HouseholdProductController;
 
 //Route::get('/login', function () {
 //    return redirect(route('filament.admin.auth.login'));
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function(){
     //Mājsaimniecības izveide
     Route::post('/households', [HouseholdController::class, 'store'])
         ->name('households.store');
+    Route::post('/household-products', [HouseholdProductController::class, 'store'])
+        ->name('household-products.store');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {
