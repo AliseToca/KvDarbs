@@ -16,24 +16,33 @@ class Product extends Model
         'id',
         'name',
         'product_category_id',
+        'measurement_type_id',
     ];
 
-    public function households(){
+    public function households(): BelongsToMany
+    {
         return $this->belongsToMany(Household::class);
     }
 
-    public function shoppingLists(){
+    public function shoppingLists(): BelongsToMany
+    {
         return $this->belongsToMany(ShoppingList::class);
     }
 
-    public function recipes()
+    public function recipes(): BelongsToMany
     {
         return $this->belongsToMany(Recipe::class, 'product_recipe_unit')
             ->withPivot(['amount', 'unit_id'])
             ->withTimestamps();
     }
 
-    public function productCategory(){
+    public function productCategory(): BelongsTo
+    {
         return $this->belongsTo(ProductCategory::class);
+    }
+
+    public function measurementType(): BelongsTo
+    {
+        return $this->belongsTo(MeasurementType::class);
     }
 }

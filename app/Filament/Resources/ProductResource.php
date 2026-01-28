@@ -38,11 +38,15 @@ class ProductResource extends Resource
                 TextInput::make('name')
                     ->label(__('fields.labels.name'))
                     ->required(),
+                Select::make('measurement_type_id')
+                    ->label(__('fields.labels.measurement_type'))
+                    ->relationship('measurementType', 'name')
+                    ->required(),
                 Select::make('product_category_id')
                     ->label(__('fields.labels.category'))
                     ->relationship('productCategory', 'name')
                     ->required(),
-            ]);
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
@@ -51,6 +55,9 @@ class ProductResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.labels.name')),
+                TextColumn::make('measurementType.name')
+                    ->label(__('fields.labels.measurement_type'))
+                    ->badge(),
                 TextColumn::make('productCategory.name')
                     ->label(__('fields.labels.category'))
                     ->badge(),

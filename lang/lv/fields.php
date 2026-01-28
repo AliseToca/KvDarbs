@@ -7,6 +7,7 @@ return [
         'image_alt' => 'Attēla alternatīvais teksts',
         'text' => 'Teksts',
         'type' => 'Tips',
+        'measurement_type' => 'Mērījuma veids',
         'category' => 'Kategorija',
         'roles' => 'Lomas',
         'items' => 'Vienības',

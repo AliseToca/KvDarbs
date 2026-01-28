@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('conversion_factor');
-            $table->foreignId('measurment_type_id')->constrained();
+            $table->foreignId('measurement_type_id')->constrained();
         });
     }
 

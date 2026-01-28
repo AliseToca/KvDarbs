@@ -15,7 +15,6 @@ class HouseholdProduct extends Model
     protected $fillable = [
         'household_id',
         'product_id',
-        'unit_id',
         'amount',
         'expiration_date'
     ];
@@ -28,10 +27,5 @@ class HouseholdProduct extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(Unit::class);
     }
 }
