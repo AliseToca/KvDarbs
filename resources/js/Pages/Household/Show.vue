@@ -2,11 +2,9 @@
 import MainLayout from '../../Layouts/Main.vue';
 import {router, usePage} from '@inertiajs/vue3';
 import {computed, reactive, ref} from 'vue';
-import Modal from "../../Components/Modal.vue";
-import AcordionItem from "../../Components/AcordionItem.vue";
 import InputField from "../../Components/Inputs/InputField.vue";
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
-import SearchableSelect from "../../Components/Inputs/SearchableSelect.vue";
+import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
 
 const { household, householdProducts, products, productCategories, units, translations } = usePage().props;
 
@@ -76,7 +74,6 @@ function submit() {
         }
     });
 }
-
 </script>
 
 <template>
@@ -87,56 +84,12 @@ function submit() {
                 <button class="button primary" @click="isModalOpen = true">
                     <i class="pi pi-plus"></i>
                 </button>
-                <Modal v-model="isModalOpen">
-                    <template #header>
-                        <h2>{{translations.household.add_product}}</h2>
-                    </template>
-
-                    <template #body>
-                        <form class="form-field" id="add-product-form" @submit.prevent="submit">
-                            <SearchableSelect
-                                v-model="form.product_id"
-                                :items="products"
-                                id="product"
-                                :label="translations.fields.labels.name"
-                                :placeholderValue="translations.household.search_products"
-                                :notFoundMessage="translations.fields.labels.product.not_found"
-                            />
-
-                            <InputField
-                                v-model="form.amount"
-                                type="number"
-                                :label="translations.fields.labels.product.amount"
-                                :error="form.errors.amount"
-                            />
-
-                            <SearchableSelect
-                                v-model="form.unit_id"
-                                :items="filteredUnits"
-                                id="unit"
-                                :label="translations.fields.labels.product.unit"
-                                :placeholderValue="translations.household.search_units"
-                                :notFoundMessage="translations.fields.labels.product.not_found"
-                                :clearable="false"
-                            />
-
-                            <InputField
-                                v-model="form.expirationDate"
-                                type="date"
-                                :label="translations.fields.labels.product.expiration_date"
-                                :error="form.errors.expiration_date"
-                            />
-
-                        </form>
-                    </template>
-
-                    <template #footer>
-                        <button class="button primary full-width" form="add-product-form" type="submit">
-                            {{ translations.button.add }}
-                        </button>
-                    </template>
-                </Modal>
             </header>
+
+            <AddHouseholdProductModal
+                v-model="isModalOpen"
+                :household-id="household.id"
+            />
 
             <HouseholdProducts :categorizedProducts="categorizedProducts" :no-product-text="translations.household.no_products"/>
         </section>

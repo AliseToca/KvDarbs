@@ -3,7 +3,7 @@ import { usePage, router} from '@inertiajs/vue3';
 import { ref, reactive } from "vue";
 import {route} from 'ziggy-js';
 import MainLayout from '../../Layouts/Main.vue';
-import Modal from "../../Components/Modal.vue";
+import Modal from "../../Components/Modals/Modal.vue";
 import InputField from "../../Components/Inputs/InputField.vue";
 
 const { user, translations, household } = usePage().props;
