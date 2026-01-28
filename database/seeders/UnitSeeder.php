@@ -17,17 +17,17 @@ class UnitSeeder extends Seeder
     {
         $units = [
             //Svars
-            ['name' => 'g', 'type' => 'weight', 'conversion_factor' => 1],
-            ['name' => 'kg', 'type' => 'weight', 'conversion_factor' => 1000],
+            ['name' => 'g', 'conversion_factor' => 1, 'measurment_type_id' => 1],
+            ['name' => 'kg', 'conversion_factor' => 1000, 'measurment_type_id' => 1],
 
             //Tilpums
-            ['name' => 'ml', 'type' => 'volume', 'conversion_factor' => 1],
-            ['name' => 'l', 'type' => 'volume', 'conversion_factor' => 1000],
+            ['name' => 'ml', 'conversion_factor' => 1, 'measurment_type_id' => 2],
+            ['name' => 'l', 'conversion_factor' => 1000, 'measurment_type_id' => 2],
+            ['name' => 'tējk.', 'conversion_factor' => 5, 'measurment_type_id' => 2],
+            ['name' => 'ēdmk.', 'conversion_factor' => 15, 'measurment_type_id' => 2],
 
             //Skaits
-            ['name' => 'pc', 'type' => 'count', 'conversion_factor' => 1],
-            ['name' => 'tsp', 'type' => 'volume', 'conversion_factor' => 5],
-            ['name' => 'tbsp', 'type' => 'volume', 'conversion_factor' => 15],
+            ['name' => 'gab', 'conversion_factor' => 1, 'measurment_type_id' => 3],
         ];
 
         DB::table('units')->insert($units);
