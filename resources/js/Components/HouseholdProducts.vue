@@ -1,10 +1,13 @@
 <script setup>
 import AcordionItem from "./AcordionItem.vue";
+import FormatProduct from "./FormatProduct.vue";
 
-defineProps({
+const props = defineProps({
     categorizedProducts: Object,
     noProductText: String
 })
+
+console.log(props.categorizedProducts);
 </script>
 
 <template>
@@ -18,7 +21,7 @@ defineProps({
 
         <ul v-if="products.length">
             <li v-for="product in products" :key="product.id">
-                {{ product.amount }}
+                <FormatProduct :name="product.productName" :amount="product.amount" :measurementTypeId="product.measurementTypeId"/>
                 <span class="tag" v-if="product.expirationDate">
                     {{product.expirationDate}}
                 </span>

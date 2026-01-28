@@ -75,36 +75,35 @@ class HouseholdController extends Controller
 
         $household = $user->household;
 
-        $products = Product::select('id', 'name')->get();
+        $products = Product::select('id', 'name', 'measurement_type_id')->get();
 
         $productCategories = ProductCategory::select('id', 'name')->get();
 
         $units = Unit::all();
 
         //Visi mājsaimniecības produkti ar tā saistītajiem modeļiem
-        $householdProducts = $user->household->householdProducts()
-            ->with(['product.productCategory', 'unit'])
+        $householdProducts = $household->householdProducts()
+            ->with(['product.productCategory', 'product.measurementType'])
             ->get()
-            //Pārveidojam modeļu datus uz vienkārsu masīvu front-end
             ->map(function ($householdProduct) {
                 return [
                     'id' => $householdProduct->id,
                     'productName' => $householdProduct->product->name,
                     'amount' => $householdProduct->amount,
-                    'unitName' => $householdProduct->unit->name,
-                    'unitConversionFactor' => $householdProduct->unit->conversion_factor,
                     'expirationDate' => $householdProduct->expiration_date,
                     'categoryName' => $householdProduct->product->productCategory->name,
+                    'measurementTypeId' => $householdProduct->product->measurementType->id,
                 ];
             });
 
         return Inertia::render('Household/Show', [
             'household' => $household,
             'householdProducts' => $householdProducts,
-            'products' => $products,
-            'productCategories' => $productCategories,
-            'units' => $units,
+            'products' => Product::select('id','name','measurement_type_id')->get(),
+            'productCategories' => ProductCategory::select('id','name')->get(),
+            'units' => Unit::all(),
         ]);
+
     }
 
     /**

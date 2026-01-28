@@ -16,6 +16,7 @@ const form = reactive({
 });
 
 function submit() {
+    console.log('was here');
     form.errors = {};
 
     router.post(route('households.store'),

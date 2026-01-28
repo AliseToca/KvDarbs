@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Household;
 use App\Models\HouseholdProduct;
 use App\Models\Unit;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HouseholdProductController extends Controller
@@ -27,35 +28,38 @@ class HouseholdProductController extends Controller
             'product_id' => 'required|exists:products,id',
             'amount' => 'required|numeric',
             'unit_id' => 'required|exists:units,id',
-            'expiration_date' => 'nullable|date'
+            'expiration_date' => 'nullable|date',
         ]);
 
+        $household = Household::findOrFail($validated['household_id']);
         $unit = Unit::findOrFail($validated['unit_id']);
+        $product = Product::findOrFail($validated['product_id']);
+
+        if ($unit->measurement_type_id !== $product->measurement_type_id) {
+            return back()->withErrors([
+                'unit_id' => 'Selected unit is not compatible with this product.',
+            ]);
+        }
 
         $amountInBaseUnit = $validated['amount'] * $unit->conversion_factor;
 
-        $household = Household::findOrFail($validated['household_id']);
-
         $existingProduct = $household->householdProducts()
-            ->where('product_id', $validated['product_id'])
-            ->whereHas('unit', function ($query) use ($unit) {
-                $query->where('type', $unit->type);
-            })
+            ->where('product_id', $product->id)
             ->first();
 
-        if ($existingProduct ) {
+        if ($existingProduct) {
             $existingProduct->increment('amount', $amountInBaseUnit);
-        }else{
+        } else {
             $household->householdProducts()->create([
-                'product_id' => $validated['product_id'],
+                'product_id' => $product->id,
                 'amount' => $amountInBaseUnit,
-                'unit_id' => $validated['unit_id'],
-                'expiration_date' => $validated['expiration_date'] ?? null
+                'expiration_date' => $validated['expiration_date'],
             ]);
         }
 
         return back();
     }
+
 
     /**
      * Display the specified resource.

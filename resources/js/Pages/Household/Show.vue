@@ -13,11 +13,22 @@ const { household, householdProducts, products, productCategories, units, transl
 const isModalOpen = ref(false);
 
 const form = reactive({
-    name: '',
+    product_id: '',
     amount: 1,
-    unit: '',
+    unit_id: '',
     expirationDate: '',
     errors: {},
+});
+
+//
+const filteredUnits = computed(() => {
+    if (!form.product_id) return [];
+
+    const product = products.find(product => product.id === form.product_id);
+
+    if (!product) return [];
+
+    return units.filter(unit => unit.measurement_type_id === product.measurement_type_id);
 });
 
 //Sagrupēti produkti pēc kategorijas
@@ -29,7 +40,7 @@ const categorizedProducts = computed(() => {
         map[category.name] = [];
     })
 
-    // Pievienojam katru produktu atbilstošajai kategorijai
+    //Pievienojam katru produktu atbilstošajai kategorijai
     householdProducts.forEach(product => {
         const category = product.categoryName ?? 'Uncategorized';
 
@@ -46,30 +57,26 @@ const categorizedProducts = computed(() => {
 function submit() {
     form.errors = {};
 
-    router.post(route('household-products.store'),
-        {
-            household_id: usePage().props.household.id,
-            product_id: form.name,
-            amount: form.amount,
-            unit_id: form.unit,
-            expiration_date: form.expirationDate,
+    router.post(route('household-products.store'), {
+        household_id: household.id,
+        product_id: form.product_id,
+        amount: form.amount,
+        unit_id: form.unit_id,
+        expiration_date: form.expirationDate,
+    }, {
+        onSuccess: () => {
+            isModalOpen.value = false;
+            router.visit(window.location.href, {
+                preserveScroll: true,
+                preserveState: false,
+            });
         },
-        {
-            onSuccess: () => {
-                isModalOpen.value = false;
-
-                router.visit(window.location.href, {
-                    preserveScroll: true,
-                    preserveState: false,
-                });
-            },
-            onError: (errors) => {
-                form.errors = errors;
-                console.log(errors);
-            }
+        onError: (errors) => {
+            form.errors = errors;
         }
-    );
+    });
 }
+
 </script>
 
 <template>
@@ -88,41 +95,38 @@ function submit() {
                     <template #body>
                         <form class="form-field" id="add-product-form" @submit.prevent="submit">
                             <SearchableSelect
-                                v-model="form.name"
-                                class="form-field-item"
+                                v-model="form.product_id"
                                 :items="products"
-                                id="name"
+                                id="product"
                                 :label="translations.fields.labels.name"
                                 :placeholderValue="translations.household.search_products"
                                 :notFoundMessage="translations.fields.labels.product.not_found"
                             />
+
                             <InputField
                                 v-model="form.amount"
-                                class="form-field-item"
                                 type="number"
-                                id="amount"
-                                name="amount"
                                 :label="translations.fields.labels.product.amount"
                                 :error="form.errors.amount"
                             />
+
                             <SearchableSelect
-                                v-model="form.unit"
-                                class="form-field-item"
-                                :items="units"
+                                v-model="form.unit_id"
+                                :items="filteredUnits"
                                 id="unit"
                                 :label="translations.fields.labels.product.unit"
                                 :placeholderValue="translations.household.search_units"
                                 :notFoundMessage="translations.fields.labels.product.not_found"
+                                :clearable="false"
                             />
+
                             <InputField
                                 v-model="form.expirationDate"
-                                class="form-field-item"
                                 type="date"
-                                id="expiration_date"
-                                name="expiration_date"
                                 :label="translations.fields.labels.product.expiration_date"
                                 :error="form.errors.expiration_date"
                             />
+
                         </form>
                     </template>
 
