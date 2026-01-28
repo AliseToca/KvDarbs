@@ -81,8 +81,8 @@ function submit() {
         <section class="household">
             <header>
                 <h1 class="capitalize">{{ household.name }}</h1>
-                <button class="button primary" @click="isModalOpen = true">
-                    <i class="pi pi-plus"></i>
+                <button class="button" @click="isModalOpen = true">
+                    <i class="pi pi-plus"></i> Pievienot produktu
                 </button>
             </header>
 

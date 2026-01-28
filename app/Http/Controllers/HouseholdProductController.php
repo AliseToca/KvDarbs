@@ -82,8 +82,25 @@ class HouseholdProductController extends Controller
      */
     public function update(Request $request, HouseholdProduct $householdProduct)
     {
-        //
+
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'unit_id' => 'required|exists:units,id',
+            'expiration_date' => 'nullable|date',
+        ]);
+
+        $unit = Unit::findOrFail($validated['unit_id']);
+
+        $amountInBaseUnit = $validated['amount'] * $unit->conversion_factor;
+
+        $householdProduct->update([
+            'amount' => $amountInBaseUnit,
+            'expiration_date' => $validated['expiration_date'],
+        ]);
+
+        return back();
     }
+
 
     /**
      * Remove the specified resource from storage.
