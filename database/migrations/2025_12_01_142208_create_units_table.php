@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('units', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type');
             $table->decimal('conversion_factor');
+            $table->foreignId('measurment_type_id')->constrained();
         });
     }
 

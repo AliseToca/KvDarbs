@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('product_category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('measurment_type_id')->constrained();
             $table->timestamps();
         });
     }

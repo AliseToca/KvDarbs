@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_shopping_list', function (Blueprint $table) {
+        Schema::create('measurment_types', function (Blueprint $table) {
             $table->id();
-            $table->double('amount');
-
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('shopping_list_id')->constrained()->cascadeOnDelete();
-
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_shopping_list');
+        Schema::dropIfExists('measurment_type');
     }
 };
