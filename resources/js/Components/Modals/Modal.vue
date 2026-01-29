@@ -6,6 +6,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:modelValue']);
 
+// Novēro izmaiņas loga rādīšanas mainīgajam
 watch(
     () => props.modelValue,
     (open) => {
@@ -21,6 +22,7 @@ const close = () => emit('update:modelValue', false);
         <div v-if="modelValue" class="modal-container">
             <div class="modal-overlay" @click="close">
                 <div class="modal-inner" @click.stop>
+                    <!-- Paziņojuma loga galvene -->
                     <div class="modal-header">
                         <slot name="header"/>
 
@@ -29,10 +31,12 @@ const close = () => emit('update:modelValue', false);
                         </button>
                     </div>
 
+                    <!-- Paziņojuma loga saturs -->
                     <div class="modal-body">
                         <slot name="body"/>
                     </div>
 
+                    <!-- Paziņojuma loga kājene -->
                     <div class="modal-footer">
                         <slot name= "footer"/>
                     </div>

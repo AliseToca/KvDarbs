@@ -22,7 +22,7 @@ const form = reactive({
     errors: {},
 });
 
-// Filtrējam mērvienības pēc izvēlētā produkta
+// Iegūst atbilstošās mērvienības
 const filteredUnits = computed(() => {
     const product = products.find(p => p.id === form.product_id);
     if (!product) return [];
@@ -32,13 +32,15 @@ const filteredUnits = computed(() => {
     );
 });
 
-function close() {
+function closeModal() {
     emit('update:modelValue', false);
 }
+
 
 function submit() {
     form.errors = {};
 
+    //Pieprasījums mājsaimniecības produkta saglabāšanai
     router.post(route('household-products.store'), {
         household_id: props.householdId,
         product_id: form.product_id,
@@ -47,21 +49,22 @@ function submit() {
         expiration_date: form.expirationDate,
     }, {
         onSuccess: () => {
-            close()
+            closeModal();
+
             router.visit(window.location.href, {
                 preserveScroll: true,
                 preserveState: false,
-            })
+            });
         },
         onError: (errors) => {
-            form.errors = errors
+            form.errors = errors;
         }
     })
 }
 </script>
 
 <template>
-    <Modal :model-value="modelValue" @update:modelValue="close">
+    <Modal :model-value="modelValue" @update:modelValue="closeModal">
         <template #header>
             <h2>{{ translations.household.add_product }}</h2>
         </template>
