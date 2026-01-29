@@ -6,10 +6,43 @@
     header {
         display: flex;
         justify-content: space-between;
+        padding-bottom: 10px;
+
+        i {
+            font-size: 15px;
+        }
     }
 
     li {
         display: flex;
         justify-content: space-between;
+    }
+
+    .product-item {
+        width: 90%;
+        cursor: pointer;
+        transition: transform 0.3s;
+
+        :hover {
+            transform: scale(1.05);
+        }
+
+        .product-item-inner {
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .pi-trash {
+        width: 10%;
+        text-align: right;
+        cursor: pointer;
+    }
+
+    .empty {
+        color: $color-text-muted;
     }
 }

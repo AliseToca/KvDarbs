@@ -7,6 +7,7 @@ use App\Models\HouseholdProduct;
 use App\Models\Unit;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class HouseholdProductController extends Controller
 {
@@ -21,7 +22,7 @@ class HouseholdProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'household_id' => 'required|exists:households,id',
@@ -80,7 +81,7 @@ class HouseholdProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, HouseholdProduct $householdProduct)
+    public function update(Request $request, HouseholdProduct $householdProduct): RedirectResponse
     {
 
         $validated = $request->validate([
@@ -105,8 +106,9 @@ class HouseholdProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HouseholdProduct $householdProduct)
+    public function destroy(HouseholdProduct $householdProduct): RedirectResponse
     {
-        //
+        $householdProduct->delete();
+        return back();
     }
 }

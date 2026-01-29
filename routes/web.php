@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function(){
         ->name('household-products.store');
     Route::put('/household-products/{householdProduct}', [HouseholdProductController::class, 'update'])
         ->name('household-products.update');
+    Route::delete('/household-products/{householdProduct}', [HouseholdProductController::class, 'destroy'])
+        ->name('household-products.destroy');
+
 });
 
 Route::middleware(LocalOnly::class)->group(function () {
