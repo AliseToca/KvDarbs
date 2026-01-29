@@ -22,13 +22,17 @@ button {
         background-color: $color-primary;
 
         &:hover {
-            background-color: darken($color-primary, 10%);
+            background-color: adjust-color($color-primary, $lightness: -10%);
         }
 
         &:disabled {
-            background-color: lighten($color-primary, 10%);
+            background-color: adjust-color($color-primary, $lightness: 10%);
             cursor: not-allowed;
         }
+    }
+
+    &:hover {
+        background-color: adjust-color($color-gray-dark, $lightness: 10%);
     }
 
     &.full-width {
@@ -36,6 +40,12 @@ button {
     }
 }
 
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
 //$button-sizes: (
 //    xs: (
 //        height: steps(3),
