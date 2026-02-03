@@ -5,8 +5,9 @@ import {computed, ref} from 'vue';
 import FormatTime from '../../Components/FormatTime.vue';
 import Review from "../../Components/Review.vue";
 import ReviewForm from "../../Components/ReviewForm.vue";
+import Pagination from "../../Components/Pagination.vue";
 
-const { translations, recipe} = usePage().props;
+const { translations, recipe, reviews} = usePage().props;
 
 const currentServings = ref(recipe.servings);
 
@@ -119,7 +120,7 @@ function formatAmount(value) {
                 <h2>{{ translations.recipe.reviews.heading }}</h2>
                 <ReviewForm/>
                 <Review
-                    v-for="review in recipe.reviews"
+                    v-for="review in reviews.data"
                     :key="review.id"
                     :id="review.id"
                     :rating = "review.rating"
@@ -127,6 +128,8 @@ function formatAmount(value) {
                     :username = "review.user.username"
                     :created_at = "review.created_at"
                 />
+                <Pagination :links="reviews.links" />
+
             </section>
         </div>
     </MainLayout>

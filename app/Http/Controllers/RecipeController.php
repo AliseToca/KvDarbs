@@ -67,11 +67,13 @@ class RecipeController extends Controller
         $recipe->load([
             'recipeProducts.product',
             'recipeProducts.unit',
-            'reviews.user:id,username',
         ]);
+
+        $reviews = $recipe->reviews()->with('user:id,username')->paginate(5);
 
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
+            'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
         ]);
     }
