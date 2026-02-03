@@ -3,7 +3,8 @@
 .pagination {
     display: flex;
     align-items: center;
-    margin-top: steps(2);
+    justify-content: center;
+    margin-top: auto;
 
     .pagination-list {
         display: flex;
@@ -48,6 +49,10 @@
         &.disabled {
             opacity: 0.5;
             pointer-events: none;
+        }
+
+        &:hover:not(.disabled):not(.active) {
+            color: $color-text-muted;
         }
     }
 

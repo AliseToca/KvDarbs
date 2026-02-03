@@ -43,8 +43,8 @@ class RecipeController extends Controller
     public function index(Page $page): Response
     {
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
-            ->get()
-            ->map(function ($recipe) {
+            ->paginate(12)
+            ->through(function ($recipe) {
                 return [
                     'id' => $recipe->id,
                     'name' => $recipe->name,

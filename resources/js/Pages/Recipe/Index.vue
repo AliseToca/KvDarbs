@@ -2,6 +2,8 @@
 import MainLayout from '../../Layouts/Main.vue';
 import RecipeCard from '../../Components/RecipeCard.vue';
 import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import Pagination from "../../Components/Pagination.vue";
 
 const { recipes } = usePage().props;
 </script>
@@ -10,7 +12,8 @@ const { recipes } = usePage().props;
     <MainLayout>
         <div class="grid-container">
             <RecipeCard
-                v-for="recipe in recipes" :key="recipe.id"
+                v-for="recipe in recipes.data || []"
+                :key="recipe.id"
                 :url = recipe.url
                 :name = recipe.name
                 :rating = recipe.average_rating
@@ -18,5 +21,7 @@ const { recipes } = usePage().props;
                 :compatibility = 70
             />
         </div>
+
+        <Pagination :links="recipes.links" />
     </MainLayout>
 </template>
