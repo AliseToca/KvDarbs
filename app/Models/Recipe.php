@@ -28,16 +28,21 @@ class Recipe extends Model
         'product_id',
     ];
 
+    // Datu pārveidošana uz tipu
     protected $casts = [
         'image_src' => 'string',
         'ingredients' => 'array',
         'instructions' => 'array',
     ];
 
+    // Vērtību piekļuves lauki
     protected $appends = [
-        'total_time'
+        'total_time',
+        'average_rating',
+        'reviews_count',
     ];
 
+    //--- Receptes relācijas ---
     public function users(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -68,8 +73,24 @@ class Recipe extends Model
         return $this->belongsToMany(RecipeType::class);
     }
 
+    //--- Vērtibu piekļuves metodes ---
+    // Kopējā receptes laika aprēķins
     public function getTotalTimeAttribute(): int
     {
         return ($this->prep_time ?? 0) + ($this->cook_time ?? 0);
+    }
+
+    // Receptes vidējā novērtējuma iegūšana
+    public function getAverageRatingAttribute(): ?float
+    {
+        $avg = $this->reviews()->avg('rating');
+
+        return $avg !== null ? round($avg, 1) : null;
+    }
+
+    // Receptes atsauksmju skaita iegūšana
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->reviews()->count();
     }
 }

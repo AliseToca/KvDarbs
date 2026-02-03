@@ -54,7 +54,10 @@ function formatAmount(value) {
                 <div class="recipe header-content">
                     <div>
                         <h1>{{ recipe.name }}</h1>
-                        <p>Rating & Comments</p>
+                        <span>
+                            <i class="pi pi-star"></i> {{recipe.average_rating}}
+                            <i class="pi pi-comments"></i> {{recipe.reviews_count}}
+                        </span>
                     </div>
                     <div>
                         <!--Receptes gatavošanas ilgumi stundās un minūtēs-->

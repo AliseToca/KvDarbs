@@ -20,6 +20,9 @@ class RecipeController extends Controller
         $this->pagesService = $pagesService;
     }
 
+    /**
+     * Palīgmetodes, kas izveido attiecīgās receptes lapas saiti
+     */
     protected function recipeShowUrl(Recipe $recipe): string
     {
         // Aktīvā valoda
@@ -48,6 +51,8 @@ class RecipeController extends Controller
                     'image_src' => $recipe->image_src,
                     'prep_time' => $recipe->prep_time,
                     'cook_time' => $recipe->cook_time,
+                    'total_time' => $recipe->total_time,
+                    'average_rating' => $recipe->average_rating,
                     'url' => $this->recipeShowUrl($recipe),
                 ];
             });
