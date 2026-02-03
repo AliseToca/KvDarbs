@@ -69,7 +69,7 @@ class RecipeController extends Controller
             'recipeProducts.unit',
         ]);
 
-        $reviews = $recipe->reviews()->with('user:id,username')->paginate(5);
+        $reviews = $recipe->reviews()->with('user:id,username')->latest()->paginate(5);
 
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
