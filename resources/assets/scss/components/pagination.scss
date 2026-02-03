@@ -5,6 +5,52 @@
     align-items: center;
     margin-top: steps(2);
 
+    .pagination-list {
+        display: flex;
+        gap: steps(0.5);
+    }
+
+    .pagination-item {
+        &:first-of-type {
+            margin-right: steps(1.5);
+        }
+        &:last-of-type {
+            margin-left: steps(1.5);
+        }
+
+        &.active {
+            display: flex;
+            align-items: center;
+
+            &:after {
+                content: '/';
+                width: steps(2);
+                text-align: center;
+                display: block;
+                color: var(--color-neutral-700);
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .pagination-link {
+        padding: 0.4rem 0.7rem;
+        text-decoration: none;
+        display: block;
+
+        &.active {
+            background: $color-secondary;
+            border-radius: 8px;
+            color: $color-white;
+            pointer-events: none;
+        }
+
+        &.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    }
+
     .loading-indicator {
         position: absolute;
         inset: 0;
@@ -26,7 +72,6 @@
         min-width: var(--button-height);
 
         span {
-            color: var(--color-neutral-700);
             padding-inline: 0;
             font-weight: 600;
             position: relative;
@@ -34,7 +79,6 @@
         }
 
         svg {
-            color: var(--color-primary-300);
             width: steps(4);
             height: steps(4);
         }
@@ -59,16 +103,6 @@
     }
 
     @include for-at-least($tablet) {
-        .pagination-item {
-            &:first-of-type {
-                margin-right: steps(1.5);
-            }
-
-            &:last-of-type {
-                margin-left: steps(1.5);
-            }
-        }
-
         button {
             &.active {
                 background-color: var(--color-primary-050);
@@ -94,20 +128,6 @@
             &:nth-last-child(1),
             &:nth-last-child(2) {
                 display: block;
-            }
-
-            &.active {
-                display: flex;
-                align-items: center;
-
-                &:after {
-                    content: '/';
-                    width: steps(2);
-                    text-align: center;
-                    display: block;
-                    color: var(--color-neutral-700);
-                    opacity: 0.5;
-                }
             }
         }
     }
