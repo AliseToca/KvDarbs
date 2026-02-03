@@ -68,21 +68,6 @@ class Recipe extends Model
         return $this->belongsToMany(RecipeType::class);
     }
 
-    public function getUrlAttribute(): string
-    {
-        $pages = app(PagesService::class);
-
-        $language = $pages->getLanguagePage();
-        $page = $pages->getCurrentPage();
-
-        return url(sprintf(
-            '/%s/%s/%s',
-            $language->slug,
-            $page->slug,
-            $this->slug
-        ));
-    }
-
     public function getTotalTimeAttribute(): int
     {
         return ($this->prep_time ?? 0) + ($this->cook_time ?? 0);
