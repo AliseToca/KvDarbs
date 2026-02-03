@@ -1,0 +1,19 @@
+@use '@environment' as *;
+
+.star {
+    color: $color-star;
+    transition: color 0.2s;
+}
+.star.active {
+    color: $color-star-active;
+}
+
+.form-rating-container {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+
+    p {
+        margin-right: 10px;
+    }
+}

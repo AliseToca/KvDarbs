@@ -6,6 +6,7 @@ use App\Http\Controllers\UI\ComponentPageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\HouseholdProductController;
+use App\Http\Controllers\ReviewController;
 
 //Route::get('/login', function () {
 //    return redirect(route('filament.admin.auth.login'));
@@ -17,11 +18,11 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 });
 
-//Reģistrēta lietotāja adresācija
+//Reģistrēta lietotāja adresācijas
 Route::middleware('auth')->group(function(){
-    //Mājsaimniecības izveide
     Route::post('/households', [HouseholdController::class, 'store'])
         ->name('households.store');
+
     Route::post('/household-products', [HouseholdProductController::class, 'store'])
         ->name('household-products.store');
     Route::put('/household-products/{householdProduct}', [HouseholdProductController::class, 'update'])
@@ -29,6 +30,8 @@ Route::middleware('auth')->group(function(){
     Route::delete('/household-products/{householdProduct}', [HouseholdProductController::class, 'destroy'])
         ->name('household-products.destroy');
 
+    Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
+        ->name('recipes.reviews.store');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

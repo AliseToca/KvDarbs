@@ -8,4 +8,5 @@ return [
     'save' => 'Saglabāt',
     'cancel' => 'Atcelt',
     'delete' =>'Dzēst',
+    'submit' => 'Iesniegt',
 ];

@@ -1,10 +1,12 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
 import { usePage } from '@inertiajs/vue3';
-import FormatTime from '../../Components/FormatTime.vue';
 import {computed, ref} from 'vue';
+import FormatTime from '../../Components/FormatTime.vue';
+import Review from "../../Components/Review.vue";
+import ReviewForm from "../../Components/ReviewForm.vue";
 
-const { translations, recipe } = usePage().props;
+const { translations, recipe} = usePage().props;
 
 const currentServings = ref(recipe.servings);
 
@@ -77,10 +79,12 @@ function formatAmount(value) {
                 </div>
                 <img :src="'/storage/'+ recipe.image_src">
             </section>
+
             <section class="recipe header-buttons">
                 <button class="button primary full-width">Print</button>
                 <button class="button full-width">Save</button>
             </section>
+
             <section class="recipe ingredients">
                 <div class="ingredients-header">
                     <h3>{{ translations.recipe.ingredients }}</h3>
@@ -97,7 +101,8 @@ function formatAmount(value) {
                     {{ formatAmount(ingredient.scaledAmount) }}{{ ingredient.unit.name }} {{ ingredient.product.name }}
                 </div>
             </section>
-            <section>
+
+            <section class="recipe instructions">
                 <h3>{{ translations.recipe.instructions }}</h3>
                 <ol>
                     <!--Izvada pagatavošanas soļus ar numuru-->
@@ -105,6 +110,20 @@ function formatAmount(value) {
                         {{index + 1}}. {{ step.text }}
                     </li>
                 </ol>
+            </section>
+
+            <section class="recipe reviews">
+                <h2>{{ translations.recipe.reviews.heading }}</h2>
+                <ReviewForm/>
+                <Review
+                    v-for="review in recipe.reviews"
+                    :key="review.id"
+                    :id="review.id"
+                    :rating = "review.rating"
+                    :content = "review.content"
+                    :username = "review.user.username"
+                    :created_at = "review.created_at"
+                />
             </section>
         </div>
     </MainLayout>

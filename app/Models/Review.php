@@ -10,10 +10,11 @@ use App\Models\User;
 class Review extends Model
 {
     protected $fillable = [
+        'rating',
         'content',
         'image',
-        'rating',
         'recipe_id',
+        'user_id',
     ];
 
     public function recipe(){

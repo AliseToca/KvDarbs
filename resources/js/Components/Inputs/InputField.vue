@@ -9,7 +9,7 @@ const props = defineProps({
     placeholderValue: String,
     modelValue: String,
     error: [String, Array],
-    maxLength: {Number},
+    maxLength: Number,
     lengthCheck: Boolean,
 });
 

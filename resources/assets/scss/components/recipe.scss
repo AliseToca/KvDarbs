@@ -33,6 +33,14 @@
         width: 100%;
         gap: 5px;
     }
+
+    &.reviews {
+        margin-top: 20px;
+
+        h2 {
+            margin-bottom: 10px;
+        }
+    }
 }
 
 .ingredients-header {

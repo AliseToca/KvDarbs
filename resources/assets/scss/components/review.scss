@@ -1,0 +1,12 @@
+@use '@environment' as *;
+
+.review {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
