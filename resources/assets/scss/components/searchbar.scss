@@ -1,0 +1,16 @@
+@use '@environment' as *;
+
+.search-bar {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: steps(6);
+    padding: 0 steps(2);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background-color: $color-body-dark;
+    color: $color-text-muted;
+    appearance: none;
+}

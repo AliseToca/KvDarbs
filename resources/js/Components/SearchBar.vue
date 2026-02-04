@@ -13,7 +13,7 @@ const props = defineProps({
 
 const search = ref(props.modelValue)
 
-// Nosūta pieprasījumu ar 300ms aizkavi
+// Nosūta pieprasījumu ar 200ms aizkavi
 const performSearch = debounce((value) => {
     router.get(
         window.location.pathname,
@@ -25,7 +25,7 @@ const performSearch = debounce((value) => {
             preserveScroll: true
         }
     )
-}, 300)
+}, 200)
 
 watch(search, (value) => {
     performSearch(value)
@@ -33,7 +33,9 @@ watch(search, (value) => {
 </script>
 
 <template>
-    <div class="form-field">
+    <div class="form-field search-bar">
+        <i class="pi pi-search"></i>
+
         <input
             v-model="search"
             type="search"
