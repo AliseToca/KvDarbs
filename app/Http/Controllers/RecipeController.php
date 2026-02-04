@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recipe;
+use Illuminate\Http\Request;
 use Inertia\Response;
 use Inertia\Inertia;
 use App\Services\PagesService;
+use App\Models\Recipe;
 use CubeAgency\FilamentPageManager\Models\Page;
 
 class RecipeController extends Controller
@@ -40,10 +41,14 @@ class RecipeController extends Controller
         ]);
     }
 
-    public function index(Page $page): Response
+    public function index(Request $request): Response
     {
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
-            ->paginate(12)
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(1)
+            ->withQueryString()
             ->through(function ($recipe) {
                 return [
                     'id' => $recipe->id,
@@ -59,6 +64,9 @@ class RecipeController extends Controller
 
         return Inertia::render('Recipe/Index', [
             'recipes' => $recipes,
+            'filters' => [
+                'search' => $request->search,
+            ]
         ]);
     }
 

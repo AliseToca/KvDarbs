@@ -1,15 +1,22 @@
 <script setup>
+import { usePage } from '@inertiajs/vue3';
 import MainLayout from '../../Layouts/Main.vue';
 import RecipeCard from '../../Components/RecipeCard.vue';
-import { usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
 import Pagination from "../../Components/Pagination.vue";
+import SearchBar from "../../Components/SearchBar.vue";
 
-const { recipes } = usePage().props;
+const { translations, recipes, filters } = usePage().props;
 </script>
 
 <template>
     <MainLayout>
+        <div>
+            <SearchBar
+                :model-value="filters.search"
+                placedHolder="Meklē receptes..."
+            />
+        </div>
+
         <div class="grid-container">
             <RecipeCard
                 v-for="recipe in recipes.data || []"
@@ -20,6 +27,11 @@ const { recipes } = usePage().props;
                 :time_minutes = recipe.total_time
                 :compatibility = 70
             />
+
+            <p v-if="recipes.data.length === 0">
+                {{ translations.recipe.not_found }}
+            </p>
+
         </div>
 
         <Pagination :links="recipes.links" />
