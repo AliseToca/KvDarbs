@@ -6,6 +6,7 @@ use App\Models\Household;
 use App\Models\HouseholdProduct;
 use App\Models\Unit;
 use App\Models\Product;
+use App\Services\MeasurmentConversionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
@@ -24,6 +25,7 @@ class HouseholdProductController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validē lietotāja ievadītos datus
         $validated = $request->validate([
             'household_id' => 'required|exists:households,id',
             'product_id' => 'required|exists:products,id',
@@ -32,25 +34,25 @@ class HouseholdProductController extends Controller
             'expiration_date' => 'nullable|date',
         ]);
 
+        // Iegūstam nepieciešamos modeļus
         $household = Household::findOrFail($validated['household_id']);
         $unit = Unit::findOrFail($validated['unit_id']);
         $product = Product::findOrFail($validated['product_id']);
 
-        if ($unit->measurement_type_id !== $product->measurement_type_id) {
-            return back()->withErrors([
-                'unit_id' => 'Selected unit is not compatible with this product.',
-            ]);
-        }
+        // Pārveidojam lietotāja ievadīto daudzumu uz tā bāzes vienību
+        $amountInBaseUnit = MeasurmentConversionService::toBaseAmount($validated['amount'], $unit, $product);
 
-        $amountInBaseUnit = $validated['amount'] * $unit->conversion_factor;
-
+        // Iegūstan mājsaimniecībā esošu produktu, ja tas ir
         $existingProduct = $household->householdProducts()
             ->where('product_id', $product->id)
             ->first();
 
-        if ($existingProduct) {
+        // Ja mājsaimniecībā ir produkts, tam pieskaita lietotāja ievadīto daudzumu
+        if ($existingProduct)
+        {
             $existingProduct->increment('amount', $amountInBaseUnit);
-        } else {
+        } else // citādāk tas tiek izveidots
+        {
             $household->householdProducts()->create([
                 'product_id' => $product->id,
                 'amount' => $amountInBaseUnit,
@@ -83,17 +85,21 @@ class HouseholdProductController extends Controller
      */
     public function update(Request $request, HouseholdProduct $householdProduct): RedirectResponse
     {
-
+        // Validē lietotāja ievadītos datus
         $validated = $request->validate([
             'amount' => 'required|numeric',
             'unit_id' => 'required|exists:units,id',
             'expiration_date' => 'nullable|date',
         ]);
 
+        // Iegūstam nepieciešamos modeļus
         $unit = Unit::findOrFail($validated['unit_id']);
+        $product = $householdProduct->product;
 
-        $amountInBaseUnit = $validated['amount'] * $unit->conversion_factor;
+        // Pārveidojam lietotāja ievadīto daudzumu uz bāzes daudzumu
+        $amountInBaseUnit = MeasurmentConversionService::toBaseAmount($validated['amount'], $unit, $product);
 
+        // Atjaunina mājsaimniecības produkta datus
         $householdProduct->update([
             'amount' => $amountInBaseUnit,
             'expiration_date' => $validated['expiration_date'],

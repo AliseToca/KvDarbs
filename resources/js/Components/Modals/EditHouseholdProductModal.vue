@@ -27,34 +27,19 @@ const availableUnits = computed(() => {
     if (!props.product) return [];
 
     return units
-        .filter(u => u.measurement_type_id === props.product.measurementTypeId)
+        .filter(unit => unit.measurement_type_id === props.product.measurementTypeId)
         .sort((a, b) => b.conversion_factor - a.conversion_factor); //Lielākās -> mazāko
 });
 
-// Vispiemērotākā mērvienība pašreizējam produkta daudzumam
-const bestUnit = computed(() => {
-    if (!props.product) return null;
-
-    return availableUnits.value.find(u => props.product.amount >= u.conversion_factor)
-        ?? availableUnits.value.at(-1);
-});
-
 // Automātiski aizpilda formas vērtibas
-watch(() => props.product, (p) => {
-    if (!p) return;
+watch(() => props.product, (product) => {
+    if (!product) return;
 
-    const unit = bestUnit.value;
+    form.unit_id = product.unitId;
+    form.amount = product.amount;
+    form.expirationDate = product.expirationDate;
+}, { immediate: true });
 
-    form.unit_id = unit?.id || '';
-
-    //Pārreķina daudzumu izvēlētajā mērvienībā
-    form.amount = unit ? p.amount / unit.conversion_factor : p.amount;
-
-    form.expirationDate = p.expirationDate;
-    }, {
-        immediate: true
-    }
-);
 
 function closeModal() {
     emit("update:modelValue", false);

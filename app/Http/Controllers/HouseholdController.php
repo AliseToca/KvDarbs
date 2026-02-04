@@ -11,6 +11,7 @@ use App\Services\PagesService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use CubeAgency\FilamentPageManager\Models\Page;
+use App\Services\MeasurmentConversionService;
 
 class HouseholdController extends Controller
 {
@@ -86,10 +87,17 @@ class HouseholdController extends Controller
             ->with(['product.productCategory', 'product.measurementType'])
             ->get()
             ->map(function ($householdProduct) {
+                $formatted = MeasurmentConversionService::fromBaseAmount(
+                    $householdProduct->amount,
+                    $householdProduct->product
+                );
+
                 return [
                     'id' => $householdProduct->id,
                     'productName' => $householdProduct->product->name,
-                    'amount' => $householdProduct->amount,
+                    'amount' => $formatted['amount'],
+                    'unit' => $formatted['unit'],
+                    'unitId' => $formatted['unit_id'],
                     'expirationDate' => $householdProduct->expiration_date,
                     'categoryName' => $householdProduct->product->productCategory->name,
                     'measurementTypeId' => $householdProduct->product->measurementType->id,

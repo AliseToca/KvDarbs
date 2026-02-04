@@ -1,7 +1,6 @@
 <script setup>
 import {ref} from "vue";
 import AcordionItem from "./AcordionItem.vue";
-import FormatProduct from "./FormatProduct.vue";
 import EditHouseholdProductModal from "./Modals/EditHouseholdProductModal.vue";
 import DeleteHouseholdProductModal from "./Modals/DeleteHouseholdProductModal.vue";
 
@@ -45,11 +44,9 @@ function openDelete(product) {
                     <div class="product-item-inner">
                         <i class="pi pi-pencil"></i>
 
-                        <!-- Formatē produktu un tā daudzumu -->
-                        <FormatProduct
-                            :name="product.productName"
-                            :amount="product.amount"
-                            :measurementTypeId="product.measurementTypeId"/>
+                        <span>
+                            {{ product.amount }}{{ product.unit }} {{ product.productName }}
+                        </span>
 
                         <span class="tag" v-if="product.expirationDate">
                             {{product.expirationDate}}
