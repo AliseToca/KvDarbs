@@ -1,7 +1,8 @@
 <script setup>
-import { computed } from 'vue';
-import {Link} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 import FormatTime from "./FormatTime.vue";
+
+const { translations } = usePage().props;
 
 const props = defineProps({
     url: String,
@@ -23,8 +24,14 @@ const props = defineProps({
             <div class="recipe-card-item header">
                 <h3>{{ name }}</h3>
                 <div>
-                    <i class="pi pi-star-fill"></i>
-                    <span>{{ rating }}</span>
+                    <span v-if="rating">
+                        <i class="pi pi-star-fill"></i>
+                        {{ rating }}
+                    </span>
+
+                    <span v-else>
+                        {{ translations.recipe.reviews.no_rating }}
+                    </span>
                 </div>
             </div>
             <div class="recipe-card-item tags">

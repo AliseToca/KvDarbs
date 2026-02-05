@@ -13,6 +13,7 @@ return [
         'plural' => 'Atsauksmes',
         'add_review' => 'Atstāj atsauksmi',
         'ur_rating' => 'Tavs novērtējums:',
+        'no_rating' => 'Nav novērtēta',
     ],
-    'not_found' => 'Recepte nav atrasta'
+    'not_found' => 'Recepte nav atrasta',
 ];

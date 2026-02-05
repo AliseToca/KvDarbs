@@ -56,8 +56,11 @@ function formatAmount(value) {
                     <div>
                         <h1>{{ recipe.name }}</h1>
                         <span>
-                            <i class="pi pi-star"></i> {{recipe.average_rating}}
-                            <i class="pi pi-comments"></i> {{recipe.reviews_count}}
+                            <i class="pi pi-star"></i>
+                            {{ recipe.average_rating || 0 }}
+
+                            <i class="pi pi-comments"></i>
+                            {{ recipe.reviews_count }}
                         </span>
                     </div>
                     <div>
