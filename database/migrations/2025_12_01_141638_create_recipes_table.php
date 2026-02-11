@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('image_src')->nullable();
             $table->text('content');
-            $table->json('instructions')->nullable();
             $table->unsignedSmallInteger('prep_time')->nullable();
             $table->unsignedSmallInteger('cook_time')->nullable();
             $table->unsignedSmallInteger('servings')->nullable();
+            $table->json('instructions')->nullable();
+            $table->enum('visibility', ['private', 'household', 'public'])->default('household');
 
             $table->foreignId('user_id')->nullable()->constrained();
 

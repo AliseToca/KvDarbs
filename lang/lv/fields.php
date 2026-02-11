@@ -18,6 +18,7 @@ return [
         'minutes' => 'Minūtes',
         'created_at' => 'Izveidots',
         'recipe' => [
+            'visibility' => 'Redzamība',
             'prep_time' => 'Sagatavošanas laiks',
             'cook_time' => 'Gatavošanas laiks',
             'ingredients' => 'Sastāvdaļas',

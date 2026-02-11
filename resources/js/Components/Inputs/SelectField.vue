@@ -14,7 +14,7 @@ const isOpen = ref(false);
 
 const selectedItem = computed(() => {
     return props.items.find(
-        item => Number(item.id) === Number(props.modelValue)
+        item => item.id == props.modelValue
     ) || null
 });
 

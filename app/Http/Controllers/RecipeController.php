@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\RecipeCategory;
+use App\Models\RecipeType;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Inertia\Inertia;
@@ -67,6 +71,16 @@ class RecipeController extends Controller
             'filters' => [
                 'search' => $request->search,
             ]
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Recipe/Create', [
+            'categories' => RecipeCategory::all(),
+            'types' => RecipeType::all(),
+            'products' => Product::all(),
+            'units' => Unit::all(),
         ]);
     }
 

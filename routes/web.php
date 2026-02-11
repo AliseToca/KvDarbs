@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\LocalOnly;
 use App\Http\Controllers\UI\StyleGuidePageController;
@@ -32,6 +34,10 @@ Route::middleware('auth')->group(function(){
 
     Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
         ->name('recipes.reviews.store');
+
+    Route::get('/recipe/create', [RecipeController::class, 'create']);
+    Route::post('/recipe/store', [RecipeController::class, 'store'])
+        ->name('recipes.store');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {
