@@ -58,5 +58,13 @@ return [
     'recipes' => [
         'singular' => 'Recepte',
         'plural' => 'Receptes',
+    ],
+    'recipe_categories' => [
+        'singular' => 'Recepšu kategorija',
+        'plural' => 'Recepšu kategorijas',
+    ],
+    'recipe_types' => [
+        'singular' => 'Recepta tips',
+        'plural' => 'Recepta tipi',
     ]
 ];
