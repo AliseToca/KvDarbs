@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Household;
+use App\Models\Recipe;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -63,5 +66,10 @@ class User extends Authenticatable implements FilamentUser
     public function household(): BelongsTo
     {
         return $this->belongsTo(Household::class);
+    }
+
+    public function recipes(): HasMany
+    {
+        return $this->hasMany(Recipe::class);
     }
 }

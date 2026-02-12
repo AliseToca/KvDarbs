@@ -80,7 +80,7 @@ function formatAmount(value) {
                         <!--Receptes autors-->
                         <p>
                             <strong>{{ translations.recipe.author }}: </strong>
-                            <span>autors</span>
+                            <span>@{{ recipe.user.username }}</span>
                         </p>
                     </div>
                 </div>
@@ -114,7 +114,7 @@ function formatAmount(value) {
                 <ol>
                     <!--Izvada pagatavošanas soļus ar numuru-->
                     <li v-for="(step, index) in recipe.instructions" :key="index">
-                        {{index + 1}}. {{ step.text }}
+                        {{index + 1}}. {{ step }}
                     </li>
                 </ol>
             </section>

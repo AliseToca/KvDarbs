@@ -26,6 +26,7 @@ class Recipe extends Model
         'servings',
         'instructions',
         'product_id',
+        'user_id',
     ];
 
     // Datu pārveidošana uz tipu
@@ -43,7 +44,7 @@ class Recipe extends Model
     ];
 
     //--- Receptes relācijas ---
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

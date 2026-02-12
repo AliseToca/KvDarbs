@@ -89,10 +89,34 @@ class RecipeController extends Controller
     public function show(Recipe $recipe)
     {
         $recipe->load([
-            'recipeProducts.product',
+            'user:id,username',
+            'recipeProducts.product.measurementType.units',
         ]);
 
-        $reviews = $recipe->reviews()->with('user:id,username')->latest()->paginate(5);
+        $recipe->recipeProducts->transform(function ($recipeProduct) {
+            $converted = MeasurmentConversionService::fromBaseAmount(
+                $recipeProduct->amount,
+                $recipeProduct->product
+            );
+
+            return [
+                'id' => $recipeProduct->id,
+                'amount' => $converted['amount'],
+                'product'=> [
+                    'id' => $recipeProduct->product_id,
+                    'name' => $recipeProduct->product->name,
+                ],
+                'unit' =>[
+                    'id' => $converted['unit_id'],
+                    'name' => $converted['unit'],
+                ]
+            ];
+        });
+
+        $reviews = $recipe->reviews()
+            ->with('user:id,username')
+            ->latest()
+            ->paginate(5);
 
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
