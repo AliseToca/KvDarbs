@@ -14,7 +14,6 @@ class RecipeProduct extends Model
     protected $fillable = [
         'recipe_id',
         'product_id',
-        'unit_id',
         'amount',
     ];
 
@@ -25,10 +24,5 @@ class RecipeProduct extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(Unit::class);
     }
 }

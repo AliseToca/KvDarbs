@@ -6,7 +6,9 @@ use App\Models\Product;
 use App\Models\RecipeCategory;
 use App\Models\RecipeType;
 use App\Models\Unit;
+use App\Services\MeasurmentConversionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Response;
 use Inertia\Inertia;
 use App\Services\PagesService;
@@ -88,7 +90,6 @@ class RecipeController extends Controller
     {
         $recipe->load([
             'recipeProducts.product',
-            'recipeProducts.unit',
         ]);
 
         $reviews = $recipe->reviews()->with('user:id,username')->latest()->paginate(5);
@@ -98,5 +99,53 @@ class RecipeController extends Controller
             'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'visibility' => 'required|string',
+            'prep_time' => 'required|numeric',
+            'cook_time' => 'required|numeric',
+            'servings' => 'required|numeric',
+
+            'instructions' => 'required|array',
+            'instructions.*' => 'required|string',
+
+            'recipe_products' => 'required|array',
+            'recipe_products.*.product_id' => 'required|numeric',
+            'recipe_products.*.amount' => 'required|numeric|min:0',
+            'recipe_products.*.unit_id' => 'required|numeric',
+        ]);
+
+        $user = auth()->user();
+        $slug = $user->username . '-' . Str::slug($data['name']);
+
+        $recipe = Recipe::create([
+            'name' => $data['name'],
+            'slug' => $slug,
+            'content' => 'test',
+            'visibility' => $data['visibility'],
+            'prep_time' => $data['prep_time'],
+            'cook_time' => $data['cook_time'],
+            'servings' => $data['servings'],
+            'instructions' => $data['instructions'],
+            'user_id' => $user->id,
+        ]);
+
+        foreach ($data['recipe_products'] as $recipeProduct) {
+            $unit = Unit::findOrFail($recipeProduct['unit_id']);
+            $product = Product::findOrFail($recipeProduct['product_id']);
+
+            $amountInBase = MeasurmentConversionService::toBaseAmount($recipeProduct['amount'], $unit, $product);
+
+            $recipe->recipeProducts()->create([
+                'product_id' => $recipeProduct['product_id'],
+                'amount' => $amountInBase,
+            ]);
+        }
+
+        return redirect()->to($this->recipeShowUrl($recipe));
     }
 }

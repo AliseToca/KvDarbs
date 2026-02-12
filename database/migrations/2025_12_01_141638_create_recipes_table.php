@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('image_src')->nullable();
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->unsignedSmallInteger('prep_time')->nullable();
             $table->unsignedSmallInteger('cook_time')->nullable();
             $table->unsignedSmallInteger('servings')->nullable();

@@ -1,5 +1,5 @@
 <script setup>
-import {usePage} from "@inertiajs/vue3";
+import {usePage, useForm} from "@inertiajs/vue3";
 import {reactive, computed} from "vue";
 import {route} from "ziggy-js";
 import MainLayout from '../../Layouts/Main.vue';
@@ -10,8 +10,9 @@ import SelectField from "../../Components/Inputs/SelectField.vue";
 
 const { translations, products, units} = usePage().props;
 
-const form = reactive({
+const form = useForm({
     name: '',
+    image_src: null,
     prep_time: 0,
     cook_time: 0,
     servings: 0,
@@ -24,8 +25,7 @@ const form = reactive({
     ],
     instructions: [''],
     visibility: 'household',
-    errors: {},
-})
+});
 
 const visibilityOptions = [
     { id: 'private', name: translations.recipe.visibility.private },
@@ -76,7 +76,7 @@ function submit() {
         <div class="recipe">
             <h1>{{ translations.recipe.create_recipe }}</h1>
 
-            <form class="form-field">
+            <form class="form-field" @submit.prevent="submit">
                 <section>
                     <InputField
                         v-model="form.name"
@@ -117,7 +117,6 @@ function submit() {
                         <InputField
                             v-model="form.servings"
                             type="number"
-                            min = 0
                             :label="translations.fields.labels.recipe.servings"
                             :error="form.errors.servings"
                         />
@@ -194,7 +193,7 @@ function submit() {
                     </div>
                 </section>
 
-                <button class="button" @submit.prevent="submit">
+                <button class="button" type="submit" :disabled="form.processing">
                     {{translations.button.create}}
                 </button>
             </form>
