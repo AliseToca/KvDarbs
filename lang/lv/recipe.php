@@ -7,6 +7,7 @@ return [
     'total_time' => 'Kopējais laiks',
     'servings' => 'Porcijas',
     'author' => 'Autors',
+    'details' => 'Detaļas',
     'ingredients' => 'Sastāvdaļas',
     'instructions' => 'Pagatavošanas soļi',
     'reviews' => [

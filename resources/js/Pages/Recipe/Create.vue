@@ -90,6 +90,7 @@ function submit() {
                     />
 
                     <ImageUpload
+                        class="form-field-item"
                         v-model="form.image_src"
                         :label="translations.fields.labels.image"
                     />
@@ -103,7 +104,7 @@ function submit() {
                 </section>
 
                 <section>
-                    <h3>Detaļas</h3>
+                    <h3>{{ translations.recipe.details }}</h3>
 
                     <div class="grid-container">
                         <DurationField

@@ -16,12 +16,6 @@ const preview = ref(null)
 
 function onFileChange(e) {
     const file = e.target.files[0]
-    if (!file) return
-
-    if (!file.type.startsWith('image/')) {
-        alert('Please select an image file')
-        return
-    }
 
     emit('update:modelValue', file)
     preview.value = URL.createObjectURL(file)
@@ -50,7 +44,7 @@ const imageSrc = computed(() => {
 
         <div class="image-upload-container">
             <div class="image-preview">
-                <img :src="imageSrc" alt="Preview" />
+                <img :src="imageSrc"/>
             </div>
 
             <input
