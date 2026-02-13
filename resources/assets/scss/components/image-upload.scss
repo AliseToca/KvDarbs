@@ -1,0 +1,28 @@
+@use '@environment' as *;
+
+.image-upload {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+
+.image-upload-container {
+    background-color: $color-body-dark;
+    border-radius: 8px;
+}
+
+.image-preview {
+    display: flex;
+    padding: 10px;
+
+    img {
+        width: 50%;
+
+        object-fit: cover;
+        aspect-ratio: 4/3;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+}
