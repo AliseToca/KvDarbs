@@ -20,7 +20,7 @@ const props = defineProps({
         :href="url"
     >
         <div class="recipe-card">
-            <img src="../../assets/images/placeholder.jpg">
+            <img :src="imageSrc ? `/storage/${imageSrc}` : '/storage/placeholder.jpg'">
             <div class="recipe-card-item header">
                 <h3>{{ name }}</h3>
                 <div>

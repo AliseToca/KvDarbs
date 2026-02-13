@@ -23,6 +23,7 @@ const { translations, recipes, filters } = usePage().props;
                 :key="recipe.id"
                 :url = recipe.url
                 :name = recipe.name
+                :imageSrc = recipe.image_src
                 :rating = recipe.average_rating
                 :time_minutes = recipe.total_time
                 :compatibility = 70

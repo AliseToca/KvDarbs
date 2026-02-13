@@ -84,7 +84,7 @@ function formatAmount(value) {
                         </p>
                     </div>
                 </div>
-                <img :src="'/storage/'+ recipe.image_src">
+                <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
             </section>
 
             <section class="recipe header-buttons">
