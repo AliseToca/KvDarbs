@@ -11,6 +11,7 @@ const props = defineProps({
     imageSrc: String,
     rating: Number,
     time_minutes: Number,
+    missing_products_count: Number,
     compatibility: Number,
 })
 </script>
@@ -38,7 +39,11 @@ const props = defineProps({
                 <div class="tag">
                     <FormatTime :timeMinutes="time_minutes"/>
                 </div>
-                <div class="tag">Nav 2 sastāvdaļu</div>
+                <div class="tag">  {{ missing_products_count > 0
+                    ? `Nav ${missing_products_count} sastāvdaļu`
+                    : 'Visas sastāvdaļas pieejamas '
+                    }}
+                </div>
             </div>
             <div class="compatibility-bar">
                 <div

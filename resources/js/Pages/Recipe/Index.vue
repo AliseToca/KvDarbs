@@ -26,7 +26,8 @@ const { translations, recipes, filters } = usePage().props;
                 :imageSrc = recipe.image_src
                 :rating = recipe.average_rating
                 :time_minutes = recipe.total_time
-                :compatibility = 70
+                :missing_products_count = recipe.missing_products_count
+                :compatibility = recipe.compatibility
             />
 
             <p v-if="recipes.data.length === 0">

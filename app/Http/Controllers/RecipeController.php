@@ -7,6 +7,7 @@ use App\Models\RecipeCategory;
 use App\Models\RecipeType;
 use App\Models\Unit;
 use App\Services\MeasurmentConversionService;
+use App\Services\RecipeAvailabilityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Response;
@@ -49,13 +50,17 @@ class RecipeController extends Controller
 
     public function index(Request $request): Response
     {
+        $user = auth()->user();
+
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
             ->when($request->search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
             ->paginate(1)
             ->withQueryString()
-            ->through(function ($recipe) {
+            ->through(function ($recipe) use ($user) {
+                $availabability = RecipeAvailabilityService::calculate($recipe, $user);
+
                 return [
                     'id' => $recipe->id,
                     'name' => $recipe->name,
@@ -64,6 +69,8 @@ class RecipeController extends Controller
                     'cook_time' => $recipe->cook_time,
                     'total_time' => $recipe->total_time,
                     'average_rating' => $recipe->average_rating,
+                    'missing_products_count' => $availabability['missing_products_count'],
+                    'compatibility' => $availabability['compatibility'],
                     'url' => $this->recipeShowUrl($recipe),
                 ];
             });
