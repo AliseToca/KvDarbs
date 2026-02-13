@@ -1,12 +1,12 @@
 <script setup>
 import {usePage, useForm} from "@inertiajs/vue3";
-import {reactive, computed} from "vue";
 import {route} from "ziggy-js";
 import MainLayout from '../../Layouts/Main.vue';
 import InputField from "../../Components/Inputs/InputField.vue";
 import DurationField from "../../Components/Inputs/DurationField.vue";
 import SearchableSelect from "../../Components/Inputs/SearchableSelect.vue";
 import SelectField from "../../Components/Inputs/SelectField.vue";
+import ImageUpload from "../../Components/Inputs/ImageUpload.vue";
 
 const { translations, products, units} = usePage().props;
 
@@ -15,7 +15,7 @@ const form = useForm({
     image_src: null,
     prep_time: 0,
     cook_time: 0,
-    servings: 0,
+    servings: 1,
     recipe_products: [
         {
             product_id: '',
@@ -67,7 +67,10 @@ function getFilteredUnits(index) {
 
 
 function submit() {
-    form.post(route('recipes.store'));
+    form.post(route('recipes.store'),{
+        forceFormData: true,
+    });
+
 }
 </script>
 
@@ -86,9 +89,8 @@ function submit() {
                         :error="form.errors.name"
                     />
 
-                    <InputField
+                    <ImageUpload
                         v-model="form.image_src"
-                        type="file"
                         :label="translations.fields.labels.image"
                     />
 
@@ -180,6 +182,7 @@ function submit() {
                             v-model="form.instructions[index]"
                             type="text"
                             :label="(index + 1) + '. ' + translations.fields.labels.recipe.step"
+                            :error="form.errors.instructions"
                         />
 
                         <button

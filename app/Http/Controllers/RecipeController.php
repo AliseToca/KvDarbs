@@ -129,6 +129,7 @@ class RecipeController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
+            'image_src' => 'nullable|image|max:2048',
             'visibility' => 'required|string',
             'prep_time' => 'required|numeric',
             'cook_time' => 'required|numeric',
@@ -143,11 +144,18 @@ class RecipeController extends Controller
             'recipe_products.*.unit_id' => 'required|numeric',
         ]);
 
+        if($request->hasFile('image_src')) {
+            $path = $request->file('image_src')->store('recipes', 'public');
+        } else{
+            $path = null;
+        }
+
         $user = auth()->user();
         $slug = $user->username . '-' . Str::slug($data['name']);
 
         $recipe = Recipe::create([
             'name' => $data['name'],
+            'image_src' => $path,
             'slug' => $slug,
             'content' => 'test',
             'visibility' => $data['visibility'],
