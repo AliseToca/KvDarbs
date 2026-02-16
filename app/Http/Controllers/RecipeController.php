@@ -142,11 +142,22 @@ class RecipeController extends Controller
             ->latest()
             ->paginate(5);
 
+        $recipesPage = $this->loadRecipePage();
 
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
             'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
+            'breadcrumbs' => [
+                [
+                    'name' => $recipesPage->name,
+                    'url' => $recipesPage->getUrl('index'),
+                ],
+                [
+                    'name' => $recipe->name,
+                    'url' => null, //pašreizējā lapa, nav saites
+                ],
+            ],
         ]);
     }
 

@@ -6,8 +6,9 @@ import FormatTime from '../../Components/FormatTime.vue';
 import Review from "../../Components/Review.vue";
 import ReviewForm from "../../Components/ReviewForm.vue";
 import Pagination from "../../Components/Pagination.vue";
+import Breadcrumb from "../../Components/Breadcrumb.vue";
 
-const { translations, recipe, reviews} = usePage().props;
+const { translations, recipe, reviews, breadcrumbs} = usePage().props;
 
 const currentServings = ref(recipe.servings);
 
@@ -50,6 +51,8 @@ function formatAmount(value) {
 
 <template>
     <MainLayout>
+        <Breadcrumb :items="breadcrumbs"/>
+
         <div class="recipe">
             <section class="recipe header">
                 <div class="recipe header-content">
