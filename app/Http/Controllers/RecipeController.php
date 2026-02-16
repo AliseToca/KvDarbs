@@ -16,17 +16,20 @@ use Inertia\Inertia;
 use App\Services\PagesService;
 use App\Models\Recipe;
 use CubeAgency\FilamentPageManager\Models\Page;
+use App\Services\BreadcrumbService;
 
 class RecipeController extends Controller
 {
     protected PagesService $pagesService;
+    protected BreadcrumbService $breadcrumbService;
 
     /**
      * Dependency Injection – lai nevajadzētu izmantot app()
      */
-    public function __construct(PagesService $pagesService)
+    public function __construct(PagesService $pagesService, BreadcrumbService $breadcrumbService)
     {
         $this->pagesService = $pagesService;
+        $this->breadcrumbService = $breadcrumbService;
     }
 
     /**
@@ -34,14 +37,7 @@ class RecipeController extends Controller
      */
     protected function recipeShowUrl(Recipe $recipe): string
     {
-        // Aktīvā valoda
-        $currentLanguage = $this->pagesService->getLanguagePage();
-
-        // Recepte lapa konkrētajā valodā
-        $page = Page::query()
-            ->where('template', 'App\Filament\Templates\RecipeTemplate')
-            ->where('parent_id', $currentLanguage->id)
-            ->firstOrFail();
+        $page = $this->pagesService->getRecipeIndexPage();
 
         // Izveidojam saiti ar {recipe:slug}
         return $page->getUrl('show', [
@@ -49,21 +45,9 @@ class RecipeController extends Controller
         ]);
     }
 
-    protected function loadRecipePage(): Page
-    {
-        $currentLanguage = $this->pagesService->getLanguagePage();
-
-        return Page::query()
-            ->select(['id', 'name', "content->blocks as blocks"])
-            ->where('template', 'App\Filament\Templates\RecipeTemplate')
-            ->where('parent_id', $currentLanguage->id)
-            ->firstOrFail();
-    }
-
-
     public function index(Request $request): Response
     {
-        $page = $this->loadRecipePage();
+        $page = $this->pagesService->getRecipeIndexPage();
         $user = auth()->user();
 
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
@@ -142,22 +126,11 @@ class RecipeController extends Controller
             ->latest()
             ->paginate(5);
 
-        $recipesPage = $this->loadRecipePage();
-
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
             'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
-            'breadcrumbs' => [
-                [
-                    'name' => $recipesPage->name,
-                    'url' => $recipesPage->getUrl('index'),
-                ],
-                [
-                    'name' => $recipe->name,
-                    'url' => null, //pašreizējā lapa, nav saites
-                ],
-            ],
+            'breadcrumbs' => $this->breadcrumbService->getBreadcrumbs($recipe),
         ]);
     }
 

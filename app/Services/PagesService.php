@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Filament\Templates\LanguageTemplate;
+use App\Filament\Templates\RecipeTemplate;
 use App\Models\Page;
 use App\Repositories\LanguageRepository;
 use Illuminate\Cache\TaggedCache;
@@ -61,6 +62,18 @@ class PagesService
 
         return $this->getCacheStore()->remember($cacheKey, self::CACHE_TTL, $callback);
     }
+
+    public function getRecipeIndexPage(): Page
+    {
+        $languagePage = $this->getLanguagePage();
+
+        return Page::query()
+            ->select(['id', 'name', 'content->blocks as blocks'])
+            ->where('template', RecipeTemplate::class)
+            ->where('parent_id', $languagePage->id)
+            ->firstOrFail();
+    }
+
 
     public function getPageByTemplate(string $template): Page|Model|null
     {
