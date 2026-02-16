@@ -4,12 +4,15 @@ import MainLayout from '../../Layouts/Main.vue';
 import RecipeCard from '../../Components/RecipeCard.vue';
 import Pagination from "../../Components/Pagination.vue";
 import SearchBar from "../../Components/SearchBar.vue";
+import ConstructorRenderer from "../../Components/ConstructorRenderer.vue";
 
-const { translations, recipes, filters } = usePage().props;
+const { translations, recipes, filters, blocks, page_name} = usePage().props;
 </script>
 
 <template>
     <MainLayout>
+        <ConstructorRenderer :pageName="page_name" :blocks="blocks"/>
+
         <div>
             <SearchBar
                 :model-value="filters.search"

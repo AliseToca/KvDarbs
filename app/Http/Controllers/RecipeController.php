@@ -8,6 +8,7 @@ use App\Models\RecipeType;
 use App\Models\Unit;
 use App\Services\MeasurmentConversionService;
 use App\Services\RecipeAvailabilityService;
+use CubeAgency\FilamentConstructor\Filament\Forms\Components\Constructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Response;
@@ -48,8 +49,21 @@ class RecipeController extends Controller
         ]);
     }
 
+    protected function loadRecipePage(): Page
+    {
+        $currentLanguage = $this->pagesService->getLanguagePage();
+
+        return Page::query()
+            ->select(['id', 'name', "content->blocks as blocks"])
+            ->where('template', 'App\Filament\Templates\RecipeTemplate')
+            ->where('parent_id', $currentLanguage->id)
+            ->firstOrFail();
+    }
+
+
     public function index(Request $request): Response
     {
+        $page = $this->loadRecipePage();
         $user = auth()->user();
 
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
@@ -59,7 +73,7 @@ class RecipeController extends Controller
             ->paginate(1)
             ->withQueryString()
             ->through(function ($recipe) use ($user) {
-                $availabability = RecipeAvailabilityService::calculate($recipe, $user);
+                $availability = RecipeAvailabilityService::calculate($recipe, $user);
 
                 return [
                     'id' => $recipe->id,
@@ -69,19 +83,22 @@ class RecipeController extends Controller
                     'cook_time' => $recipe->cook_time,
                     'total_time' => $recipe->total_time,
                     'average_rating' => $recipe->average_rating,
-                    'missing_products_count' => $availabability['missing_products_count'],
-                    'compatibility' => $availabability['compatibility'],
+                    'missing_products_count' => $availability['missing_products_count'],
+                    'compatibility' => $availability['compatibility'],
                     'url' => $this->recipeShowUrl($recipe),
                 ];
             });
 
         return Inertia::render('Recipe/Index', [
+            'page_name' => $page->name,
+            'blocks' => json_decode($page->blocks) ?? [],
             'recipes' => $recipes,
             'filters' => [
                 'search' => $request->search,
             ]
         ]);
     }
+
 
     public function create()
     {
@@ -124,6 +141,7 @@ class RecipeController extends Controller
             ->with('user:id,username')
             ->latest()
             ->paginate(5);
+
 
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
