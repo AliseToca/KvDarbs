@@ -8,8 +8,9 @@ import SearchableSelect from "../../Components/Inputs/SearchableSelect.vue";
 import SelectField from "../../Components/Inputs/SelectField.vue";
 import ImageUpload from "../../Components/Inputs/ImageUpload.vue";
 
-const { translations, products, units} = usePage().props;
+const { translations, enums, products, units} = usePage().props;
 
+console.log(enums.visibility, products, units);
 const form = useForm({
     name: '',
     image_src: null,
@@ -27,11 +28,7 @@ const form = useForm({
     visibility: 'household',
 });
 
-const visibilityOptions = [
-    { id: 'private', name: translations.recipe.visibility.private },
-    { id: 'household', name: translations.recipe.visibility.household },
-    { id: 'public', name: translations.recipe.visibility.public },
-];
+const visibilityOptions = enums.visibility;
 
 function addInstruction() {
     form.instructions.push('');
