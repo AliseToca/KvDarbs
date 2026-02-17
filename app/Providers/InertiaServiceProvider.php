@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Models\Menu;
 use App\Services\PagesService;
 use Waavi\Translation\Repositories\LanguageRepository;
+use App\Enums\Recipe\Visibility;
+
 class InertiaServiceProvider extends ServiceProvider
 {
     /**
@@ -35,10 +37,16 @@ class InertiaServiceProvider extends ServiceProvider
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),
             'auth' => fn () => ['user' => auth()->user()],
-//            'availableLocales' => fn () => app(LanguageRepository::class)->availableLocales(),
             'languagePage' => fn () => app(PagesService::class)
                 ->getLanguagePage()
                 ->only(['content', 'slug']),
+            'enums' => [
+                'visibility' => collect(Visibility::cases())->map(fn($case) =>
+                [
+                    'id'   => $case->value,
+                    'name' => $case->label(),
+                ]),
+            ]
         ]);
     }
 

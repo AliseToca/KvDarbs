@@ -13,12 +13,14 @@ use App\Models\Product;
 use App\Models\RecipeCategory;
 use App\Models\RecipeType;
 use App\Services\PagesService;
+use App\Enums\Recipe\Visibility;
 
 class Recipe extends Model
 {
     protected $fillable = [
         'slug',
         'name',
+        'visibility',
         'image_src',
         'content',
         'prep_time',
@@ -34,6 +36,7 @@ class Recipe extends Model
         'image_src' => 'string',
         'ingredients' => 'array',
         'instructions' => 'array',
+        'visibility' => Visibility::class,
     ];
 
     // Vērtību piekļuves lauki
