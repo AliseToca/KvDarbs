@@ -14,6 +14,7 @@ use App\Models\RecipeCategory;
 use App\Models\RecipeType;
 use App\Services\PagesService;
 use App\Enums\Recipe\Visibility;
+use Illuminate\Database\Eloquent\Builder;
 
 class Recipe extends Model
 {
@@ -96,5 +97,25 @@ class Recipe extends Model
     public function getReviewsCountAttribute(): int
     {
         return $this->reviews()->count();
+    }
+
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        return $query->where(function (Builder $q) use ($user){
+            // Publiski ieraksti - redzami visiem
+            $q->where('visibility', Visibility::Public)
+                // Privāti ieraksti - redzami tikai pašam lietotājam
+                ->orWhere(function (Builder $q) use ($user) {
+                    $q->where('visibility', Visibility::Private)
+                        ->where('user_id', $user->id);
+                })
+                // Mājsaimniecības ieraksti - redzami tikai lietotājiem no tās pašas mājsaimniecības
+                ->orWhere(function(Builder $q) use ($user) {
+                    $q->where('visibility', Visibility::Household)
+                        ->whereHas('user', fn($q) =>
+                            $q->where('household_id', $user->household_id)
+                        );
+                });
+        });
     }
 }

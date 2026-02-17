@@ -17,9 +17,12 @@ use App\Services\PagesService;
 use App\Models\Recipe;
 use CubeAgency\FilamentPageManager\Models\Page;
 use App\Services\BreadcrumbService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RecipeController extends Controller
 {
+    use AuthorizesRequests;
+
     protected PagesService $pagesService;
     protected BreadcrumbService $breadcrumbService;
 
@@ -51,6 +54,7 @@ class RecipeController extends Controller
         $user = auth()->user();
 
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
+            ->visibleTo($user)
             ->when($request->search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -96,6 +100,8 @@ class RecipeController extends Controller
 
     public function show(Recipe $recipe)
     {
+        $this->authorize('view', $recipe);
+
         $recipe->load([
             'user:id,username',
             'recipeProducts.product.measurementType.units',
