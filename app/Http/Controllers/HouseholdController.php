@@ -12,9 +12,13 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use CubeAgency\FilamentPageManager\Models\Page;
 use App\Services\MeasurmentConversionService;
+use App\Filament\Templates\HouseholdTemplate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class HouseholdController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Serviss, kas atbild par lapu struktūru un valodām
      */
@@ -39,7 +43,7 @@ class HouseholdController extends Controller
 
         // Atrodam mājsaimniecības lapu konkrētajā valodā
         $page = Page::query()
-            ->where('template', 'App\Filament\Templates\HouseholdTemplate')
+            ->where('template', HouseholdTemplate::class)
             ->where('parent_id', $currentLanguage->id)
             ->firstOrFail();
 
@@ -72,9 +76,10 @@ class HouseholdController extends Controller
      */
     public function show(User $user)
     {
-        // $this->authorize('view', $user->household);
-
         $household = $user->household;
+
+        $this->authorize('view', $household);
+
 
         $products = Product::select('id', 'name', 'measurement_type_id')->get();
 
