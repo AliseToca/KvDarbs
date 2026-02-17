@@ -3,11 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Recipe;
+use App\Models\RecipeType;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Enums\Recipe\Visibility;
 
-class RecipePolicy
+class RecipeTypePolicy
 {
     use HandlesAuthorization;
 
@@ -16,31 +15,15 @@ class RecipePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_recipe');
+        return $user->can('view_any_recipe::type');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, Recipe $recipe): bool
+    public function view(User $user, RecipeType $recipeType): bool
     {
-        if ($recipe->visibility === Visibility::Public) {
-            return true;
-        }
-
-        if (! $user) {
-            return false;
-        }
-
-        if ($recipe->visibility === Visibility::Private) {
-            return $recipe->user_id === $user->id;
-        }
-
-        if ($recipe->visibility === Visibility::Household) {
-            return $recipe->user->household_id === $user->household_id;
-        }
-
-        return false;
+        return $user->can('view_recipe::type');
     }
 
     /**
@@ -48,23 +31,23 @@ class RecipePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_recipe');
+        return $user->can('create_recipe::type');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Recipe $recipe): bool
+    public function update(User $user, RecipeType $recipeType): bool
     {
-        return $user->can('update_recipe');
+        return $user->can('update_recipe::type');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Recipe $recipe): bool
+    public function delete(User $user, RecipeType $recipeType): bool
     {
-        return $user->can('delete_recipe');
+        return $user->can('delete_recipe::type');
     }
 
     /**
@@ -72,15 +55,15 @@ class RecipePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_recipe');
+        return $user->can('delete_any_recipe::type');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Recipe $recipe): bool
+    public function forceDelete(User $user, RecipeType $recipeType): bool
     {
-        return $user->can('force_delete_recipe');
+        return $user->can('force_delete_recipe::type');
     }
 
     /**
@@ -88,15 +71,15 @@ class RecipePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_recipe');
+        return $user->can('force_delete_any_recipe::type');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Recipe $recipe): bool
+    public function restore(User $user, RecipeType $recipeType): bool
     {
-        return $user->can('restore_recipe');
+        return $user->can('restore_recipe::type');
     }
 
     /**
@@ -104,15 +87,15 @@ class RecipePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_recipe');
+        return $user->can('restore_any_recipe::type');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Recipe $recipe): bool
+    public function replicate(User $user, RecipeType $recipeType): bool
     {
-        return $user->can('replicate_recipe');
+        return $user->can('replicate_recipe::type');
     }
 
     /**
@@ -120,6 +103,6 @@ class RecipePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_recipe');
+        return $user->can('reorder_recipe::type');
     }
 }
