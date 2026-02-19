@@ -27,7 +27,6 @@ class HouseholdProductController extends Controller
     {
         // Validē lietotāja ievadītos datus
         $validated = $request->validate([
-            'household_id' => 'required|exists:households,id',
             'product_id' => 'required|exists:products,id',
             'amount' => 'required|numeric',
             'unit_id' => 'required|exists:units,id',
@@ -35,7 +34,7 @@ class HouseholdProductController extends Controller
         ]);
 
         // Iegūstam nepieciešamos modeļus
-        $household = Household::findOrFail($validated['household_id']);
+        $household = auth()->user()->activeHousehold();
         $unit = Unit::findOrFail($validated['unit_id']);
         $product = Product::findOrFail($validated['product_id']);
 
@@ -115,6 +114,7 @@ class HouseholdProductController extends Controller
     public function destroy(HouseholdProduct $householdProduct): RedirectResponse
     {
         $householdProduct->delete();
+
         return back();
     }
 }

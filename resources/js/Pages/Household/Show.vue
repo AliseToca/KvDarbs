@@ -1,24 +1,26 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import {router, usePage} from '@inertiajs/vue3';
+import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import {computed, reactive, ref} from 'vue';
 import InputField from "../../Components/Inputs/InputField.vue";
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
 
-const { household, householdProducts, products, productCategories, units, translations } = usePage().props;
+const { products, productCategories, units, translations } = usePage().props;
+
+const householdProducts = computed(() => usePage().props.householdProducts);
+const household = computed(() => usePage().props.household);
 
 const isModalOpen = ref(false);
 
-const form = reactive({
+const form = useForm({
     product_id: '',
     amount: 1,
     unit_id: '',
-    expirationDate: '',
+    expiration_date: '',
     errors: {},
 });
 
-//
 const filteredUnits = computed(() => {
     if (!form.product_id) return [];
 
@@ -39,7 +41,7 @@ const categorizedProducts = computed(() => {
     })
 
     //Pievienojam katru produktu atbilstošajai kategorijai
-    householdProducts.forEach(product => {
+    householdProducts.value.forEach(product => {
         const category = product.categoryName ?? 'Uncategorized';
 
         if (!map[category]) {
@@ -53,24 +55,10 @@ const categorizedProducts = computed(() => {
 });
 
 function submit() {
-    form.errors = {};
-
-    router.post(route('household-products.store'), {
-        household_id: household.id,
-        product_id: form.product_id,
-        amount: form.amount,
-        unit_id: form.unit_id,
-        expiration_date: form.expirationDate,
-    }, {
+    form.post(route('household-products.store'), {
         onSuccess: () => {
             isModalOpen.value = false;
-            router.visit(window.location.href, {
-                preserveScroll: true,
-                preserveState: false,
-            });
-        },
-        onError: (errors) => {
-            form.errors = errors;
+            form.reset();
         }
     });
 }
@@ -81,9 +69,18 @@ function submit() {
         <section class="household">
             <header>
                 <h1 class="capitalize">{{ household.name }}</h1>
-                <button class="button" @click="isModalOpen = true">
-                    <i class="pi pi-plus"></i> Pievienot produktu
-                </button>
+                <div>
+                    <button class="button primary" @click="isModalOpen = true">
+                        <i class="pi pi-plus"></i> Pievienot produktu
+                    </button>
+                    <Link
+                        :href="route('household.edit', household.id)"
+                        class="button"
+                    >
+                        <i class="pi pi-cog"></i>
+                    </Link>
+
+                </div>
             </header>
 
             <AddHouseholdProductModal

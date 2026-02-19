@@ -8,7 +8,9 @@ import ReviewForm from "../../Components/ReviewForm.vue";
 import Pagination from "../../Components/Pagination.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 
-const { translations, recipe, reviews, breadcrumbs} = usePage().props;
+const { translations, recipe, breadcrumbs} = usePage().props;
+
+const reviews = computed(() => usePage().props.reviews.data || []);
 
 const currentServings = ref(recipe.servings);
 
@@ -126,7 +128,7 @@ function formatAmount(value) {
                 <h2>{{ translations.recipe.reviews.heading }}</h2>
                 <ReviewForm/>
                 <Review
-                    v-for="review in reviews.data"
+                    v-for="review in reviews"
                     :key="review.id"
                     :id="review.id"
                     :rating = "review.rating"
@@ -134,7 +136,7 @@ function formatAmount(value) {
                     :username = "review.user.username"
                     :created_at = "review.created_at"
                 />
-                <Pagination :links="reviews.links" />
+                <Pagination :links="usePage().props.reviews.links" />
 
             </section>
         </div>

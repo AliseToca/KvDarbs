@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, watch, computed } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import {router, useForm, usePage} from "@inertiajs/vue3";
 import Modal from "./Modal.vue";
 import InputField from "../Inputs/InputField.vue";
 import SearchableSelect from "../Inputs/SearchableSelect.vue";
@@ -15,10 +15,10 @@ const { units, translations } = usePage().props;
 // Nodod vecāka komponentei mainīgā vērtību
 const emit = defineEmits(["update:modelValue"]);
 
-const form = reactive({
+const form = useForm({
     amount: 1,
     unit_id: '',
-    expirationDate: '',
+    expiration_date: '',
     errors: {},
 });
 
@@ -37,39 +37,22 @@ watch(() => props.product, (product) => {
 
     form.unit_id = product.unitId;
     form.amount = product.amount;
-    form.expirationDate = product.expirationDate;
+    form.expiration_date = product.expirationDate;
 }, { immediate: true });
-
 
 function closeModal() {
     emit("update:modelValue", false);
 }
 
 function submit() {
-    form.errors = {};
+    if (!props.product?.id) return;
 
-    if (!props.product?.id) {
-        return;
-    }
-
-    const unit = units.find(u => u.id === form.unit_id);
-
-    //Pieprasījums atjaunināt mājsaimniecības produkta vērtibas
-    router.put(route('household-products.update', props.product.id), {
-        amount: form.amount,
-        unit_id: form.unit_id,
-        expiration_date: form.expirationDate,
-    }, {
+    form.put(route('household-products.update', props.product.id), {
+        preserveScroll: true,
         onSuccess: () => {
-            closeModal()
-            router.visit(window.location.href, {
-                preserveScroll: true,
-                preserveState: false,
-            })
+            closeModal();
+            router.reload({ only: ['householdProducts'], preserveScroll: true });
         },
-        onError: (errors) => {
-            form.errors = errors
-        }
     });
 }
 </script>
@@ -81,7 +64,7 @@ function submit() {
         </template>
 
         <template #body>
-            <form id="edit-product-form" class="form-field" @submit="submit">
+            <form id="edit-product-form" class="form-field" @submit.prevent="submit">
                 <InputField
                     v-model="form.amount"
                     type="number"
@@ -97,7 +80,7 @@ function submit() {
                 />
 
                 <InputField
-                    v-model="form.expirationDate"
+                    v-model="form.expiration_date"
                     type="date"
                     :label="translations.fields.labels.product.expiration_date"
                     :error="form.errors.expiration_date"
@@ -110,6 +93,7 @@ function submit() {
                 class="button primary full-width"
                 form="edit-product-form"
                 type="submit"
+                :disabled="form.processing"
             >
                 {{ translations.button.save }}
             </button>

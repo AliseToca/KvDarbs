@@ -80,11 +80,8 @@ class HouseholdController extends Controller
 
         $this->authorize('view', $household);
 
-
         $products = Product::select('id', 'name', 'measurement_type_id')->get();
-
         $productCategories = ProductCategory::select('id', 'name')->get();
-
         $units = Unit::all();
 
         //Visi mājsaimniecības produkti ar tā saistītajiem modeļiem
@@ -149,5 +146,12 @@ class HouseholdController extends Controller
         return redirect(
             $this->householdShowUrl($request->user())
         );
+    }
+
+    public function edit(Household $household)
+    {
+        return Inertia::render('Household/Edit', [
+            'household' => $household,
+        ]);
     }
 }

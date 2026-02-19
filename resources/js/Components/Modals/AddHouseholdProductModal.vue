@@ -1,25 +1,23 @@
 <script setup>
 import { computed, reactive } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import Modal from './Modal.vue';
 import InputField from "@/Components/Inputs/InputField.vue";
 import SearchableSelect from "@/Components/Inputs/SearchableSelect.vue";
 
 const props = defineProps({
     modelValue: Boolean,
-    householdId: Number,
 });
 
 const emit = defineEmits(['update:modelValue']);
 
 const { products, units, translations } = usePage().props;
 
-const form = reactive({
+const form = useForm({
     product_id: '',
     amount: 1,
     unit_id: '',
-    expirationDate: '',
-    errors: {},
+    expiration_date: '',
 });
 
 // Iegūst atbilstošās mērvienības
@@ -36,31 +34,20 @@ function closeModal() {
     emit('update:modelValue', false);
 }
 
-
 function submit() {
-    form.errors = {};
-
-    //Pieprasījums mājsaimniecības produkta saglabāšanai
-    router.post(route('household-products.store'), {
-        household_id: props.householdId,
-        product_id: form.product_id,
-        amount: form.amount,
-        unit_id: form.unit_id,
-        expiration_date: form.expirationDate,
-    }, {
+    form.post(route('household-products.store'), {
+        preserveScroll: true,
         onSuccess: () => {
             closeModal();
-
-            router.visit(window.location.href, {
-                preserveScroll: true,
-                preserveState: false,
-            });
+            form.reset({ amount: 1 });
+            router.reload({ only: ['householdProducts'] });
         },
         onError: (errors) => {
-            form.errors = errors;
+            console.log('Validation errors:', errors);
         }
-    })
+    });
 }
+
 </script>
 
 <template>
@@ -70,7 +57,7 @@ function submit() {
         </template>
 
         <template #body>
-            <form id="add-product-form" class="form-field" @submit="submit">
+            <form id="add-product-form" class="form-field" @submit.prevent="submit">
                 <SearchableSelect
                     v-model="form.product_id"
                     :items="products"
@@ -94,7 +81,7 @@ function submit() {
                 />
 
                 <InputField
-                    v-model="form.expirationDate"
+                    v-model="form.expiration_date"
                     type="date"
                     :label="translations.fields.labels.product.expiration_date"
                     :error="form.errors.expiration_date"
@@ -107,6 +94,7 @@ function submit() {
                 class="button primary full-width"
                 form="add-product-form"
                 type="submit"
+                :disabled="form.processing"
             >
                 {{ translations.button.add }}
             </button>

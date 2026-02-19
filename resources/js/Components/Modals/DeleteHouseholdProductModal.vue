@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from 'vue';
-import {router, usePage} from '@inertiajs/vue3';
+import {router, usePage, useForm} from '@inertiajs/vue3';
 import Modal from './Modal.vue';
 
 const { translations } = usePage().props;
@@ -13,29 +12,19 @@ const props = defineProps({
 // Nodod vecāka komponentei mainīgā vērtību
 const emit = defineEmits(['update:modelValue']);
 
-const isSubmitting = ref(false);
-
 function closeModal() {
     emit('update:modelValue', false); //Aizver paziņojuma logu
 }
 
+const form = useForm({});
+
 function confirmDelete() {
     if (!props.product?.id) return;
 
-    isSubmitting.value = true;
-
-    // Pieprasījums dzēst mājsaimniecības produktu
-    router.delete(route('household-products.destroy', props.product.id), {
+    form.delete(route('household-products.destroy', props.product.id), {
+        preserveScroll: true,
         onSuccess: () => {
-            close();
-            // Refresh page or preserve state
-            router.visit(window.location.href, {
-                preserveScroll: true,
-                preserveState: false,
-            });
-        },
-        onFinish: () => {
-            isSubmitting.value = false;
+            closeModal();
         },
     });
 }
@@ -59,10 +48,10 @@ function confirmDelete() {
 
         <template #footer>
             <div class="button-container">
-                <button class="button full-width" @click="closeModal" :disabled="isSubmitting">
+                <button class="button full-width" @click="closeModal" :disabled="form.processing">
                     {{ translations.button.cancel }}
                 </button>
-                <button class="button primary full-width" @click="confirmDelete" :disabled="isSubmitting">
+                <button class="button primary full-width" @click="confirmDelete" :disabled="form.processing">
                     {{ translations.button.delete }}
                 </button>
             </div>

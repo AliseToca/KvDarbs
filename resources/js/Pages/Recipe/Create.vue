@@ -10,7 +10,6 @@ import ImageUpload from "../../Components/Inputs/ImageUpload.vue";
 
 const { translations, enums, products, units} = usePage().props;
 
-console.log(enums.visibility, products, units);
 const form = useForm({
     name: '',
     image_src: null,
@@ -67,7 +66,6 @@ function submit() {
     form.post(route('recipes.store'),{
         forceFormData: true,
     });
-
 }
 </script>
 
