@@ -13,6 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Household;
 use App\Models\Recipe;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -62,10 +63,16 @@ class User extends Authenticatable implements FilamentUser
         return true;
     }
 
-
-    public function household(): BelongsTo
+    public function households(): BelongsToMany
     {
-        return $this->belongsTo(Household::class);
+        return $this->belongsToMany(Household::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function activeHousehold(): ?Household
+    {
+        return $this->households()->first();
     }
 
     public function recipes(): HasMany

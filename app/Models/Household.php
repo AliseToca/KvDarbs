@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
 use App\Models\HouseholdProduct;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Household extends Model
 {
@@ -13,9 +14,11 @@ class Household extends Model
         'name',
     ];
 
-    public function users(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function householdProducts(): HasMany

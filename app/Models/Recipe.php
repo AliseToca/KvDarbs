@@ -110,11 +110,11 @@ class Recipe extends Model
                         ->where('user_id', $user->id);
                 })
                 // Mājsaimniecības ieraksti - redzami tikai lietotājiem no tās pašas mājsaimniecības
-                ->orWhere(function(Builder $q) use ($user) {
+                ->orWhere(function (Builder $q) use ($user) {
                     $q->where('visibility', Visibility::Household)
-                        ->whereHas('user', fn($q) =>
-                            $q->where('household_id', $user->household_id)
-                        );
+                        ->whereHas('user.households', function ($q) use ($user) {
+                            $q->whereIn('households.id', $user->households()->pluck('households.id'));
+                        });
                 });
         });
     }

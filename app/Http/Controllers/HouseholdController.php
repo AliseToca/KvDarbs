@@ -62,7 +62,7 @@ class HouseholdController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->household) {
+        if ($user->activeHousehold()) {
             return redirect(
                 $this->householdShowUrl($user)
             );
@@ -76,7 +76,7 @@ class HouseholdController extends Controller
      */
     public function show(User $user)
     {
-        $household = $user->household;
+        $household = $user->activeHousehold();
 
         $this->authorize('view', $household);
 
@@ -133,11 +133,17 @@ class HouseholdController extends Controller
         // Izveidojam mājsaimniecību
         $household = Household::create($validated);
 
+        // Pārbaudam vai lietotājām jau ir mājsaimniecība
+        $user =  $request->user();
+
+        if($user->households()->exists()) {
+            abort(403, 'User already has a household.');
+        }
+
         // Piesaistām mājsaimniecību lietotājam
-        $request->user()
-            ->household()
-            ->associate($household)
-            ->save();
+        $user->households()->attach($household->id, [
+            'role' => 'owner',
+        ]);
 
         // Pāradresējam uz mājsaimniecības lietotāja lapu
         return redirect(

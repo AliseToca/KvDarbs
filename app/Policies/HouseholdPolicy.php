@@ -21,7 +21,9 @@ class HouseholdPolicy
      */
     public function view(User $user, Household $household): bool
     {
-        return $user->household_id === $household->id;
+        return $user->households()
+            ->where('households.id', $household->id)
+            ->exists();
     }
 
     /**

@@ -37,7 +37,9 @@ class RecipePolicy
         }
 
         if ($recipe->visibility === Visibility::Household) {
-            return $recipe->user->household_id === $user->household_id;
+            return $user->households()
+                ->whereIn('households.id', $recipe->user->households()->select('households.id'))
+                ->exists();
         }
 
         return false;

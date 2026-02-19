@@ -10,11 +10,10 @@ class RecipeAvailabilityService
     public static function calculate(Recipe $recipe, User $user): array
     {
         $recipe->load('recipeProducts.product');
-        $user->load('household.householdProducts.product');
 
-        $householdProducts = $user->household->householdProducts->keyBy('product_id');
+        $household = $user->activeHousehold();
 
-        if (!$user->household) {
+        if (!$household) {
             return [
                 'available_products_count' => 0,
                 'missing_products_count' => $recipe->recipeProducts->count(),
@@ -23,20 +22,25 @@ class RecipeAvailabilityService
             ];
         }
 
+        $household->load('householdProducts.product');
+
+        $householdProducts = $household->householdProducts->keyBy('product_id');
+
         $available = 0;
         $missing = 0;
 
         foreach($recipe->recipeProducts as $recipeProduct) {
             $requiredAmount = $recipeProduct->amount;
-
             $householdProduct = $householdProducts->get($recipeProduct->product_id);
 
-            if(!$householdProduct) {
+            if (!$householdProduct) {
                 $missing++;
                 continue;
-            }if($householdProduct->amount >= $requiredAmount) {
+            }
+
+            if ($householdProduct->amount >= $requiredAmount) {
                 $available++;
-            }else{
+            } else {
                 $missing++;
             }
         }
