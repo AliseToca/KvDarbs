@@ -5,13 +5,15 @@ import {computed, reactive, ref} from 'vue';
 import InputField from "../../Components/Inputs/InputField.vue";
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
+import EditHouseholdModal from "../../Components/Modals/EditHouseholdModal.vue";
 
 const { products, productCategories, units, translations } = usePage().props;
 
 const householdProducts = computed(() => usePage().props.householdProducts);
 const household = computed(() => usePage().props.household);
 
-const isModalOpen = ref(false);
+const isAddProductModalOpen = ref(false);
+const isEditHouseholdModalOpen = ref(false);
 
 const form = useForm({
     product_id: '',
@@ -19,16 +21,6 @@ const form = useForm({
     unit_id: '',
     expiration_date: '',
     errors: {},
-});
-
-const filteredUnits = computed(() => {
-    if (!form.product_id) return [];
-
-    const product = products.find(product => product.id === form.product_id);
-
-    if (!product) return [];
-
-    return units.filter(unit => unit.measurement_type_id === product.measurement_type_id);
 });
 
 //Sagrupēti produkti pēc kategorijas
@@ -53,15 +45,6 @@ const categorizedProducts = computed(() => {
 
     return map;
 });
-
-function submit() {
-    form.post(route('household-products.store'), {
-        onSuccess: () => {
-            isModalOpen.value = false;
-            form.reset();
-        }
-    });
-}
 </script>
 
 <template>
@@ -70,22 +53,23 @@ function submit() {
             <header>
                 <h1 class="capitalize">{{ household.name }}</h1>
                 <div>
-                    <button class="button primary" @click="isModalOpen = true">
+                    <button class="button primary" @click="isAddProductModalOpen = true">
                         <i class="pi pi-plus"></i> Pievienot produktu
                     </button>
-                    <Link
-                        :href="route('household.edit', household.id)"
-                        class="button"
-                    >
+                    <button class="button" @click="isEditHouseholdModalOpen = true">
                         <i class="pi pi-cog"></i>
-                    </Link>
-
+                    </button>
                 </div>
             </header>
 
             <AddHouseholdProductModal
-                v-model="isModalOpen"
+                v-model="isAddProductModalOpen"
                 :household-id="household.id"
+            />
+
+            <EditHouseholdModal
+                v-model="isEditHouseholdModalOpen"
+                :household="household"
             />
 
             <HouseholdProducts :categorizedProducts="categorizedProducts" :no-product-text="translations.household.no_products"/>

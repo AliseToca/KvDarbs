@@ -147,11 +147,4 @@ class HouseholdController extends Controller
             $this->householdShowUrl($request->user())
         );
     }
-
-    public function edit(Household $household)
-    {
-        return Inertia::render('Household/Edit', [
-            'household' => $household,
-        ]);
-    }
 }
