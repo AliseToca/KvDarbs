@@ -24,6 +24,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function(){
     Route::post('/households', [HouseholdController::class, 'store'])
         ->name('households.store');
+    Route::put('/households/{household}', [HouseholdController::class, 'update'])
+        ->name('households.update');
 
     Route::post('/household-products', [HouseholdProductController::class, 'store'])
         ->name('household-products.store');

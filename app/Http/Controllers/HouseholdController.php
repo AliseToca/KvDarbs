@@ -8,6 +8,7 @@ use App\Models\ProductCategory;
 use App\Models\Unit;
 use App\Models\User;
 use App\Services\PagesService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use CubeAgency\FilamentPageManager\Models\Page;
@@ -146,5 +147,16 @@ class HouseholdController extends Controller
         return redirect(
             $this->householdShowUrl($request->user())
         );
+    }
+
+    public function update(Request $request, Household $household): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:30'],
+        ]);
+
+        $household->update($validated);
+
+        return back();
     }
 }

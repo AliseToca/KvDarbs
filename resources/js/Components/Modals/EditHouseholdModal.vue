@@ -1,26 +1,49 @@
 <script setup>
 import Modal from "./Modal.vue";
-import SearchableSelect from "../Inputs/SearchableSelect.vue";
 import InputField from "../Inputs/InputField.vue";
-import {useForm, usePage} from "@inertiajs/vue3";
+import { watch } from "vue";
+import { router, useForm, usePage } from "@inertiajs/vue3";
 
-const {translations} = usePage().props;
-
-defineProps({
+const props = defineProps({
+    modelValue: Boolean,
     household: Object,
-})
+});
+
+const { translations } = usePage().props;
+
+const emit = defineEmits(["update:modelValue"]);
 
 const form = useForm({
     name: '',
-    members: [],
 });
 
+watch(() => props.household, (household) => {
+    if (!household) return;
+
+    form.name = household.name;
+}, { immediate: true });
+
+function closeModal() {
+    emit("update:modelValue", false);
+}
+
+function submit() {
+    if (!props.household?.id) return;
+
+    form.put(route('households.update', props.household.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            closeModal();
+            router.reload({ only: ['households'], preserveScroll: true });
+        },
+    });
+}
 </script>
 
 <template>
     <Modal :model-value="modelValue" @update:modelValue="closeModal">
         <template #header>
-            <h2>{{household.name}}</h2>
+            <h2>{{ translations.household.ur_household }}</h2>
         </template>
 
         <template #body>
