@@ -59,24 +59,7 @@ class HouseholdProductController extends Controller
             ]);
         }
 
-        return back();
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(HouseholdProduct $householdProduct)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(HouseholdProduct $householdProduct)
-    {
-        //
+        return back()->with('success', 'Veiksmīgi pievienots produkts');
     }
 
     /**
@@ -104,7 +87,7 @@ class HouseholdProductController extends Controller
             'expiration_date' => $validated['expiration_date'],
         ]);
 
-        return back();
+        return back()->with('success', 'Veiksmīgi atjaunota produkta informācija');
     }
 
 
@@ -115,6 +98,7 @@ class HouseholdProductController extends Controller
     {
         $householdProduct->delete();
 
-        return back();
+
+        return back()->with('success', 'Produkts tika dzēsts no mājsaimniecības');
     }
 }

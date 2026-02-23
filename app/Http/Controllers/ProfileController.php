@@ -39,7 +39,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return back();
+        return back()->with('success', 'Profila informācija veiksmīgi atjaunināta');
     }
 
     /**

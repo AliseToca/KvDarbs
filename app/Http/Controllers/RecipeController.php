@@ -193,6 +193,6 @@ class RecipeController extends Controller
             ]);
         }
 
-        return redirect()->to($this->recipeShowUrl($recipe));
+        return redirect()->to($this->recipeShowUrl($recipe))->with('success', 'Recepte ir izveidota');
     }
 }

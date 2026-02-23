@@ -146,7 +146,7 @@ class HouseholdController extends Controller
         // Pāradresējam uz mājsaimniecības lietotāja lapu
         return redirect(
             $this->householdShowUrl($request->user())
-        );
+        )->with('success', 'Veiksmīgi izveidota mājsaimniecība');
     }
 
     public function update(Request $request, Household $household): RedirectResponse
@@ -157,6 +157,6 @@ class HouseholdController extends Controller
 
         $household->update($validated);
 
-        return back();
+        return back()->with('success', 'Veiksmīgi atjaunota mājsaimniecības informācija');
     }
 }

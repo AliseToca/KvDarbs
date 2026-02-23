@@ -40,7 +40,7 @@ class ReviewController extends Controller
             ...$validated,
         ]);
 
-        return back();
+        return back()->with('success', 'Atsauksme tika veiksmīgi izveidota');
     }
 
     /**
