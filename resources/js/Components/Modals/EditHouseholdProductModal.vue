@@ -1,6 +1,6 @@
 <script setup>
-import { reactive, watch, computed } from "vue";
-import {router, useForm, usePage} from "@inertiajs/vue3";
+import { computed } from "vue";
+import { router, useForm, usePage } from "@inertiajs/vue3";
 import Modal from "./Modal.vue";
 import InputField from "../Inputs/InputField.vue";
 import SearchableSelect from "../Inputs/SearchableSelect.vue";
@@ -16,10 +16,9 @@ const { units, translations } = usePage().props;
 const emit = defineEmits(["update:modelValue"]);
 
 const form = useForm({
-    amount: 1,
-    unit_id: '',
-    expiration_date: '',
-    errors: {},
+    amount: props.product?.amount ?? 1,
+    unit_id: props.product?.unitId,
+    expiration_date: props.product?.expirationDate ?? '',
 });
 
 // Pieejamās mērvienības konkrētajam produktam
@@ -28,17 +27,8 @@ const availableUnits = computed(() => {
 
     return units
         .filter(unit => unit.measurement_type_id === props.product.measurementTypeId)
-        .sort((a, b) => b.conversion_factor - a.conversion_factor); //Lielākās -> mazāko
+        .sort((a, b) => b.conversion_factor - a.conversion_factor);
 });
-
-// Automātiski aizpilda formas vērtibas
-watch(() => props.product, (product) => {
-    if (!product) return;
-
-    form.unit_id = product.unitId;
-    form.amount = product.amount;
-    form.expiration_date = product.expirationDate;
-}, { immediate: true });
 
 function closeModal() {
     emit("update:modelValue", false);

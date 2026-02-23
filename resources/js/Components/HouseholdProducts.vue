@@ -68,6 +68,7 @@ function openDelete(product) {
     <EditHouseholdProductModal
         v-model="isEditOpen"
         :product="selectedProduct"
+        :key="selectedProduct?.id"
     />
 
     <DeleteHouseholdProductModal

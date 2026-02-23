@@ -1,7 +1,6 @@
 <script setup>
 import Modal from "./Modal.vue";
 import InputField from "../Inputs/InputField.vue";
-import { watch } from "vue";
 import { router, useForm, usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -14,14 +13,8 @@ const { translations } = usePage().props;
 const emit = defineEmits(["update:modelValue"]);
 
 const form = useForm({
-    name: '',
+    name: props.household?.name ?? '',
 });
-
-watch(() => props.household, (household) => {
-    if (!household) return;
-
-    form.name = household.name;
-}, { immediate: true });
 
 function closeModal() {
     emit("update:modelValue", false);
