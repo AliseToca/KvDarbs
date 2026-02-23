@@ -46,7 +46,11 @@ class InertiaServiceProvider extends ServiceProvider
                     'id'   => $case->value,
                     'name' => $case->label(),
                 ]),
-            ]
+            ],
+            'flash' => [
+                'success' => fn () => session('success'),
+                'error' => fn () => session('error'),
+            ],
         ]);
     }
 
