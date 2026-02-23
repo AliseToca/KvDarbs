@@ -1,27 +1,42 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3'
+import MainLayout from '../../Layouts/Main.vue';
+import {usePage, useForm} from "@inertiajs/vue3";
+import InputField from "../../Components/Inputs/InputField.vue";
 
-const props = defineProps({
-    user: Object,
-})
+const { translations, user } = usePage().props;
 
 const form = useForm({
-    name: props.user.name,
-    email: props.user.email,
-})
+    name: user.name,
+    username: user.username,
+});
+
+const submit = () => {
+    form.put(route('profile.update'));
+}
 </script>
 
 <template>
-    <div>
-        <h1 class="text-xl font-bold">Profile</h1>
+    <MainLayout>
+        <h1> {{ translations.auth.profile }} </h1>
 
-        <form @submit.prevent="form.put(route('user-profile-information.update'))">
-            <input v-model="form.name" />
-            <input v-model="form.email" />
+        <form class="form-field" @submit.prevent="submit">
+            <InputField
+                v-model="form.username"
+                :label="translations.auth.username"
+                :max-length="20"
+            />
 
-            <button :disabled="form.processing">
-                Save
+            <InputField
+                v-model="form.name"
+                class="form-field-item"
+                :label="translations.auth.name"
+            />
+
+            <button class="button" type="submit" :disabled="form.processing">
+                {{ translations.button.save }}
             </button>
         </form>
-    </div>
+    </MainLayout>
 </template>
+
+

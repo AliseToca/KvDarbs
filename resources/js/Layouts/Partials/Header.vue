@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { router, usePage } from '@inertiajs/vue3'
+import { router, usePage, Link} from '@inertiajs/vue3'
 import NavBar from "../../Components/NavBar.vue";
 
 const { props } = usePage()
@@ -74,9 +74,13 @@ const logout = () => router.post('/logout')
 
         <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
         <div v-if="!isMobile">
-            <button v-if="auth.user" @click="logout" class="button primary">
-                {{ translations.auth.logout }}
-            </button>
+            <Link v-if="auth.user" :href="route('profile.edit')" as="button" class="button round primary">
+                <i class="pi pi-user"></i>
+            </Link>
+
+<!--            <button v-if="auth.user" @click="logout" class="button round primary">-->
+<!--                {{ translations.auth.logout }}-->
+<!--            </button>-->
             <button v-else @click="login" class="button primary">
                 {{ translations.auth.login }}
             </button>

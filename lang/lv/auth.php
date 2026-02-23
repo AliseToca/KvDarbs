@@ -5,9 +5,10 @@ return [
     'login' => 'Pieteikties',
     'logout' => 'Iziet',
 
-
     'login_title' => 'Pieteikšanās',
     'register_title' => 'Reģistrācija',
+
+    'profile' => 'Profils',
 
     'name' => 'Vārds',
     'email' => 'E-pasts',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\LocalOnly;
@@ -22,6 +23,11 @@ Route::middleware('guest')->group(function () {
 
 //Reģistrēta lietotāja adresācijas
 Route::middleware('auth')->group(function(){
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
     Route::post('/households', [HouseholdController::class, 'store'])
         ->name('households.store');
     Route::put('/households/{household}', [HouseholdController::class, 'update'])
@@ -34,12 +40,12 @@ Route::middleware('auth')->group(function(){
     Route::delete('/household-products/{householdProduct}', [HouseholdProductController::class, 'destroy'])
         ->name('household-products.destroy');
 
-    Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
-        ->name('recipes.reviews.store');
-
     Route::get('/recipe/create', [RecipeController::class, 'create']);
     Route::post('/recipe/store', [RecipeController::class, 'store'])
         ->name('recipes.store');
+
+    Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
+        ->name('recipes.reviews.store');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

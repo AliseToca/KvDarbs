@@ -18,6 +18,13 @@ button {
     background-color: $color-gray-dark;
     color: $color-white;
 
+    &.round {
+        border-radius: 50%;
+        height: 45px;
+        aspect-ratio: 1;
+        padding: 0px;
+    }
+
     &.primary {
         background-color: $color-primary;
 
