@@ -13,7 +13,10 @@ return [
     'name' => 'Vārds',
     'email' => 'E-pasts',
     'username' => 'Lietotājvārds',
+
     'password' => 'Parole',
+    'current_password' => 'Pašreizējā parole',
+    'new_password' => 'Jaunā parole',
     'password_confirmation' => 'Paroles apstiprinājums',
 
     'remember_me' => 'Atcerēties mani',
