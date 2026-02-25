@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Services\PagesService;
 use Waavi\Translation\Repositories\LanguageRepository;
 use App\Enums\Recipe\Visibility;
+use Illuminate\Support\Facades\File;
 
 class InertiaServiceProvider extends ServiceProvider
 {
@@ -26,14 +27,19 @@ class InertiaServiceProvider extends ServiceProvider
     {
         Inertia::share([
             'locale' => fn () => app()->getLocale(),
-            'translations' => fn () => [
-                'auth' => trans('auth'),
-                'validation' => trans('validation'),
-                'recipe' => trans('recipe'),
-                'household' => trans('household'),
-                'button' => trans('button'),
-                'fields' => trans('fields'),
-            ],
+            'translations' => function () {
+                $locale = app()->getLocale();
+                $path = lang_path($locale);
+
+                $translations = [];
+
+                foreach (File::files($path) as $file) {
+                    $key = pathinfo($file, PATHINFO_FILENAME);
+                    $translations[$key] = trans($key);
+                }
+
+                return $translations;
+            },
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),
             'auth' => fn () => ['user' => auth()->user()],

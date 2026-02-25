@@ -23,16 +23,11 @@ const submitProfile = () => {
 }
 
 // -- Parole --
-const passwordSaved = ref(false);
-
 const passwordForm = useForm({
     current_password: '',
     password: '',
     password_confirmation: '',
 });
-
-// Profila dzēšana
-const deleteAccountModal = ref(false);
 
 const submitPassword = () => {
     passwordForm.put(route('user-password.update'), {
@@ -49,6 +44,9 @@ const submitPassword = () => {
         },
     });
 };
+
+// Profila dzēšana
+const deleteAccountModal = ref(false);
 </script>
 
 <template>
@@ -56,8 +54,9 @@ const submitPassword = () => {
         <h1> {{ translations.auth.profile }} </h1>
 
         <!-- ---Profila informācija--- -->
-        <section>
-            <h3> Personīgā informācija </h3>
+        <section class="card">
+            <h3> {{ translations.profile.personal_information.title }} </h3>
+            <p> {{ translations.profile.personal_information.description }} </p>
 
             <form class="form-field" @submit.prevent="submitProfile">
                 <InputField
@@ -89,8 +88,9 @@ const submitPassword = () => {
         </section>
 
         <!-- ---Paroles maiņa--- -->
-        <section>
-            <h3> Nomainīt paroli </h3>
+        <section class="card">
+            <h3> {{ translations.profile.change_password.title }} </h3>
+            <p> {{ translations.profile.change_password.description }} </p>
 
             <form class="form-field" @submit.prevent="submitPassword">
                 <InputField
@@ -122,8 +122,9 @@ const submitPassword = () => {
         </section>
 
         <!-- ---Profila dzēšana--- -->
-        <section>
-            <h3>Dzēst kontu</h3>
+        <section class="card">
+            <h3> {{ translations.profile.delete_account.title }}</h3>
+            <p> {{ translations.profile.delete_account.description }} </p>
 
             <button class="button primary" @click="deleteAccountModal = true">
                 {{ translations.button.delete }}
@@ -133,5 +134,3 @@ const submitPassword = () => {
         </section>
     </MainLayout>
 </template>
-
-
