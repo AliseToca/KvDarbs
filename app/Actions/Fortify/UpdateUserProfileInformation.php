@@ -20,7 +20,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
 
-            'username' => ['required', 'string', 'min:3','max:25', Rule::unique(User::class)],
+            'username' => [
+                'required',
+                'string',
+                'min:3',
+                'max:25',
+                Rule::unique(User::class)->ignore($user->id)
+            ],
 
             'email' => [
                 'required',
@@ -40,6 +46,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'username' => $input['username'],
                 'email' => $input['email'],
             ])->save();
+
+            session()->flash('success', 'Profila informācija vieksmīgi atjaunota');
         }
     }
 
