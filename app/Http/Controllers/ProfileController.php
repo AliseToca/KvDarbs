@@ -21,32 +21,23 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request): RedirectResponse
-    {
-        $user = $request->user();
-
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'username' => [
-                'required',
-                'string',
-                'max:20',
-                'unique:users,username,' . $user->id,
-            ],
-        ]);
-
-        $user->update($validated);
-
-        return back()->with('success', 'Profila informācija veiksmīgi atjaunināta');
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request): RedirectResponse
     {
-        //
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        auth()->logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

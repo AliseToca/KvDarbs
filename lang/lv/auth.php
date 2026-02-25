@@ -9,6 +9,7 @@ return [
     'register_title' => 'Reģistrācija',
 
     'profile' => 'Profils',
+    'account' => 'Konta',
 
     'name' => 'Vārds',
     'email' => 'E-pasts',

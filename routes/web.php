@@ -15,6 +15,10 @@ use App\Http\Controllers\ReviewController;
 //    return redirect(route('filament.admin.auth.login'));
 //})->name('login');
 
+Route::get('/', function () {
+    return redirect('/lv/');
+});
+
 //Viesa adresācija
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -25,6 +29,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function(){
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
+    Route::post('/profile-delete', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 
     Route::post('/households', [HouseholdController::class, 'store'])
         ->name('households.store');

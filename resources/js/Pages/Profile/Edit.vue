@@ -3,6 +3,8 @@ import MainLayout from '../../Layouts/Main.vue';
 import {usePage, useForm} from "@inertiajs/vue3";
 import InputField from "../../Components/Inputs/InputField.vue";
 import { ref } from 'vue';
+import DeleteAccountModal from "../../Components/Modals/DeleteAccountModal.vue";
+
 
 const { translations, user } = usePage().props;
 
@@ -28,6 +30,9 @@ const passwordForm = useForm({
     password: '',
     password_confirmation: '',
 });
+
+// Profila dzēšana
+const deleteAccountModal = ref(false);
 
 const submitPassword = () => {
     passwordForm.put(route('user-password.update'), {
@@ -114,6 +119,17 @@ const submitPassword = () => {
                     {{ translations.button.save }}
                 </button>
             </form>
+        </section>
+
+        <!-- ---Profila dzēšana--- -->
+        <section>
+            <h3>Dzēst kontu</h3>
+
+            <button class="button primary" @click="deleteAccountModal = true">
+                {{ translations.button.delete }}
+            </button>
+
+            <DeleteAccountModal v-model="deleteAccountModal" />
         </section>
     </MainLayout>
 </template>
