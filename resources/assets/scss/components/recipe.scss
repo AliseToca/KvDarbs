@@ -53,6 +53,16 @@
             margin-bottom: 10px;
         }
     }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 10px;
+
+        i {
+            font-size: 15px;
+        }
+    }
 }
 .ingredient-row {
     display: grid;

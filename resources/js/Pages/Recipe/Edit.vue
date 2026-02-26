@@ -1,10 +1,14 @@
 <script setup>
-import { usePage, useForm } from "@inertiajs/vue3";
+import { ref } from 'vue';
+import { usePage, useForm, Link } from "@inertiajs/vue3";
 import MainLayout from '../../Layouts/Main.vue';
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import RecipeForm from "../../Components/RecipeForm.vue";
+import DeleteRecipeModal from "../../Components/Modals/DeleteRecipeModal.vue";
 
 const { translations, products, units, breadcrumbs, recipe } = usePage().props;
+
+const showDeleteModal = ref(false);
 
 const form = useForm({
     name: recipe.name,
@@ -32,8 +36,19 @@ function submit() {
     <MainLayout>
         <div class="recipe">
             <Breadcrumb :items="breadcrumbs" />
-            <h1>{{ translations.recipe.edit_recipe }}</h1>
+            <header>
+                <h1>{{ translations.recipe.edit_recipe }}</h1>
+
+                <button class="button primary" @click="showDeleteModal = true">
+                    <i class="pi pi-trash"/> {{ translations.button.delete }}
+                </button>
+            </header>
             <RecipeForm :form="form" :products="products" :units="units" @submit="submit" />
         </div>
+
+        <DeleteRecipeModal
+            v-model="showDeleteModal"
+            :recipe="recipe"
+        />
     </MainLayout>
 </template>

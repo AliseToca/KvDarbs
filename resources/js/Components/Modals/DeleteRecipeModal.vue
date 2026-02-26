@@ -1,31 +1,28 @@
 <script setup>
-import {router, usePage, useForm} from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import Modal from './Modal.vue';
 
 const { translations } = usePage().props;
 
 const props = defineProps({
     modelValue: Boolean,
-    product: Object,
+    recipe: Object,
 });
 
-// Nodod vecāka komponentei mainīgā vērtību
 const emit = defineEmits(['update:modelValue']);
 
 function closeModal() {
-    emit('update:modelValue', false); //Aizver paziņojuma logu
+    emit('update:modelValue', false);
 }
 
 const form = useForm({});
 
 function confirmDelete() {
-    if (!props.product?.id) return;
+    if (!props.recipe?.slug) return;
 
-    form.delete(route('household-products.destroy', props.product.id), {
+    form.delete(route('recipe.delete', { recipe: props.recipe.slug }), {
         preserveScroll: true,
-        onSuccess: () => {
-            closeModal();
-        },
+        onSuccess: () => closeModal(),
     });
 }
 </script>
@@ -33,16 +30,13 @@ function confirmDelete() {
 <template>
     <Modal :model-value="modelValue" @update:modelValue="closeModal">
         <template #header>
-            <h2>{{ props.product?.productName }} Dzēšana</h2>
+            <h2>{{ translations.recipe.delete.recipe_deletion }}</h2>
         </template>
 
         <template #body>
             <p>
-                {{ translations.household.delete_message.ask_confirmation }}
-                "<strong>
-                    {{ props.product?.productName }}
-                </strong>"
-                {{ translations.household.delete_message.from_household }}
+                {{ translations.recipe.delete.delete_confirm }}
+                "<strong>{{ props.recipe?.name }}</strong>"?
             </p>
         </template>
 
@@ -51,6 +45,7 @@ function confirmDelete() {
                 <button class="button primary full-width" @click="confirmDelete" :disabled="form.processing">
                     {{ translations.button.delete }}
                 </button>
+
                 <button class="button full-width" @click="closeModal" :disabled="form.processing">
                     {{ translations.button.cancel }}
                 </button>

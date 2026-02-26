@@ -312,4 +312,19 @@ class RecipeController extends Controller
 
         return redirect()->to($this->recipeShowUrl($recipe))->with('success', 'Recepte ir izveidota');
     }
+
+    public function destroy(Recipe $recipe)
+    {
+        $this->authorize('delete', $recipe);
+
+        if($recipe->image_src) {
+            Storage::disk('public')->delete($recipe->image_src);
+        }
+
+        $recipe->recipeProducts()->delete();
+        $recipe->delete();
+
+        return redirect()->route('recipe.my')->with('success', 'Recepte ir dzēsta');
+    }
+
 }

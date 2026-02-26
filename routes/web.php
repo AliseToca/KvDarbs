@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function(){
         ->name('recipes.update');
     Route::post('/recipe/store', [RecipeController::class, 'store'])
         ->name('recipes.store');
+    Route::delete('/recipes/{recipe:slug}', [RecipeController::class, 'destroy'])
+        ->name('recipe.delete');
 
 
     Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])

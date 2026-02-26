@@ -27,4 +27,8 @@ return [
     'my_recipes' => [
         'title' => 'Manas Receptes',
     ],
+    'delete' => [
+        'recipe_deletion' => 'Receptes dzēšana',
+        'delete_confirm' => 'Vai esi pārliecināties, ka vēlies dzēst recepti',
+    ],
 ];
