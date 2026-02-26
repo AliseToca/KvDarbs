@@ -8,14 +8,12 @@ use App\Models\RecipeType;
 use App\Models\Unit;
 use App\Services\MeasurmentConversionService;
 use App\Services\RecipeAvailabilityService;
-use CubeAgency\FilamentConstructor\Filament\Forms\Components\Constructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Response;
 use Inertia\Inertia;
 use App\Services\PagesService;
 use App\Models\Recipe;
-use CubeAgency\FilamentPageManager\Models\Page;
 use App\Services\BreadcrumbService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -42,10 +40,30 @@ class RecipeController extends Controller
     {
         $page = $this->pagesService->getRecipeIndexPage();
 
-        // Izveidojam saiti ar {recipe:slug}
         return $page->getUrl('show', [
             'recipe' => $recipe->slug,
         ]);
+    }
+
+    /**
+     * Maps a recipe to an array for the frontend
+     */
+    private function mapRecipe(Recipe $recipe, $user): array
+    {
+        $availability = RecipeAvailabilityService::calculate($recipe, $user);
+
+        return [
+            'id' => $recipe->id,
+            'name' => $recipe->name,
+            'image_src' => $recipe->image_src,
+            'prep_time' => $recipe->prep_time,
+            'cook_time' => $recipe->cook_time,
+            'total_time' => $recipe->total_time,
+            'average_rating' => $recipe->average_rating,
+            'missing_products_count' => $availability['missing_products_count'],
+            'compatibility' => $availability['compatibility'],
+            'url' => $this->recipeShowUrl($recipe),
+        ];
     }
 
     public function index(Request $request): Response
@@ -55,27 +73,10 @@ class RecipeController extends Controller
 
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
             ->visibleTo($user)
-            ->when($request->search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%");
-            })
-            ->paginate(1)
+            ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
+            ->paginate(12)
             ->withQueryString()
-            ->through(function ($recipe) use ($user) {
-                $availability = RecipeAvailabilityService::calculate($recipe, $user);
-
-                return [
-                    'id' => $recipe->id,
-                    'name' => $recipe->name,
-                    'image_src' => $recipe->image_src,
-                    'prep_time' => $recipe->prep_time,
-                    'cook_time' => $recipe->cook_time,
-                    'total_time' => $recipe->total_time,
-                    'average_rating' => $recipe->average_rating,
-                    'missing_products_count' => $availability['missing_products_count'],
-                    'compatibility' => $availability['compatibility'],
-                    'url' => $this->recipeShowUrl($recipe),
-                ];
-            });
+            ->through(fn($recipe) => $this->mapRecipe($recipe, $user));
 
         return Inertia::render('Recipe/Index', [
             'page_name' => $page->name,
@@ -86,7 +87,6 @@ class RecipeController extends Controller
             ]
         ]);
     }
-
 
     public function create()
     {
@@ -116,11 +116,11 @@ class RecipeController extends Controller
             return [
                 'id' => $recipeProduct->id,
                 'amount' => $converted['amount'],
-                'product'=> [
+                'product' => [
                     'id' => $recipeProduct->product_id,
                     'name' => $recipeProduct->product->name,
                 ],
-                'unit' =>[
+                'unit' => [
                     'id' => $converted['unit_id'],
                     'name' => $converted['unit'],
                 ]
@@ -159,9 +159,9 @@ class RecipeController extends Controller
             'recipe_products.*.unit_id' => 'required|numeric',
         ]);
 
-        if($request->hasFile('image_src')) {
+        if ($request->hasFile('image_src')) {
             $path = $request->file('image_src')->store('recipes', 'public');
-        } else{
+        } else {
             $path = null;
         }
 
