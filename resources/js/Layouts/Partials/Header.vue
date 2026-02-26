@@ -107,6 +107,12 @@ onUnmounted(() => {
                     <p>@{{ auth.user.username }}</p>
                 </li>
                 <li>
+                    <i class="pi pi-book"/>
+                    <Link :href="route('recipe.my')">
+                        {{ translations.profile.recipes}}
+                    </Link>
+                </li>
+                <li>
                     <i class="pi pi-user-edit"/>
                     <Link :href="route('profile.edit')">
                         {{ translations.profile.edit_profile}}

@@ -7,8 +7,9 @@ import DurationField from "../../Components/Inputs/DurationField.vue";
 import SearchableSelect from "../../Components/Inputs/SearchableSelect.vue";
 import SelectField from "../../Components/Inputs/SelectField.vue";
 import ImageUpload from "../../Components/Inputs/ImageUpload.vue";
+import Breadcrumb from "../../Components/Breadcrumb.vue";
 
-const { translations, enums, products, units} = usePage().props;
+const { translations, enums, products, units, breadcrumbs} = usePage().props;
 
 const form = useForm({
     name: '',
@@ -61,7 +62,6 @@ function getFilteredUnits(index) {
     );
 }
 
-
 function submit() {
     form.post(route('recipes.store'),{
         forceFormData: true,
@@ -72,6 +72,8 @@ function submit() {
 <template>
     <MainLayout>
         <div class="recipe">
+            <Breadcrumb :items="breadcrumbs"/>
+
             <h1>{{ translations.recipe.create_recipe }}</h1>
 
             <form class="form-field" @submit.prevent="submit">

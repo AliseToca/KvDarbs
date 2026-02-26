@@ -14,4 +14,5 @@ return [
         'description' => 'Dzēšot kontu, tiks neatgriezeniski izdzēsti visi jūsu dati. Lūdzu, esiet piesardzīgs.',
     ],
     'edit_profile' => 'Rediģēt profilu',
+    'recipes' => 'Manas receptes',
 ];

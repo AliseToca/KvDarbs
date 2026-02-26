@@ -1,0 +1,13 @@
+@use '../environment' as *;
+
+.my-recipes {
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 10px;
+
+        i {
+            font-size: 15px;
+        }
+    }
+}

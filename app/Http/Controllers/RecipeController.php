@@ -88,6 +88,28 @@ class RecipeController extends Controller
         ]);
     }
 
+    public function myRecipes(Request $request): Response
+    {
+        $page = $this->pagesService->getRecipeIndexPage();
+        $user = auth()->user();
+
+        $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
+            ->where('user_id', $user->id)
+            ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
+            ->paginate(12)
+            ->withQueryString()
+            ->through(fn($recipe) => $this->mapRecipe($recipe, $user));
+
+        return Inertia::render('Recipe/MyRecipes', [
+            'page_name' => $page->name,
+            'blocks' => json_decode($page->blocks) ?? [],
+            'recipes' => $recipes,
+            'filters' => [
+                'search' => $request->search,
+            ]
+        ]);
+    }
+
     public function create()
     {
         return Inertia::render('Recipe/Create', [
@@ -95,6 +117,10 @@ class RecipeController extends Controller
             'types' => RecipeType::all(),
             'products' => Product::all(),
             'units' => Unit::all(),
+            'breadcrumbs' => [
+                ['name' => trans('recipe.my_recipes.title'), 'url' => route('recipe.my')],
+                ['name' => trans('recipe.create_recipe'), 'url' => null],
+            ],
         ]);
     }
 

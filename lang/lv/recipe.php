@@ -23,4 +23,7 @@ return [
         'private' => 'Privāts',
     ],
     'not_found' => 'Recepte nav atrasta',
+    'my_recipes' => [
+        'title' => 'Manas Receptes',
+    ],
 ];
