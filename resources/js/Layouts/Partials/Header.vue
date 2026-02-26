@@ -16,10 +16,12 @@ const toggleDropdown = () => {
 
     if (openDropdown.value) {
         setTimeout(() => document.addEventListener('click', closeOnOutside), 0);
+    }else{
+        document.removeEventListener('click', closeOnOutside);
     }
 }
 
-const closeOnOutside = () => {
+const closeOnOutside = (e) => {
     const dropdown = document.querySelector('.dropdown');
     if (dropdown && dropdown.contains(e.target)) return;
 
@@ -71,6 +73,7 @@ onUnmounted(() => {
     if (mediaQuery && mediaQueryHandler) {
         mediaQuery.removeEventListener('change', mediaQueryHandler);
     }
+    document.removeEventListener('click', closeOnOutside);
 });
 </script>
 
