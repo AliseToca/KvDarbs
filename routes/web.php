@@ -44,12 +44,17 @@ Route::middleware('auth')->group(function(){
     Route::delete('/household-products/{householdProduct}', [HouseholdProductController::class, 'destroy'])
         ->name('household-products.destroy');
 
-    Route::get('/recipe/create', [RecipeController::class, 'create'])
-        ->name('recipe.create');
-    Route::post('/recipe/store', [RecipeController::class, 'store'])
-        ->name('recipes.store');
     Route::get('/recipes/my', [RecipeController::class, 'myRecipes'])
         ->name('recipe.my');
+    Route::get('/recipe/create', [RecipeController::class, 'create'])
+        ->name('recipe.create');
+    Route::get('/recipes/{recipe:slug}/edit', [RecipeController::class, 'edit'])
+        ->name('recipes.edit');
+    Route::post('/recipes/{recipe:slug}', [RecipeController::class, 'update'])
+        ->name('recipes.update');
+    Route::post('/recipe/store', [RecipeController::class, 'store'])
+        ->name('recipes.store');
+
 
     Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
         ->name('recipes.reviews.store');
