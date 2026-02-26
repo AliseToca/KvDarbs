@@ -7,16 +7,21 @@ const props = defineProps({
         default: 0,
     },
     label: String,
-})
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
-const hours = ref(0)
-const minutes = ref(0)
+const hours = ref(0);
+const minutes = ref(0);
+
+watch(() => props.modelValue, (val) => {
+    hours.value = Math.floor(val / 60);
+    minutes.value = val % 60;
+}, { immediate: true });
 
 watch([hours, minutes], () => {
-    emit('update:modelValue', hours.value * 60 + minutes.value)
-})
+    emit('update:modelValue', hours.value * 60 + minutes.value);
+});
 </script>
 
 <template>
