@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'avatar' => [
+        'title' => 'Profila attēls',
+        'description' => 'Augšupielādējiet vai atjauniniet savu profila attēlu. Šis attēls būs redzams jūsu profilā un citur platformā, kur tiek attēlots jūsu konts.',
+    ],
     'personal_information' => [
         'title' => 'Personīgā informācija',
         'description' => 'Atjauniniet savu vārdu, e-pastu un lietotājvārdu. Šie dati tiek izmantoti, lai identificētu jūsu kontu.',

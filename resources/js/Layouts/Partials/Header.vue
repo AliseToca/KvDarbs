@@ -1,9 +1,14 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch, computed } from 'vue'
 import { router, usePage, Link} from '@inertiajs/vue3'
 import NavBar from "../../Components/NavBar.vue";
+import Avatar from "../../Components/Avatar.vue";
 
-const { translations, headerMenu, languagePage, auth } = usePage().props;
+const page = usePage();
+const { translations, headerMenu, languagePage } = page.props;
+
+const user = computed(() => page.props.user);
+const avatarSrc = computed(() => page.props.user?.avatar_src);
 
 const isMenuOpen = ref(false);
 const isMobile = ref(false);
@@ -88,26 +93,23 @@ onUnmounted(() => {
         <!--Navigācijas josla darbvirsmas izmēra ekrāniem -->
         <NavBar
             v-if="!isMobile"
-            :auth="auth"
             :language-page="languagePage"
             :menu="headerMenu"
         />
 
         <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
         <div v-if="!isMobile" class="profile">
-            <button
-                v-if="auth.user"
+            <Avatar
+                v-if="user"
+                :avatar-src="avatarSrc"
                 @click="toggleDropdown"
-                class="button round primary"
-            >
-                <i class="pi pi-user"></i>
-            </button>
+            />
 
             <!-- Nolaižamajā izvēlnē -->
             <ul v-if="openDropdown" class="dropdown">
                 <li class="user-info">
-                    <p><strong>{{ auth.user.name }}</strong></p>
-                    <p>@{{ auth.user.username }}</p>
+                    <p><strong>{{ user.name }}</strong></p>
+                    <p>@{{ user.username }}</p>
                 </li>
                 <li>
                     <i class="pi pi-book"/>
@@ -130,7 +132,7 @@ onUnmounted(() => {
             </ul>
         </div>
 
-        <Link v-if="!auth.user" :href="route('login')" as="button" class="button primary">
+        <Link v-if="!user" :href="route('login')" as="button" class="button primary">
             {{ translations.auth.login }}
         </Link>
 
@@ -154,13 +156,12 @@ onUnmounted(() => {
 
                 <!-- Mobilā navigācijas josla -->
                 <NavBar
-                    :auth="auth"
                     :language-page="languagePage"
                     :menu="headerMenu"
                 />
 
                 <!--Pieslēgšanās/izrakstīšanās mobilās pogas-->
-                <button v-if="auth.user" @click="logout" class="button primary">
+                <button v-if="user" @click="logout" class="button primary">
                     {{ translations.auth.logout }}
                 </button>
                 <button v-else @click="login" class="button primary">

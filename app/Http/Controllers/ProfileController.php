@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -18,6 +19,25 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'user' => $request->user(),
         ]);
+    }
+
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar_src' => ['required', 'image', 'max:2048'],
+        ]);
+
+        $user = $request->user();
+
+        if ($user->avatar_src) {
+            Storage::disk('public')->delete($user->avatar_src);
+        }
+
+        $path = $request->file('avatar_src')->store('avatars', 'public');
+
+        $user->update(['avatar_src' => $path]);
+
+        return back()->with('success', 'Veiksmīgi augšuplādēta profila attēls');
     }
 
     /**

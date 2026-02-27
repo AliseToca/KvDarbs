@@ -29,6 +29,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function(){
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])
+        ->name('profile.updateAvatar');
     Route::post('/profile-delete', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 

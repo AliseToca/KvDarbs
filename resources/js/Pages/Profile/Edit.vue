@@ -4,11 +4,23 @@ import {usePage, useForm} from "@inertiajs/vue3";
 import InputField from "../../Components/Inputs/InputField.vue";
 import { ref } from 'vue';
 import DeleteAccountModal from "../../Components/Modals/DeleteAccountModal.vue";
-
+import ImageUpload from "../../Components/Inputs/ImageUpload.vue";
 
 const { translations, user } = usePage().props;
 
-// -- Profila informācija --
+// -- Profila attēls --
+const avatarForm = useForm({
+    avatar_src: user.avatar_src ?? null,
+});
+
+const submitAvatar = () => {
+    avatarForm.post(route('profile.updateAvatar'), {
+        preserveScroll: true,
+        forceFormData: true,
+    });
+};
+
+// -- Personīgā informācija --
 const profileForm = useForm({
     name: user.name,
     username: user.username,
@@ -52,6 +64,30 @@ const deleteAccountModal = ref(false);
 <template>
     <MainLayout>
         <h1> {{ translations.auth.profile }} </h1>
+
+        <!-- ---Profila attēls--- -->
+        <section class="card">
+            <h3> {{ translations.profile.avatar.title }} </h3>
+            <p> {{ translations.profile.avatar.description }} </p>
+
+            <form class="form-field" @submit.prevent="submitAvatar">
+                <ImageUpload
+                    v-model="avatarForm.avatar_src"
+                    class="form-field-item"
+                    :placeholder="avatarForm.avatar_src ? `/storage/${avatarForm.avatar_src}` : null"
+                    width="200px"
+                    aspect-ratio="1/1"
+                />
+
+                <p v-if="avatarForm.errors.avatar_src" class="error">
+                    {{ avatarForm.errors.avatar_src }}
+                </p>
+
+                <button class="button" type="submit" :disabled="avatarForm.processing">
+                    {{ translations.button.save }}
+                </button>
+            </form>
+        </section>
 
         <!-- ---Profila informācija--- -->
         <section class="card">
