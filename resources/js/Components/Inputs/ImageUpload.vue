@@ -8,6 +8,14 @@ const props = defineProps({
         type: String,
         default: '/storage/placeholder.jpg',
     },
+    width: {
+        type: String,
+        default: '50%',
+    },
+    aspectRatio: {
+        type: String,
+        default: '4/3',
+    },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -44,7 +52,11 @@ const imageSrc = computed(() => {
 
         <div class="image-upload-container">
             <div class="image-preview">
-                <img :src="imageSrc"/>
+                <img v-if="placeholder" :src="imageSrc" :style="{ width: width, aspectRatio: aspectRatio }"/>
+
+                <div v-else class="placeholder" :style="{ width: width, aspectRatio: aspectRatio }">
+                    <i class="pi pi-upload"></i>
+                </div>
             </div>
 
             <input
