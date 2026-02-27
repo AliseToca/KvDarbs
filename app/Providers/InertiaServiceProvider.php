@@ -42,7 +42,11 @@ class InertiaServiceProvider extends ServiceProvider
             },
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),
-            'auth' => fn () => ['user' => auth()->user()],
+            'user' => fn () => auth()->user() ? [
+                'name' => auth()->user()->name,
+                'username' => auth()->user()->username,
+                'avatar_src' => auth()->user()->avatar_src,
+            ] : null,
             'languagePage' => fn () => app(PagesService::class)
                 ->getLanguagePage()
                 ->only(['content', 'slug']),
