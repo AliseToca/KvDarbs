@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Unit;
 use App\Models\User;
+use App\Services\HouseholdUrlService;
 use App\Services\PagesService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,14 +24,14 @@ class HouseholdController extends Controller
     /**
      * Serviss, kas atbild par lapu struktūru un valodām
      */
-    protected PagesService $pagesService;
 
     /**
      * Dependency Injection – lai nevajadzētu izmantot app()
      */
-    public function __construct(PagesService $pagesService)
+    public function __construct(PagesService $pagesService, HouseholdUrlService $householdUrlService)
     {
         $this->pagesService = $pagesService;
+        $this->householdUrlService = $householdUrlService;
     }
 
     /**
@@ -39,19 +40,7 @@ class HouseholdController extends Controller
      */
     protected function householdShowUrl(User $user): string
     {
-        // Aktīvās valodas saknes lapa
-        $currentLanguage = $this->pagesService->getLanguagePage();
-
-        // Atrodam mājsaimniecības lapu konkrētajā valodā
-        $page = Page::query()
-            ->where('template', HouseholdTemplate::class)
-            ->where('parent_id', $currentLanguage->id)
-            ->firstOrFail();
-
-        // Izveidojam saiti ar {user:username} parametru
-        return $page->getUrl('show', [
-            'user' => $user->username,
-        ]);
+        return $this->householdUrlService->showUrl($user);
     }
 
     /**
