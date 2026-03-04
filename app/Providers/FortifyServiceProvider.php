@@ -29,6 +29,9 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
+                if ($intended = session()->pull('url.intended')) {
+                    return Inertia::location($intended);
+                }
                 $page = app(PagesService::class)->getLanguagePage();
                 return Inertia::location('/' . $page->slug . '/');
             }
@@ -37,6 +40,9 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
+                if ($intended = session()->pull('url.intended')) {
+                    return Inertia::location($intended);
+                }
                 $page = app(PagesService::class)->getLanguagePage();
                 return Inertia::location('/' . $page->slug . '/');
             }
@@ -71,14 +77,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
-
-        Fortify::loginView(function () {
-            return Inertia::render('Auth/Login');
-        });
-
-        Fortify::registerView(function () {
-            return Inertia::render('Auth/Register');
         });
     }
 }

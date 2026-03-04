@@ -6,6 +6,7 @@ import InputField from "../../Components/Inputs/InputField.vue";
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
 import EditHouseholdModal from "../../Components/Modals/EditHouseholdModal.vue";
+import InviteHouseholdModal from "../../Components/Modals/InviteHouseholdModal.vue";
 
 const { products, productCategories, units, translations } = usePage().props;
 
@@ -14,6 +15,7 @@ const household = computed(() => usePage().props.household);
 
 const isAddProductModalOpen = ref(false);
 const isEditHouseholdModalOpen = ref(false);
+const isInviteModalOpen = ref(false);
 
 const form = useForm({
     product_id: '',
@@ -56,11 +58,19 @@ const categorizedProducts = computed(() => {
                     <button class="button primary" @click="isAddProductModalOpen = true">
                         <i class="pi pi-plus"></i> Pievienot produktu
                     </button>
+                    <button class="button" @click="isInviteModalOpen = true">
+                        <i class="pi pi-user-plus"></i>
+                    </button>
                     <button class="button" @click="isEditHouseholdModalOpen = true">
                         <i class="pi pi-cog"></i>
                     </button>
                 </div>
             </header>
+
+            <InviteHouseholdModal
+                v-model="isInviteModalOpen"
+                :household="household"
+            />
 
             <AddHouseholdProductModal
                 v-model="isAddProductModalOpen"

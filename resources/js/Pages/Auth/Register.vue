@@ -3,14 +3,20 @@ import AuthLayout from '../../Layouts/Auth.vue'
 import { useForm, usePage } from '@inertiajs/vue3';
 import InputField from "../../Components/Inputs/InputField.vue";
 
+const props = defineProps({
+    prefillEmail: { type: String, default: '' },
+    inviteToken:  { type: String, default: '' },
+});
+
 const translations = usePage().props.translations;
 
 const form = useForm({
     name: '',
-    email: '',
+    email: props.prefillEmail,
     username: '',
     password: '',
     password_confirmation: '',
+    invite_token: props.inviteToken,
 });
 
 const submit = () => {
@@ -83,6 +89,8 @@ const submit = () => {
                             :label="translations.auth.password_confirmation"
                             :error="form.errors.password_confirmation"
                         />
+                        <input type="hidden" name="invite_token" :value="form.invite_token" />
+
                         <button type="submit" class="button full-width primary">
                             {{ translations.auth.register }}
                         </button>

@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\HouseholdProductController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\HouseholdEmailInviteController;
 
 //Route::get('/login', function () {
 //    return redirect(route('filament.admin.auth.login'));
@@ -18,6 +19,9 @@ use App\Http\Controllers\ReviewController;
 Route::get('/', function () {
     return redirect('/lv/');
 });
+
+Route::get('/households/join-email/{token}', [HouseholdEmailInviteController::class, 'show'])
+    ->name('households.invite.email.show');
 
 //Viesa adresācija
 Route::middleware('guest')->group(function () {
@@ -38,6 +42,13 @@ Route::middleware('auth')->group(function(){
         ->name('households.store');
     Route::put('/households/{household}', [HouseholdController::class, 'update'])
         ->name('households.update');
+
+    Route::post('/households/{household}/invite/email', [HouseholdEmailInviteController::class, 'send'])
+        ->name('households.invite.email.send');
+    Route::delete('/households/{household}/invite/email/{invitation}', [HouseholdEmailInviteController::class, 'cancel'])
+        ->name('households.invite.email.cancel');
+    Route::post('/households/join-email/{token}', [HouseholdEmailInviteController::class, 'accept'])
+        ->name('households.invite.email.accept');
 
     Route::post('/household-products', [HouseholdProductController::class, 'store'])
         ->name('household-products.store');

@@ -38,5 +38,24 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        $token = $input['invite_token'] ?? null;
+
+        if ($token) {
+            $invite = HouseholdInvitation::with('household')
+                ->where('token', $token)
+                ->where('email', $user->email)
+                ->whereNull('accepted_at')
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if ($invite) {
+                $invite->household->users()->attach($user->id, ['role' => 'member']);
+                $invite->update(['accepted_at' => now()]);
+                session(['url.intended' => route('households.show', $invite->household)]);
+            }
+        }
+
+        return $user;
     }
 }

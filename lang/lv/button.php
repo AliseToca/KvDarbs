@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'join' => 'Piebiedroties',
+    'join' => 'Pievienoties',
+    'join_anyway' => 'Tāpatās pievienoties',
     'create' => 'Izveidot',
     'add' => 'Pievienot',
     'remove' => 'Noņemt',

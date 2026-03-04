@@ -5,8 +5,13 @@ import { useForm, usePage } from "@inertiajs/vue3";
 
 const translations = usePage().props.translations;
 
+const props = defineProps({
+    prefillEmail: { type: String, default: '' },
+    inviteToken:  { type: String, default: '' },
+});
+
 const form = useForm({
-    email: '',
+    email: props.prefillEmail,
     username: '',
     password: '',
 });
