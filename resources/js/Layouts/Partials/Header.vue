@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref, watch, computed } from 'vue'
 import { router, usePage, Link} from '@inertiajs/vue3'
 import NavBar from "../../Components/NavBar.vue";
 import Avatar from "../../Components/Avatar.vue";
+import Dropdown from "../../Components/Dropdown.vue";
 
 const page = usePage();
 const { translations, headerMenu, languagePage } = page.props;
@@ -12,27 +13,6 @@ const avatarSrc = computed(() => page.props.user?.avatar_src);
 
 const isMenuOpen = ref(false);
 const isMobile = ref(false);
-
-// Darbvirsmas nolaižamā izvēlne
-const openDropdown = ref(false);
-
-const toggleDropdown = () => {
-    openDropdown.value = !openDropdown.value;
-
-    if (openDropdown.value) {
-        setTimeout(() => document.addEventListener('click', closeOnOutside), 0);
-    }else{
-        document.removeEventListener('click', closeOnOutside);
-    }
-}
-
-const closeOnOutside = (e) => {
-    const dropdown = document.querySelector('.dropdown');
-    if (dropdown && dropdown.contains(e.target)) return;
-
-    openDropdown.value = false;
-    document.removeEventListener('click', closeOnOutside);
-}
 
 //Mobilā režīma noteikšana
 let mediaQuery;
@@ -67,10 +47,6 @@ watch(isMenuOpen, open => {
 onMounted(() => {
     setupMobile();
     closeMenu();
-
-    router.on('start', () => {
-        openDropdown.value = false;
-    });
 });
 
 onUnmounted(() => {
@@ -78,7 +54,6 @@ onUnmounted(() => {
     if (mediaQuery && mediaQueryHandler) {
         mediaQuery.removeEventListener('change', mediaQueryHandler);
     }
-    document.removeEventListener('click', closeOnOutside);
 });
 </script>
 
@@ -98,38 +73,25 @@ onUnmounted(() => {
         />
 
         <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
-        <div v-if="!isMobile" class="profile">
-            <Avatar
-                v-if="user"
-                :avatar-src="avatarSrc"
-                @click="toggleDropdown"
-            />
+        <div v-if="!isMobile">
+            <Dropdown :user="user" :avatar-src="avatarSrc">
+                <template #trigger>
+                    <Avatar :avatar-src="avatarSrc" />
+                </template>
 
-            <!-- Nolaižamajā izvēlnē -->
-            <ul v-if="openDropdown" class="dropdown">
-                <li class="user-info">
-                    <p><strong>{{ user.name }}</strong></p>
-                    <p>@{{ user.username }}</p>
+                <li>
+                    <i class="pi pi-book" />
+                    <Link :href="route('recipe.my')">{{ translations.profile.recipes }}</Link>
                 </li>
                 <li>
-                    <i class="pi pi-book"/>
-                    <Link :href="route('recipe.my')">
-                        {{ translations.profile.recipes}}
-                    </Link>
+                    <i class="pi pi-user-edit" />
+                    <Link :href="route('profile.edit')">{{ translations.profile.edit_profile }}</Link>
                 </li>
                 <li>
-                    <i class="pi pi-user-edit"/>
-                    <Link :href="route('profile.edit')">
-                        {{ translations.profile.edit_profile}}
-                    </Link>
+                    <i class="pi pi-power-off" />
+                    <Link :href="route('logout')" method="post">{{ translations.auth.logout }}</Link>
                 </li>
-                <li>
-                    <i class="pi pi-power-off"/>
-                    <Link :href="route('logout')" method="post">
-                        {{ translations.auth.logout }}
-                    </Link>
-                </li>
-            </ul>
+            </Dropdown>
         </div>
 
         <Link v-if="!user" :href="route('login')" as="button" class="button primary">
