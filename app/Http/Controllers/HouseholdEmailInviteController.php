@@ -22,6 +22,8 @@ class HouseholdEmailInviteController extends Controller
             ->where('household_user.role', 'owner')
             ->exists();
 
+        abort_if(!$isOwner, 403);
+
         $request->validate(['email' => 'required|email']);
 
         $email = $request->email;
@@ -31,7 +33,7 @@ class HouseholdEmailInviteController extends Controller
             ->exists();
 
         if ($alreadyMember) {
-            return back()->withErrors(['email' => 'This person is already a member.']);
+            return back()->withErrors(['email' => 'Lietotājs jau ir mājsaimniecībā']);
         }
 
         $invitation = HouseholdInvitation::updateOrCreate(
@@ -56,7 +58,7 @@ class HouseholdEmailInviteController extends Controller
             ->where('token', $token)
             ->firstOrFail();
 
-        abort_if(!$invitation->isValid(), 410, 'This invite has expired or already been used.');
+        abort_if(!$invitation->isValid(), 410, 'Šis uzaicinājums ir beidzies vai jau izmantots');
 
         if (!auth()->check()) {
             session(['url.intended' => route('households.invite.email.show', $token)]);
@@ -80,7 +82,7 @@ class HouseholdEmailInviteController extends Controller
             ->where('token', $token)
             ->firstOrFail();
 
-        abort_if(!$invitation->isValid(), 410, 'This invite has expired or already been used.');
+        abort_if(!$invitation->isValid(), 410, 'Šis uzaicinājums ir beidzies vai jau izmantots');
 
         $user = auth()->user();
         $household = $invitation->household;
@@ -95,13 +97,13 @@ class HouseholdEmailInviteController extends Controller
 
         return redirect(
             $this->householdUrlService->showUrl($user)
-        )->with('success', "Welcome to {$household->name}!");
+        )->with('success', "Sveicināti '{$household->name}'!");
     }
 
     public function cancel(Household $household, HouseholdInvitation $invitation)
     {
         abort_if(auth()->id() !== $household->owner_id, 403);
         $invitation->delete();
-        return back()->with('success', 'Invitation cancelled.');
+        return back()->with('success', 'Ielūgums atcelts');
     }
 }

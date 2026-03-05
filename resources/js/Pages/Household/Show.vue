@@ -1,14 +1,15 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import {Link, router, useForm, usePage} from '@inertiajs/vue3';
-import {computed, reactive, ref} from 'vue';
-import InputField from "../../Components/Inputs/InputField.vue";
+import {Link, usePage} from '@inertiajs/vue3';
+import {computed, ref} from 'vue';
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
 import EditHouseholdModal from "../../Components/Modals/EditHouseholdModal.vue";
 import InviteHouseholdModal from "../../Components/Modals/InviteHouseholdModal.vue";
+import LeaveHouseholdModal from "../../Components/Modals/LeaveHouseholdModal.vue";
+import Dropdown from "../../Components/Dropdown.vue";
 
-const { products, productCategories, units, translations } = usePage().props;
+const {productCategories, translations, userRole, householdUsersCount } = usePage().props;
 
 const householdProducts = computed(() => usePage().props.householdProducts);
 const household = computed(() => usePage().props.household);
@@ -16,14 +17,9 @@ const household = computed(() => usePage().props.household);
 const isAddProductModalOpen = ref(false);
 const isEditHouseholdModalOpen = ref(false);
 const isInviteModalOpen = ref(false);
+const isLeaveModalOpen = ref(false);
 
-const form = useForm({
-    product_id: '',
-    amount: 1,
-    unit_id: '',
-    expiration_date: '',
-    errors: {},
-});
+const dropdown = ref(null);
 
 //Sagrupēti produkti pēc kategorijas
 const categorizedProducts = computed(() => {
@@ -53,23 +49,54 @@ const categorizedProducts = computed(() => {
     <MainLayout>
         <section class="household">
             <header>
-                <h1 class="capitalize">{{ household.name }}</h1>
-                <div>
+                <div class="household-title">
+                    <h1 class="capitalize">{{ household.name }}</h1>
+                    <div>
+                        <i class="pi pi-users"/>
+                        <span>{{householdUsersCount}}</span>
+                    </div>
+                </div>
+                <div class="actions">
                     <button class="button primary" @click="isAddProductModalOpen = true">
                         <i class="pi pi-plus"></i> Pievienot produktu
                     </button>
-                    <button class="button" @click="isInviteModalOpen = true">
-                        <i class="pi pi-user-plus"></i>
-                    </button>
-                    <button class="button" @click="isEditHouseholdModalOpen = true">
-                        <i class="pi pi-cog"></i>
-                    </button>
+                    <Dropdown ref="dropdown">
+                        <template #trigger>
+                            <button class="button">
+                                <i class="pi pi-ellipsis-v"></i>
+                            </button>
+                        </template>
+
+                        <li v-if="userRole === 'owner'">
+                            <button @click="dropdown.close(); isInviteModalOpen = true">
+                                <i class="pi pi-user-plus"/>
+                                Uzaicini lietotāju
+                            </button>
+                        </li>
+                        <li v-if="userRole === 'owner'">
+                            <button @click="dropdown.close(); isEditHouseholdModalOpen = true">
+                                <i class="pi pi-cog"/>
+                                Iestatījumi
+                            </button>
+                        </li>
+                        <li>
+                            <button @click="dropdown?.close(); isLeaveModalOpen = true">
+                                <i class="pi pi-sign-out"/>
+                                Pamest mājsaimniecību
+                            </button>
+                        </li>
+                    </Dropdown>
                 </div>
             </header>
 
             <InviteHouseholdModal
                 v-model="isInviteModalOpen"
                 :household="household"
+            />
+
+            <LeaveHouseholdModal
+                v-model="isLeaveModalOpen"
+                :leave-url="route('household.leave')"
             />
 
             <AddHouseholdProductModal

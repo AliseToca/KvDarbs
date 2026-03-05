@@ -18,7 +18,7 @@ function accept() {
 <template>
     <AuthLayout>
         <div style="display: flex; flex-direction: column; align-items: center;">
-            <h1>Pievienojies {{ invitation.household.name }}</h1>
+            <h1>Pievienojies mājsaimniecībā "{{ invitation.household.name }}"</h1>
             <p>Tevi uzaicināja {{ invitation.inviter.name }}</p>
 
             <div v-if="isLoggedIn && emailMatches">
@@ -38,13 +38,15 @@ function accept() {
             <div v-else>
                 <p>Pievienojies vai izveido jaunu kontu.</p>
 
-                <Link :href="`/login?email=${invitation.email}&invite=${invitation.token}`" class="button" as="button">
-                    {{ translations.auth.login }}
-                </Link>
+                <div class="button-container">
+                    <Link :href="`/login?email=${invitation.email}&invite=${invitation.token}`" class="button primary" as="button">
+                        {{ translations.auth.login }}
+                    </Link>
 
-                <Link :href="`/register?email=${invitation.email}&invite=${invitation.token}`" class="button" as="butotn">
-                    {{ translations.button.create }} Kontu
-                </Link>
+                    <Link :href="`/register?email=${invitation.email}&invite=${invitation.token}`" class="button" as="butotn">
+                        {{ translations.auth.register }}
+                    </Link>
+                </div>
             </div>
         </div>
     </AuthLayout>

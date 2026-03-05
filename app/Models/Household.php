@@ -25,4 +25,9 @@ class Household extends Model
     {
         return $this->hasMany(HouseholdProduct::class);
     }
+
+    public function getHouseholdUsersCountAttribute(): int
+    {
+        return $this->users()->count();
+    }
 }

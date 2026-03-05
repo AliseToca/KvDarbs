@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Household;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class HouseholdPolicy
 {
@@ -42,6 +41,27 @@ class HouseholdPolicy
         return false;
     }
 
+    public function leave(User $user, Household $household): bool
+    {
+        $isMember = $user->households()
+            ->where('households.id', $household->id)
+            ->exists();
+
+        if (!$isMember) {
+            return false;
+        }
+
+        $role = $user->households()
+            ->where('households.id', $household->id)
+            ->first()
+            ->pivot->role;
+
+        if ($role === 'owner') {
+            return $household->users()->count() > 1;
+        }
+
+        return true;
+    }
     /**
      * Determine whether the user can delete the model.
      */

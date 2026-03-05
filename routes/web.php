@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function(){
         ->name('households.store');
     Route::put('/households/{household}', [HouseholdController::class, 'update'])
         ->name('households.update');
+    Route::post('/household/leave', [HouseholdController::class, 'leave'])
+        ->name('household.leave');
 
     Route::post('/households/{household}/invite/email', [HouseholdEmailInviteController::class, 'send'])
         ->name('households.invite.email.send');

@@ -12,10 +12,9 @@ use App\Services\PagesService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use CubeAgency\FilamentPageManager\Models\Page;
 use App\Services\MeasurmentConversionService;
-use App\Filament\Templates\HouseholdTemplate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class HouseholdController extends Controller
 {
@@ -96,12 +95,19 @@ class HouseholdController extends Controller
                 ];
             });
 
+        $userRole = $household->users()
+            ->where('user_id', $user->id)
+            ->first()
+            ->pivot->role;
+
         return Inertia::render('Household/Show', [
             'household' => $household,
             'householdProducts' => $householdProducts,
             'products' => Product::select('id','name','measurement_type_id')->get(),
             'productCategories' => ProductCategory::select('id','name')->get(),
             'units' => Unit::all(),
+            'userRole' => $userRole,
+            'householdUsersCount' => $household->household_users_count,
         ]);
 
     }
@@ -147,5 +153,37 @@ class HouseholdController extends Controller
         $household->update($validated);
 
         return back()->with('success', 'Veiksmīgi atjaunota mājsaimniecības informācija');
+    }
+
+    public function leave(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $household = $user->activeHousehold();
+
+        $this->authorize('leave', $household);
+
+        // Ja lietotājs ir vienīgais īpašnieks, nododam lomu nākamajam dalībniekam
+        $role = $household->users()
+            ->where('user_id', $user->id)
+            ->first()
+            ->pivot->role;
+
+        if ($role === 'owner') {
+            $nextUser = $household->users()
+                ->where('user_id', '!=', $user->id)
+                ->first();
+
+            $household->users()->updateExistingPivot($nextUser->id, ['role' => 'owner']);
+        }
+
+        $user->households()->detach($household->id);
+
+        // Ja nav neviena lietotāja mājsaimniecībā to dzēst
+        if ($household->users()->count() === 0) {
+            $household->delete();
+        }
+
+        return redirect($this->householdUrlService->indexUrl())
+            ->with('success', 'Veiksmīgi atvienojies no mājsaimniecības');
     }
 }

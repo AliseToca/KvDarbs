@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, defineExpose } from 'vue';
 
 const props = defineProps({
     // Neobligāta lietotāja informācija - tiek renderēta tikai tad, ja tā ir norādīta
@@ -24,6 +24,8 @@ const closeOnOutside = (e) => {
         close();
     }
 }
+
+defineExpose({ close: () => isOpen.value = false });
 
 onMounted(() => document.addEventListener('click', closeOnOutside));
 onUnmounted(() => document.removeEventListener('click', closeOnOutside));

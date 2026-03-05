@@ -73,28 +73,34 @@ onUnmounted(() => {
         />
 
         <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
-        <div v-if="!isMobile">
+        <div v-if="!isMobile && user !== null">
             <Dropdown :user="user" :avatar-src="avatarSrc">
                 <template #trigger>
                     <Avatar :avatar-src="avatarSrc" />
                 </template>
 
                 <li>
-                    <i class="pi pi-book" />
-                    <Link :href="route('recipe.my')">{{ translations.profile.recipes }}</Link>
+                    <Link :href="route('recipe.my')">
+                        <i class="pi pi-book" />
+                        {{ translations.profile.recipes }}
+                    </Link>
                 </li>
                 <li>
-                    <i class="pi pi-user-edit" />
-                    <Link :href="route('profile.edit')">{{ translations.profile.edit_profile }}</Link>
+                    <Link :href="route('profile.edit')">
+                        <i class="pi pi-user-edit" />
+                        {{ translations.profile.edit_profile }}
+                    </Link>
                 </li>
                 <li>
-                    <i class="pi pi-power-off" />
-                    <Link :href="route('logout')" method="post">{{ translations.auth.logout }}</Link>
+                    <Link :href="route('logout')" method="post">
+                        <i class="pi pi-power-off" />
+                        {{ translations.auth.logout }}
+                    </Link>
                 </li>
             </Dropdown>
         </div>
 
-        <Link v-if="!user" :href="route('login')" as="button" class="button primary">
+        <Link v-if="user === null" :href="route('login')" as="button" class="button primary">
             {{ translations.auth.login }}
         </Link>
 

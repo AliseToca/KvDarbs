@@ -37,7 +37,7 @@ function submit() {
 <template>
     <Modal :model-value="modelValue" @update:modelValue="closeModal">
         <template #header>
-            <h2>Invite to {{ household.name }}</h2>
+            <h2>Uzaicinājums uz "{{ household.name }}"</h2>
         </template>
 
         <template #body>
@@ -47,7 +47,7 @@ function submit() {
                     type="email"
                     id="invite_email"
                     name="email"
-                    label="Email"
+                    :label="translations.auth.email"
                     :error="form.errors.email"
                 />
             </form>
@@ -60,7 +60,7 @@ function submit() {
                 type="submit"
                 :disabled="form.processing"
             >
-                Send Invite
+                Nosūtīt uzaicinājumu
             </button>
         </template>
     </Modal>
