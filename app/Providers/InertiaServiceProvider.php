@@ -6,8 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use App\Models\Menu;
 use App\Services\PagesService;
-use Waavi\Translation\Repositories\LanguageRepository;
 use App\Enums\Recipe\Visibility;
+use App\Enums\HouseholdUser\Role;
 use Illuminate\Support\Facades\File;
 
 class InertiaServiceProvider extends ServiceProvider
@@ -51,8 +51,11 @@ class InertiaServiceProvider extends ServiceProvider
                 ->getLanguagePage()
                 ->only(['content', 'slug']),
             'enums' => [
-                'visibility' => collect(Visibility::cases())->map(fn($case) =>
-                [
+                'visibility' => collect(Visibility::cases())->map(fn($case) => [
+                    'id'   => $case->value,
+                    'name' => $case->label(),
+                ]),
+                'roles' => collect(Role::cases())->map(fn($case) => [
                     'id'   => $case->value,
                     'name' => $case->label(),
                 ]),

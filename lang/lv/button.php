@@ -8,6 +8,7 @@ return [
     'remove' => 'Noņemt',
     'edit' => 'Rediģēt',
     'save' => 'Saglabāt',
+    'accept' => 'Apstiprināt',
     'cancel' => 'Atcelt',
     'delete' =>'Dzēst',
     'submit' => 'Iesniegt',

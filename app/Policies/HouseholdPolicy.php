@@ -2,19 +2,12 @@
 
 namespace App\Policies;
 
+use App\Enums\HouseholdUser\Role;
 use App\Models\Household;
 use App\Models\User;
 
 class HouseholdPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
     /**
      * Determine whether the user can view the model.
      */
@@ -25,12 +18,12 @@ class HouseholdPolicy
             ->exists();
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function edit(User $user, Household $household): bool
     {
-        return false;
+        return $user->households()
+            ->where('households.id', $household->id)
+            ->wherePivot('role', Role::Owner)
+            ->exists();
     }
 
     /**
@@ -38,7 +31,20 @@ class HouseholdPolicy
      */
     public function update(User $user, Household $household): bool
     {
-        return false;
+        return $this->edit($user, $household);
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Household $household): bool
+    {
+        return $this->edit($user, $household);
+    }
+
+    public function manageMember(User $user, Household $household): bool
+    {
+        return $this->edit($user, $household);
     }
 
     public function leave(User $user, Household $household): bool
@@ -56,33 +62,11 @@ class HouseholdPolicy
             ->first()
             ->pivot->role;
 
-        if ($role === 'owner') {
+        if ($role === Role::Owner) {
             return $household->users()->count() > 1;
         }
 
         return true;
     }
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Household $household): bool
-    {
-        return false;
-    }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Household $household): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Household $household): bool
-    {
-        return false;
-    }
 }

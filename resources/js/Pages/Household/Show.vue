@@ -4,7 +4,6 @@ import {Link, usePage} from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
-import EditHouseholdModal from "../../Components/Modals/EditHouseholdModal.vue";
 import InviteHouseholdModal from "../../Components/Modals/InviteHouseholdModal.vue";
 import LeaveHouseholdModal from "../../Components/Modals/LeaveHouseholdModal.vue";
 import Dropdown from "../../Components/Dropdown.vue";
@@ -15,7 +14,6 @@ const householdProducts = computed(() => usePage().props.householdProducts);
 const household = computed(() => usePage().props.household);
 
 const isAddProductModalOpen = ref(false);
-const isEditHouseholdModalOpen = ref(false);
 const isInviteModalOpen = ref(false);
 const isLeaveModalOpen = ref(false);
 
@@ -58,7 +56,7 @@ const categorizedProducts = computed(() => {
                 </div>
                 <div class="actions">
                     <button class="button primary" @click="isAddProductModalOpen = true">
-                        <i class="pi pi-plus"></i> Pievienot produktu
+                        <i class="pi pi-plus"></i> {{ translations.household.add_product }}
                     </button>
                     <Dropdown ref="dropdown">
                         <template #trigger>
@@ -74,15 +72,15 @@ const categorizedProducts = computed(() => {
                             </button>
                         </li>
                         <li v-if="userRole === 'owner'">
-                            <button @click="dropdown.close(); isEditHouseholdModalOpen = true">
+                            <Link :href="route('households.edit', household.id)" @click="dropdown?.close()">
                                 <i class="pi pi-cog"/>
                                 Iestatījumi
-                            </button>
+                            </Link>
                         </li>
                         <li>
                             <button @click="dropdown?.close(); isLeaveModalOpen = true">
                                 <i class="pi pi-sign-out"/>
-                                Pamest mājsaimniecību
+                                {{ translations.household.household.leave }}
                             </button>
                         </li>
                     </Dropdown>
@@ -96,18 +94,12 @@ const categorizedProducts = computed(() => {
 
             <LeaveHouseholdModal
                 v-model="isLeaveModalOpen"
-                :leave-url="route('household.leave')"
+                :household="household"
             />
 
             <AddHouseholdProductModal
                 v-model="isAddProductModalOpen"
                 :household-id="household.id"
-            />
-
-            <EditHouseholdModal
-                v-model="isEditHouseholdModalOpen"
-                :household="household"
-                :key="household?.id"
             />
 
             <HouseholdProducts :categorizedProducts="categorizedProducts" :no-product-text="translations.household.no_products"/>

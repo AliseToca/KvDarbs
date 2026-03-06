@@ -1,11 +1,12 @@
 <script setup>
-import { usePage, useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import Modal from './Modal.vue';
 
 const { translations } = usePage().props;
 
 const props = defineProps({
     modelValue: Boolean,
+    member: Object,
     household: Object,
 });
 
@@ -17,9 +18,12 @@ function closeModal() {
 
 const form = useForm({});
 
-function confirmLeave() {
-    form.delete(route('households.users.leave', props.household.id), {
+function confirmDelete() {
+    if (!props.member?.id) return;
+
+    form.delete(route('households.users.destroy', { household: props.household.id, user: props.member.id }), {
         preserveScroll: true,
+        only: ['household_users'],
         onSuccess: () => closeModal(),
     });
 }
@@ -28,17 +32,20 @@ function confirmLeave() {
 <template>
     <Modal :model-value="modelValue" @update:modelValue="closeModal">
         <template #header>
-            <h2>Pamest mājsaimniecību</h2>
+            <h2>Lietotāja noņemšana</h2>
         </template>
 
         <template #body>
-            <p>Vai tiešām vēlies pamest šo mājsaimniecību?</p>
+            <p>
+                Vai esi pārliecināts, ka vēliens noņemt
+                "<strong>@{{ props.member?.username }}</strong>" no mājsaimniecības?
+            </p>
         </template>
 
         <template #footer>
             <div class="button-container">
-                <button class="button primary full-width" @click="confirmLeave" :disabled="form.processing">
-                    {{ translations.button.accept}}
+                <button class="button primary full-width" @click="confirmDelete" :disabled="form.processing">
+                    {{ translations.button.delete }}
                 </button>
                 <button class="button full-width" @click="closeModal" :disabled="form.processing">
                     {{ translations.button.cancel }}

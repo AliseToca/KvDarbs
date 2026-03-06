@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\HouseholdUser\Role;
 use App\Models\Household;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -14,7 +15,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Services\MeasurmentConversionService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Auth\Access\AuthorizationException;
+use Inertia\Response;
 
 class HouseholdController extends Controller
 {
@@ -69,10 +70,6 @@ class HouseholdController extends Controller
 
         $this->authorize('view', $household);
 
-        $products = Product::select('id', 'name', 'measurement_type_id')->get();
-        $productCategories = ProductCategory::select('id', 'name')->get();
-        $units = Unit::all();
-
         //Visi mājsaimniecības produkti ar tā saistītajiem modeļiem
         $householdProducts = $household->householdProducts()
             ->with(['product.productCategory', 'product.measurementType'])
@@ -109,7 +106,40 @@ class HouseholdController extends Controller
             'userRole' => $userRole,
             'householdUsersCount' => $household->household_users_count,
         ]);
+    }
 
+    public function edit(Household $household): Response
+    {
+        $this->authorize('edit', $household);
+
+        $owner = $household->users()
+            ->wherePivot('role', 'owner')
+            ->first();
+
+        $householdUsers = $household->users()
+            ->select('users.id', 'users.username')
+            ->withPivot('role')
+            ->get()
+            ->map(fn($user) => [
+                'id'       => $user->id,
+                'username' => $user->username,
+                'role'     => $user->pivot->role,
+            ]);
+
+        return Inertia::render('Household/Edit', [
+            'household' => $household,
+            'household_users'=> $householdUsers,
+            'breadcrumbs' => [
+                [
+                    'name' => $household->name,
+                    'url' => $this->householdShowUrl($owner),
+                ],
+                [
+                    'name' => trans('household.household.edit'),
+                    'url' => null,
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -135,7 +165,7 @@ class HouseholdController extends Controller
 
         // Piesaistām mājsaimniecību lietotājam
         $user->households()->attach($household->id, [
-            'role' => 'owner',
+            'role' =>  Role::Owner,
         ]);
 
         // Pāradresējam uz mājsaimniecības lietotāja lapu
@@ -155,35 +185,13 @@ class HouseholdController extends Controller
         return back()->with('success', 'Veiksmīgi atjaunota mājsaimniecības informācija');
     }
 
-    public function leave(Request $request): RedirectResponse
+    public function destroy(Household $household): RedirectResponse
     {
-        $user = $request->user();
-        $household = $user->activeHousehold();
+        $this->authorize('delete', $household);
 
-        $this->authorize('leave', $household);
-
-        // Ja lietotājs ir vienīgais īpašnieks, nododam lomu nākamajam dalībniekam
-        $role = $household->users()
-            ->where('user_id', $user->id)
-            ->first()
-            ->pivot->role;
-
-        if ($role === 'owner') {
-            $nextUser = $household->users()
-                ->where('user_id', '!=', $user->id)
-                ->first();
-
-            $household->users()->updateExistingPivot($nextUser->id, ['role' => 'owner']);
-        }
-
-        $user->households()->detach($household->id);
-
-        // Ja nav neviena lietotāja mājsaimniecībā to dzēst
-        if ($household->users()->count() === 0) {
-            $household->delete();
-        }
+        $household->delete();
 
         return redirect($this->householdUrlService->indexUrl())
-            ->with('success', 'Veiksmīgi atvienojies no mājsaimniecības');
+            ->with('success', 'Mājsaimniecība veiksmīgi dzēsta');
     }
 }

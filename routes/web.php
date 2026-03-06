@@ -11,6 +11,7 @@ use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\HouseholdProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\HouseholdEmailInviteController;
+use App\Http\Controllers\HouseholdUserController;
 
 //Route::get('/login', function () {
 //    return redirect(route('filament.admin.auth.login'));
@@ -42,8 +43,15 @@ Route::middleware('auth')->group(function(){
         ->name('households.store');
     Route::put('/households/{household}', [HouseholdController::class, 'update'])
         ->name('households.update');
-    Route::post('/household/leave', [HouseholdController::class, 'leave'])
-        ->name('household.leave');
+    Route::get('/households/{household}/edit', [HouseholdController::class, 'edit'])
+        ->name('households.edit');
+
+    Route::patch('/households/{household}/users', [HouseholdUserController::class, 'update'])
+        ->name('households.users.update');
+    Route::delete('/households/{household}/users/leave', [HouseholdUserController::class, 'leave'])
+        ->name('households.users.leave');
+    Route::delete('/households/{household}/users/{user}', [HouseholdUserController::class, 'destroy'])
+        ->name('households.users.destroy');
 
     Route::post('/households/{household}/invite/email', [HouseholdEmailInviteController::class, 'send'])
         ->name('households.invite.email.send');

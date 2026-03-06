@@ -67,3 +67,18 @@
         color: $color-text-muted;
     }
 }
+
+.household-user-list {
+    li {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 5px;
+        align-items: baseline;
+    }
+
+    .user-actions {
+        display: flex;
+        gap: 10px;
+    }
+}
