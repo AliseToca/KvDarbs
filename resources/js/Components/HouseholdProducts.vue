@@ -2,7 +2,10 @@
 import {ref} from "vue";
 import AcordionItem from "./AcordionItem.vue";
 import EditHouseholdProductModal from "./Modals/EditHouseholdProductModal.vue";
-import DeleteHouseholdProductModal from "./Modals/DeleteHouseholdProductModal.vue";
+import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal.vue";
+import {usePage} from "@inertiajs/vue3";
+
+const {translations} = usePage().props;
 
 const props = defineProps({
     categorizedProducts: Object,
@@ -71,8 +74,11 @@ function openDelete(product) {
         :key="selectedProduct?.id"
     />
 
-    <DeleteHouseholdProductModal
+    <ConfirmDeleteModal
         v-model="isDeleteOpen"
-        :product="selectedProduct"
+        :title="`${selectedProduct?.productName}`"
+        :message="`${translations.household.delete_message.ask_confirmation} <strong>${selectedProduct?.productName}</strong> ${translations.household.delete_message.from_household}`"
+        route-name="household-products.destroy"
+        :route-param="selectedProduct?.id"
     />
 </template>

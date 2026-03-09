@@ -5,7 +5,7 @@ import MainLayout from '../../Layouts/Main.vue';
 import InputField from "../../Components/Inputs/InputField.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import Select from "../../Components/Inputs/SelectField.vue";
-import DeleteHouseholdUserModal from "../../Components/Modals/DeleteHouseholdUserModal.vue";
+import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
 const {translations, breadcrumbs, household, enums, user} = usePage().props;
 
@@ -99,10 +99,12 @@ function submitRoles() {
                 </form>
             </section>
 
-            <DeleteHouseholdUserModal
+            <ConfirmDeleteModal
                 v-model="showDeleteModal"
-                :member="selectedMember"
-                :household="household"
+                :title=translations.auth.from_user
+                :message="`${translations.household.delete_message.ask_confirmation} <strong>${selectedMember?.username}</strong> ${translations.household.delete_message.from_household}`"
+                route-name="households.users.destroy"
+                :route-param="{ household: household.id, user: selectedMember?.id }"
             />
         </section>
     </MainLayout>

@@ -28,4 +28,6 @@ return [
 
     'login_button' => 'Ieiet',
     'register_button' => 'Reģistrēties',
+
+    'from_user' => 'Lietotāja',
 ];

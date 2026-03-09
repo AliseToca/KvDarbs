@@ -12,4 +12,5 @@ return [
     'cancel' => 'Atcelt',
     'delete' =>'Dzēst',
     'submit' => 'Iesniegt',
+    'deletion' => 'Dzēšana',
 ];

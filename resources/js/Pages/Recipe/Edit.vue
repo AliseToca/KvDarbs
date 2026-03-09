@@ -4,7 +4,7 @@ import { usePage, useForm, Link } from "@inertiajs/vue3";
 import MainLayout from '../../Layouts/Main.vue';
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import RecipeForm from "../../Components/RecipeForm.vue";
-import DeleteRecipeModal from "../../Components/Modals/DeleteRecipeModal.vue";
+import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
 const { translations, products, units, breadcrumbs, recipe } = usePage().props;
 
@@ -46,9 +46,12 @@ function submit() {
             <RecipeForm :form="form" :products="products" :units="units" @submit="submit" />
         </div>
 
-        <DeleteRecipeModal
+        <ConfirmDeleteModal
             v-model="showDeleteModal"
-            :recipe="recipe"
+            :title="translations.recipe.delete.recipe_deletion"
+            :message="`${translations.recipe.delete.delete_confirm} &quot;<strong>${recipe.name}</strong>&quot;?`"
+            route-name="recipe.delete"
+            :route-param="recipe.slug"
         />
     </MainLayout>
 </template>
