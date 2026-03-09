@@ -11,6 +11,7 @@ return [
     'search_products' => 'Meklē produktus...',
     'search_units' => 'Mekle mērvienības...',
     'delete_message' => [
+        'household' => 'Mājsaimniecības',
         'ask_confirmation' => 'Vai esi pārliecināts, ka vēlies dzēst',
         'from_household' => 'no mājsaimniecības?',
     ],

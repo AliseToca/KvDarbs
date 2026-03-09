@@ -77,7 +77,7 @@ function openDelete(product) {
     <ConfirmDeleteModal
         v-model="isDeleteOpen"
         :title="`${selectedProduct?.productName}`"
-        :message="`${translations.household.delete_message.ask_confirmation} <strong>${selectedProduct?.productName}</strong> ${translations.household.delete_message.from_household}`"
+        :message="`${translations.household.delete_message.ask_confirmation} &quot;<strong>${selectedProduct?.productName}</strong>&quot; ${translations.household.delete_message.from_household}`"
         route-name="household-products.destroy"
         :route-param="selectedProduct?.id"
     />

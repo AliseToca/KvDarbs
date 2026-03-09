@@ -13,12 +13,13 @@ const household_users = computed(() => usePage().props.household_users);
 
 const roles = enums.roles;
 
-const showDeleteModal = ref(false);
+const showDeleteHouseholdModal = ref(false);
+const showDeleteUserModal = ref(false);
 const selectedMember = ref(null);
 
 function openDeleteModal(member) {
     selectedMember.value = member;
-    showDeleteModal.value = true;
+    showDeleteUserModal.value = true;
 }
 
 const nameForm = useForm({
@@ -52,6 +53,13 @@ function submitRoles() {
 
             <header>
                 <h1>{{ translations.household.your }}</h1>
+
+                <button
+                    class="button primary"
+                    @click="showDeleteHouseholdModal = true"
+                >
+                    <i class="pi pi-trash"/>
+                </button>
             </header>
 
             <section>
@@ -100,11 +108,19 @@ function submitRoles() {
             </section>
 
             <ConfirmDeleteModal
-                v-model="showDeleteModal"
+                v-model="showDeleteUserModal"
                 :title=translations.auth.from_user
                 :message="`${translations.household.delete_message.ask_confirmation} <strong>${selectedMember?.username}</strong> ${translations.household.delete_message.from_household}`"
                 route-name="households.users.destroy"
                 :route-param="{ household: household.id, user: selectedMember?.id }"
+            />
+
+            <ConfirmDeleteModal
+                v-model="showDeleteHouseholdModal"
+                :title="translations.household.delete_message.household"
+                :message="`${translations.household.delete_message.ask_confirmation} &quot;<strong>${household.name}</strong>&quot;?`"
+                route-name="households.destroy"
+                :route-param="household.id"
             />
         </section>
     </MainLayout>

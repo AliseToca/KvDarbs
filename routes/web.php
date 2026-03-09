@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function(){
         ->name('households.update');
     Route::get('/households/{household}/edit', [HouseholdController::class, 'edit'])
         ->name('households.edit');
+    Route::delete('/households/{household}/delete', [HouseholdController::class, 'destroy'])
+        ->name('households.destroy');
 
     Route::patch('/households/{household}/users', [HouseholdUserController::class, 'update'])
         ->name('households.users.update');
