@@ -57,14 +57,12 @@
         }
     }
 
-    .pi-trash {
-        width: 10%;
-        text-align: right;
-        cursor: pointer;
-    }
-
     .empty {
         color: $color-text-muted;
+    }
+
+    section {
+        margin-bottom: 40px;
     }
 }
 

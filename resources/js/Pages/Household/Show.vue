@@ -80,7 +80,7 @@ const categorizedProducts = computed(() => {
                         <li>
                             <button @click="dropdown?.close(); isLeaveModalOpen = true">
                                 <i class="pi pi-sign-out"/>
-                                {{ translations.household.household.leave }}
+                                {{ translations.household.leave }}
                             </button>
                         </li>
                     </Dropdown>

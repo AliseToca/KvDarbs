@@ -1,13 +1,11 @@
 <?php
 
 return [
-    'household' => [
-        'name' => 'Mājsaimniecība',
-        'your' => 'Tava mājsaimniecība',
-        'edit' => 'Rediģēt mājsaimniecību',
-        'leave' => 'Pamest mājsaimniecību',
-        'users' => 'Mājsaimniecības lietotāji',
-    ],
+    'name' => 'Mājsaimniecība',
+    'your' => 'Tava mājsaimniecība',
+    'edit' => 'Rediģēt mājsaimniecību',
+    'leave' => 'Pamest mājsaimniecību',
+    'users' => 'Mājsaimniecības lietotāji',
     'no_products' => 'Tukšs :(',
     'add_product' => 'Pievienot produktu',
     'search_products' => 'Meklē produktus...',

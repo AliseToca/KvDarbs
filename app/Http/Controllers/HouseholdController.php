@@ -135,7 +135,7 @@ class HouseholdController extends Controller
                     'url' => $this->householdShowUrl($owner),
                 ],
                 [
-                    'name' => trans('household.household.edit'),
+                    'name' => trans('household.edit'),
                     'url' => null,
                 ],
             ],
