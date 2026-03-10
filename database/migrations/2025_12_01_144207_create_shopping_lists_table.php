@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_shopping_list', function (Blueprint $table) {
+        Schema::create('shopping_lists', function (Blueprint $table) {
             $table->id();
-            $table->double('amount');
-
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('shopping_list_id')->constrained()->cascadeOnDelete();
-
+            $table->foreignId('household_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->boolean('is_checked')->default(false);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_shopping_list');
+        Schema::dropIfExists('shopping_lists');
     }
 };

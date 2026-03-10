@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Filament\Templates\HouseholdTemplate;
 use App\Filament\Templates\LanguageTemplate;
 use App\Filament\Templates\RecipeTemplate;
+use App\Filament\Templates\ShoppingListTemplate;
 use CubeAgency\FilamentPageManager\Models\Page;
 use Illuminate\Database\Seeder;
 use Waavi\Translation\Repositories\LanguageRepository;
@@ -53,6 +54,16 @@ class CubeInstallSeeder extends Seeder
                 'template' => RecipeTemplate::class,
                 'activate_at' => now(),
             ]);
+
+            Page::create([
+                'parent_id' => 1,
+                'name' => 'Iepirkšanās saraksts',
+                'slug' => 'iepirksanas-saraksts',
+                'template' => ShoppingListTemplate::class,
+                'activate_at' => now(),
+            ]);
+
+            $this->call(MenuSeeder::class);
         }
     }
 }
