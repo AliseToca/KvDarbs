@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShoppingList extends Model
 {
     protected $fillable = [
         'name',
+        'household_id',
+        'is_checked',
     ];
 
-    public function products(){
-        return $this->belongsToMany(Product::class);
-    }
-
-    public function users(){
-        return $this->belongsTo(User::class);
+    public function household(): BelongsTo
+    {
+        return $this->belongsTo(Household::class);
     }
 }

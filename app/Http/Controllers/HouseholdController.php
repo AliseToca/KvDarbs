@@ -164,9 +164,7 @@ class HouseholdController extends Controller
         }
 
         // Piesaistām mājsaimniecību lietotājam
-        $user->households()->attach($household->id, [
-            'role' =>  Role::Owner,
-        ]);
+        $user->households()->attach($household->id, ['role' =>  Role::Owner]);
 
         // Pāradresējam uz mājsaimniecības lietotāja lapu
         return redirect(

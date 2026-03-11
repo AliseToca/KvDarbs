@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('shopping_lists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('household_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
             $table->boolean('is_checked')->default(false);
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

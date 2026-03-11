@@ -12,10 +12,7 @@ use App\Http\Controllers\HouseholdProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\HouseholdEmailInviteController;
 use App\Http\Controllers\HouseholdUserController;
-
-//Route::get('/login', function () {
-//    return redirect(route('filament.admin.auth.login'));
-//})->name('login');
+use App\Http\Controllers\ShoppingListController;
 
 Route::get('/', function () {
     return redirect('/lv/');
@@ -82,9 +79,17 @@ Route::middleware('auth')->group(function(){
     Route::delete('/recipes/{recipe:slug}', [RecipeController::class, 'destroy'])
         ->name('recipe.delete');
 
-
     Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
         ->name('recipes.reviews.store');
+
+    Route::get('/shopping-list', [ShoppingListController::class, 'show'])
+        ->name('shopping-list.show');
+    Route::post('/shopping-list', [ShoppingListController::class, 'store'])
+        ->name('shopping-list.store');
+    Route::patch('/shopping-list/{shoppingList}', [ShoppingListController::class, 'toggle'])
+        ->name('shopping-list.toggle');
+    Route::delete('/shopping-list/{shoppingList}', [ShoppingListController::class, 'destroy'])
+        ->name('shopping-list.destroy');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

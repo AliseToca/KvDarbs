@@ -13,6 +13,8 @@ use App\Http\Controllers\RecipeController;
 use App\Filament\Templates\RecipeTemplate;
 use App\Filament\Templates\HouseholdTemplate;
 use App\Http\Controllers\HouseholdController;
+use App\Filament\Templates\ShoppingListTemplate;
+use App\Http\Controllers\ShoppingListController;
 
 Route::get('/', [LanguagePageController::class, 'index']);
 Route::post('/save-selected-cookies', CookiesPageController::class . '@saveSelectedCookies')->name('saveSelectedCookies');
@@ -59,5 +61,11 @@ PageRoutes::for(HouseholdTemplate::class, static function (Page $page) {
     // Mājsaimniecības lapa ar lietotāja mājsaimniecību
     Route::get($page->getUri().'/{user:username}', ['pageId' => $page->getKey()])
         ->uses([HouseholdController::class, 'show'])
+        ->name('show');
+});
+
+PageRoutes::for(ShoppingListTemplate::class, static function (Page $page) {
+    Route::get($page->getUri(), ['pageId' => $page->getKey()])
+        ->uses([ShoppingListController::class, 'show'])
         ->name('show');
 });

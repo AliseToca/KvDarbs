@@ -1,0 +1,82 @@
+@use '@environment' as *;
+
+.shopping-list-wrapper {
+    max-width: 80%;
+}
+
+.shopping-list {
+    border-top: 1px solid $color-gray-light;
+    margin-top: 20px;
+    padding-top: 20px;
+
+    .shopping-list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        transition: opacity 0.2s ease;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            border: 2px solid $color-brown-light;
+            border-radius: 5px;
+            background: $color-body;
+            cursor: pointer;
+            position: relative;
+            transition:
+                background 0.18s ease,
+                border-color 0.18s ease,
+                transform 0.1s ease;
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 11px;
+                transition: opacity 0.15s ease;
+            }
+
+            &:checked {
+                background: $color-brown;
+                border-color: $color-brown;
+                animation: checkbox-pop 0.22s ease;
+
+                &::after {
+                    opacity: 1;
+                }
+            }
+
+            &:focus-visible {
+                outline: 2px solid $color-brown-light;
+                outline-offset: 2px;
+            }
+        }
+
+        &--checked {
+            opacity: 0.5;
+
+            label {
+                color: $color-brown-light;
+                text-decoration: line-through;
+                text-decoration-color: $color-brown-light;
+            }
+        }
+    }
+}
