@@ -1,14 +1,24 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import { usePage } from '@inertiajs/vue3';
+import {Link, router, usePage} from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
 import FormatTime from '../../Components/FormatTime.vue';
 import Review from "../../Components/Review.vue";
 import ReviewForm from "../../Components/ReviewForm.vue";
 import Pagination from "../../Components/Pagination.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
+import Dropdown from "../../Components/Dropdown.vue";
+import {route} from "ziggy-js";
+
 
 const { translations, recipe, breadcrumbs} = usePage().props;
+
+const dropdown = ref(null);
+
+function addToShoppingList() {
+    dropdown.value.close();
+    router.post(route('shopping-list.add-from-recipe', recipe.id));
+}
 
 const reviews = computed(() => usePage().props.reviews.data || []);
 
@@ -59,7 +69,24 @@ function formatAmount(value) {
             <section class="recipe header">
                 <div class="recipe header-content">
                     <div>
-                        <h1>{{ recipe.name }}</h1>
+                        <header>
+                            <h1>{{ recipe.name }}</h1>
+
+                            <Dropdown ref="dropdown">
+                                <template #trigger>
+                                    <button class="button">
+                                        <i class="pi pi-ellipsis-v"></i>
+                                    </button>
+                                </template>
+
+                                <li>
+                                    <button @click="addToShoppingList">
+                                        <i class="pi pi-list-check"/>
+                                        Pievienot iepirkšanās sarakstam
+                                    </button>
+                                </li>
+                            </Dropdown>
+                        </header>
                         <span>
                             <i class="pi pi-star"></i>
                             {{ recipe.average_rating || 0 }}
@@ -68,6 +95,8 @@ function formatAmount(value) {
                             {{ recipe.reviews_count }}
                         </span>
                     </div>
+                    <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
+
                     <div>
                         <!--Receptes gatavošanas ilgumi stundās un minūtēs-->
                         <p>
@@ -89,7 +118,6 @@ function formatAmount(value) {
                         </p>
                     </div>
                 </div>
-                <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
             </section>
 
             <section class="recipe header-buttons">

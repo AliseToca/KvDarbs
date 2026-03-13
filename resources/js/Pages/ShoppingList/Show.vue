@@ -7,7 +7,6 @@ import {ref} from "vue";
 const { translations, page_name, shopping_list: rawList } = usePage().props;
 const shopping_list = ref([...rawList]);
 
-console.log(translations);
 const form = useForm({ name: '' });
 
 function submit() {

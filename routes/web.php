@@ -90,6 +90,9 @@ Route::middleware('auth')->group(function(){
         ->name('shopping-list.toggle');
     Route::delete('/shopping-list/{shoppingList}', [ShoppingListController::class, 'destroy'])
         ->name('shopping-list.destroy');
+
+    Route::post('/shopping-list/{recipe}/add-from-recipe', [ShoppingListController::class, 'addFromRecipe'])
+        ->name('shopping-list.add-from-recipe');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

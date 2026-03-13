@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Filament\Templates\ShoppingListTemplate;
+use App\Models\Recipe;
 use App\Models\ShoppingList;
 use App\Models\Page;
+use App\Services\MeasurmentConversionService;
 use App\Services\PagesService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,5 +61,24 @@ class ShoppingListController extends Controller
         $shoppingList->delete();
 
         return back();
+    }
+
+    public function addFromRecipe(Recipe $recipe): RedirectResponse
+    {
+        $household = auth()->user()->activeHousehold();
+        $shoppingList = $household->shoppingList;
+
+        $recipe->load('recipeProducts.product');
+
+        foreach ($recipe->recipeProducts as $recipeProduct) {
+            $formatted = MeasurmentConversionService::fromBaseAmount($recipeProduct->amount, $recipeProduct->product);
+
+            $household->shoppingList()->create([
+                'household_id' => $household->id,
+                'name' => $recipeProduct->product->name . ' ' . $formatted['amount'] . $formatted['unit'],
+            ]);
+        }
+
+        return back()->with('success', 'Receptes produkti ir pievienoti iepirkšanās sarakstam');
     }
 }

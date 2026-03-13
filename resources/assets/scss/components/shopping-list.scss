@@ -31,7 +31,7 @@
             width: 20px;
             height: 20px;
             flex-shrink: 0;
-            border: 2px solid $color-brown-light;
+            border: 2px solid $color-gray;
             border-radius: 5px;
             background: $color-body;
             cursor: pointer;
@@ -54,8 +54,8 @@
             }
 
             &:checked {
-                background: $color-brown;
-                border-color: $color-brown;
+                background: $color-gray;
+                border-color: $color-gray;
                 animation: checkbox-pop 0.22s ease;
 
                 &::after {
@@ -64,7 +64,7 @@
             }
 
             &:focus-visible {
-                outline: 2px solid $color-brown-light;
+                outline: 2px solid $color-gray-dark;
                 outline-offset: 2px;
             }
         }
@@ -73,9 +73,7 @@
             opacity: 0.5;
 
             label {
-                color: $color-brown-light;
                 text-decoration: line-through;
-                text-decoration-color: $color-brown-light;
             }
         }
     }
