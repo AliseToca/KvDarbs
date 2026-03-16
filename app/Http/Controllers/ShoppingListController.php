@@ -66,7 +66,6 @@ class ShoppingListController extends Controller
     public function addFromRecipe(Recipe $recipe): RedirectResponse
     {
         $household = auth()->user()->activeHousehold();
-        $shoppingList = $household->shoppingList;
 
         $recipe->load('recipeProducts.product');
 
@@ -80,5 +79,36 @@ class ShoppingListController extends Controller
         }
 
         return back()->with('success', 'Receptes produkti ir pievienoti iepirkšanās sarakstam');
+    }
+
+    public function addFromRecipeHousehold(Recipe $recipe): RedirectResponse
+    {
+        $household = auth()->user()->activeHousehold();
+
+        $recipe->load('recipeProducts.product');
+        $household->load('householdProducts');
+
+        foreach ($recipe->recipeProducts as $recipeProduct) {
+            $product = $recipeProduct->product;
+            $requiredAmount = $recipeProduct->amount;
+
+            $householdProduct = $household->householdProducts->firstWhere('product_id', $product->id);
+            $ownedAmount = $householdProduct?->amount ?? 0;
+
+            if ($ownedAmount >= $requiredAmount) {
+                continue;
+            }
+
+            $missingAmount = $requiredAmount - $ownedAmount;
+
+            $formatted = MeasurmentConversionService::fromBaseAmount($missingAmount, $product);
+
+            $household->shoppingList()->create([
+                'household_id' => $household->id,
+                'name' => $product->name . ' ' . $formatted['amount'] . $formatted['unit'],
+            ]);
+        }
+
+        return back()->with('success', 'Trūkstošie produkti ir pievienoti iepirkšanās sarakstam');
     }
 }

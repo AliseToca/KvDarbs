@@ -13,4 +13,6 @@ return [
     'delete' =>'Dzēst',
     'submit' => 'Iesniegt',
     'deletion' => 'Dzēšana',
+    'yes' => 'Jā',
+    'no'=> 'Nē'
 ];

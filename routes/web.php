@@ -93,6 +93,8 @@ Route::middleware('auth')->group(function(){
 
     Route::post('/shopping-list/{recipe}/add-from-recipe', [ShoppingListController::class, 'addFromRecipe'])
         ->name('shopping-list.add-from-recipe');
+    Route::post('/shopping-list/{recipe}/add-from-recipe-household', [ShoppingListController::class, 'addFromRecipeHousehold'])
+        ->name('shopping-list.add-from-recipe-household');
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

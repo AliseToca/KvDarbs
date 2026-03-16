@@ -1,23 +1,23 @@
 <script setup>
-import MainLayout from '../../Layouts/Main.vue';
-import {Link, router, usePage} from '@inertiajs/vue3';
+import {router, usePage} from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
+import MainLayout from '../../Layouts/Main.vue';
 import FormatTime from '../../Components/FormatTime.vue';
 import Review from "../../Components/Review.vue";
 import ReviewForm from "../../Components/ReviewForm.vue";
 import Pagination from "../../Components/Pagination.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import Dropdown from "../../Components/Dropdown.vue";
-import {route} from "ziggy-js";
-
+import ConfirmAddToShoppingList from "../../Components/Modals/ConfirmAddToShoppingList.vue";
 
 const { translations, recipe, breadcrumbs} = usePage().props;
 
 const dropdown = ref(null);
+const isConfirmAddToShoppingListOpen = ref(false);
 
-function addToShoppingList() {
+function openShoppingListModal() {
+    isConfirmAddToShoppingListOpen.value = true;
     dropdown.value.close();
-    router.post(route('shopping-list.add-from-recipe', recipe.id));
 }
 
 const reviews = computed(() => usePage().props.reviews.data || []);
@@ -80,12 +80,19 @@ function formatAmount(value) {
                                 </template>
 
                                 <li>
-                                    <button @click="addToShoppingList">
+                                    <button @click="openShoppingListModal">
                                         <i class="pi pi-list-check"/>
-                                        Pievienot iepirkšanās sarakstam
+                                        {{ translations.shopping_list.add_to_list }}
                                     </button>
                                 </li>
                             </Dropdown>
+
+                            <ConfirmAddToShoppingList
+                                v-model="isConfirmAddToShoppingListOpen"
+                                :title="translations.shopping_list.add_to_list"
+                                :message="translations.shopping_list.ask_confirm"
+                                :recipeId="recipe.id"
+                            />
                         </header>
                         <span>
                             <i class="pi pi-star"></i>
