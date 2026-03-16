@@ -44,21 +44,13 @@ class HouseholdController extends Controller
     }
 
     /**
-     * Mājsaimniecības sākumlapa:
-     * - ja lietotājam jau ir household → pāradresē uz lietotāja mājsaimniecības lapu
-     * - ja nav → piedāvā izvēles skatu
+     * Pāradresē uz lietotāja mājsaimniecības lapu
      */
     public function index()
     {
         $user = auth()->user();
 
-        if ($user->activeHousehold()) {
-            return redirect(
-                $this->householdShowUrl($user)
-            );
-        }
-
-        return Inertia::render('Household/Index');
+        return redirect($this->householdShowUrl($user));
     }
 
     /**
