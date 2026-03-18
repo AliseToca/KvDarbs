@@ -11,8 +11,33 @@
         ul {
             display: flex;
             gap: $cont-padding-base;
+
+            li {
+                position: relative;
+                cursor: pointer;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background-color: red;
+                    transition: width 0.3s ease;
+                }
+
+                &:hover {
+                    color: $color-primary;
+
+                    &::after {
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
+
     &.auth {
         padding-inline: 35px;
     }
