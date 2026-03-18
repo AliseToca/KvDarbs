@@ -68,9 +68,18 @@ function formatAmount(value) {
         <div class="recipe">
             <section class="recipe header">
                 <div class="recipe header-content">
-                    <div>
                         <header>
-                            <h1>{{ recipe.name }}</h1>
+                            <div>
+                                <h1>{{ recipe.name }}</h1>
+
+                                <span>
+                                    <i class="pi pi-star"></i>
+                                    {{ recipe.average_rating || 0 }}
+
+                                    <i class="pi pi-comments"></i>
+                                    {{ recipe.reviews_count }}
+                                </span>
+                            </div>
 
                             <Dropdown ref="dropdown">
                                 <template #trigger>
@@ -85,6 +94,12 @@ function formatAmount(value) {
                                         {{ translations.shopping_list.add_to_list }}
                                     </button>
                                 </li>
+                                <li>
+                                    <button>
+                                        <i class="pi pi-check"/>
+                                        Mark as done
+                                    </button>
+                                </li>
                             </Dropdown>
 
                             <ConfirmAddToShoppingList
@@ -94,14 +109,6 @@ function formatAmount(value) {
                                 :recipeId="recipe.id"
                             />
                         </header>
-                        <span>
-                            <i class="pi pi-star"></i>
-                            {{ recipe.average_rating || 0 }}
-
-                            <i class="pi pi-comments"></i>
-                            {{ recipe.reviews_count }}
-                        </span>
-                    </div>
                     <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
 
                     <div>
@@ -127,10 +134,10 @@ function formatAmount(value) {
                 </div>
             </section>
 
-            <section class="recipe header-buttons">
-                <button class="button primary full-width">Print</button>
-                <button class="button full-width">Save</button>
-            </section>
+<!--            <section class="recipe header-buttons">-->
+<!--                <button class="button primary full-width">Print</button>-->
+<!--                <button class="button full-width">Save</button>-->
+<!--            </section>-->
 
             <section class="recipe ingredients">
                 <div class="ingredients-header">
