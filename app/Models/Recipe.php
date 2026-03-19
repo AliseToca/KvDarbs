@@ -99,8 +99,12 @@ class Recipe extends Model
         return $this->reviews()->count();
     }
 
-    public function scopeVisibleTo(Builder $query, User $user): Builder
+    public function scopeVisibleTo(Builder $query, ?User $user): Builder
     {
+        if($user === null){
+            return $query->where('visibility', Visibility::Public);
+        }
+
         return $query->where(function (Builder $q) use ($user){
             // Publiski ieraksti - redzami visiem
             $q->where('visibility', Visibility::Public)

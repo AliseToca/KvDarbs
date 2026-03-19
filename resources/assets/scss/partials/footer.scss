@@ -1,7 +1,7 @@
 @use '@environment' as *;
 
 .site-footer {
-    background-color: $color-primary;
+    background-color: $color-secondary;
     color: $color-white;
     padding: $cont-padding-base;
     display: flex;
