@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -72,6 +75,10 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        $this->authorize('delete',auth()->user(), $review);
+
+        $review->delete();
+
+        return back()->with('success', 'Veiksmīgi tika izdzēsta atsauksme');
     }
 }

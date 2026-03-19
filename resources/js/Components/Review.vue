@@ -1,8 +1,12 @@
 <script setup>
 import Rating from "./Rating.vue";
 import Avatar from "./Avatar.vue";
+import {usePage} from "@inertiajs/vue3";
+
+const {user} = usePage().props;
 
 const props = defineProps({
+    id: Number,
     rating: Number,
     content: {
         type: String,
@@ -38,6 +42,8 @@ const formatDate = (date) => {
                 {{ content }}
             </div>
         </div>
+
+        <i v-if="username === user.username" class="pi pi-trash delete" @click="$emit('delete')"></i>
     </div>
 </template>
 

@@ -86,6 +86,8 @@ Route::middleware('auth')->group(function(){
 
     Route::post('/recipes/{recipe:slug}/reviews', [ReviewController::class, 'store'])
         ->name('recipes.reviews.store');
+    Route::delete('/reviews/{review}/delete', [ReviewController::class, 'destroy'])
+        ->name('recipes.reviews.delete');
 
     Route::get('/shopping-list', [ShoppingListController::class, 'show'])
         ->name('shopping-list.show');

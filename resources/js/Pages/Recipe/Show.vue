@@ -10,8 +10,11 @@ import Breadcrumb from "../../Components/Breadcrumb.vue";
 import Dropdown from "../../Components/Dropdown.vue";
 import ConfirmAddToShoppingList from "../../Components/Modals/ConfirmAddToShoppingList.vue";
 import ConfirmMarkAsDoneModal from "../../Components/Modals/ConfirmMarkAsDoneModal.vue";
+import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
+
+//--Receptes izvēlnes logs--
 const dropdown = ref(null);
 const isConfirmAddToShoppingListOpen = ref(false);
 const isConfirmMarkAsDoneOpen = ref(false);
@@ -26,8 +29,18 @@ function openMarkAsDoneModal() {
     dropdown.value.close();
 }
 
+//--Atsauksmes--
 const reviews = computed(() => usePage().props.reviews.data || []);
 
+const openConfirmDeleteModal = ref(false);
+const selectedReviewId = ref(null);
+
+function openDelete(id) {
+    selectedReviewId.value = id;
+    openConfirmDeleteModal.value = true;
+}
+
+//--Porciju skaits--
 const currentServings = ref(recipe.servings);
 
 function decrementServings() {
@@ -190,6 +203,14 @@ function formatAmount(value) {
                     :username="review.user.username"
                     :avatarSrc="review.user.avatar_src"
                     :createdAt="review.created_at"
+                    @delete="openDelete(review.id)"
+                />
+                <ConfirmDeleteModal
+                    v-model="openConfirmDeleteModal"
+                    :title="translations.recipe.reviews.plural"
+                    message="Vai tiešām vēlies dzēst atsauksmi?"
+                    route-name="recipes.reviews.delete"
+                    :route-param="selectedReviewId"
                 />
                 <Pagination :links="usePage().props.reviews.links"/>
             </section>
