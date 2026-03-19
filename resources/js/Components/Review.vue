@@ -1,14 +1,16 @@
 <script setup>
 import Rating from "./Rating.vue";
+import Avatar from "./Avatar.vue";
 
-defineProps({
+const props = defineProps({
     rating: Number,
     content: {
         type: String,
         default: '',
     },
     username: String,
-    created_at: String,
+    avatarSrc: String,
+    createdAt: String,
 })
 
 const formatDate = (date) => {
@@ -18,18 +20,23 @@ const formatDate = (date) => {
 
 <template>
     <div class="review">
-       <div class="review-header">
-           <div class="review-user">
-               <img src="">
-               <div>
-                   <h3>{{ username }}</h3>
-                    <Rating :rating="rating"/>
-               </div>
-           </div>
-           <p>{{ formatDate(created_at) }}</p>
-       </div>
-        <div class="review-body">
-            {{ content }}
+        <Avatar :avatar-src="avatarSrc" small/>
+
+        <div class="review-content">
+            <div class="review-header">
+                <div class="review-user-info">
+                    <div>
+                        <h3>{{ username }}</h3>
+                        <p class="date">{{ formatDate(createdAt) }}</p>
+                    </div>
+                </div>
+
+                <Rating :rating="rating"/>
+            </div>
+
+            <div class="review-body">
+                {{ content }}
+            </div>
         </div>
     </div>
 </template>

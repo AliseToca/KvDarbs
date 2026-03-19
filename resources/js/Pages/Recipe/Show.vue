@@ -12,7 +12,6 @@ import ConfirmAddToShoppingList from "../../Components/Modals/ConfirmAddToShoppi
 import ConfirmMarkAsDoneModal from "../../Components/Modals/ConfirmMarkAsDoneModal.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
-
 const dropdown = ref(null);
 const isConfirmAddToShoppingListOpen = ref(false);
 const isConfirmMarkAsDoneOpen = ref(false);
@@ -178,6 +177,10 @@ function formatAmount(value) {
             <section class="recipe reviews">
                 <h2>{{ translations.recipe.reviews.heading }}</h2>
                 <ReviewForm/>
+            </section>
+
+            <section>
+                <h3>{{ translations.recipe.reviews.plural }}</h3>
                 <Review
                     v-for="review in reviews"
                     :key="review.id"
@@ -185,7 +188,8 @@ function formatAmount(value) {
                     :rating="review.rating"
                     :content="review.content"
                     :username="review.user.username"
-                    :created_at="review.created_at"
+                    :avatarSrc="review.user.avatar_src"
+                    :createdAt="review.created_at"
                 />
                 <Pagination :links="usePage().props.reviews.links"/>
             </section>

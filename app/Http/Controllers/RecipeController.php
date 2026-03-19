@@ -155,7 +155,7 @@ class RecipeController extends Controller
         });
 
         $reviews = $recipe->reviews()
-            ->with('user:id,username')
+            ->with('user:id,username,avatar_src')
             ->latest()
             ->paginate(5);
 
