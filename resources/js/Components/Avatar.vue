@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
     avatarSrc: {
         type: String,
         default: null,
@@ -7,18 +7,22 @@ defineProps({
     small: {
         type: Boolean,
         default: false,
+    },
+    clickable: {
+        type: Boolean,
+        default: false,
     }
 });
 
-defineEmits(['click']);
+const emit = defineEmits(['click']);
 </script>
 
 <template>
-    <div class="avatar" :class="{'small' : small}" @click="$emit('click')">
+    <div class="avatar" :class="{ 'small': small, 'clickable': clickable }">
         <img v-if="avatarSrc" :src="`/storage/${avatarSrc}`"/>
 
-        <button v-else class="button round primary">
+        <div v-else class="placeholder">
             <i class="pi pi-user"></i>
-        </button>
+        </div>
     </div>
 </template>

@@ -76,7 +76,7 @@ onUnmounted(() => {
         <div v-if="!isMobile && user !== null">
             <Dropdown :user="user" :avatar-src="avatarSrc">
                 <template #trigger>
-                    <Avatar :avatar-src="avatarSrc" />
+                    <Avatar :avatar-src="avatarSrc" clickable/>
                 </template>
 
                 <li>
