@@ -6,6 +6,7 @@ use App\Enums\HouseholdUser\Role;
 use App\Models\Household;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\Recipe;
 use App\Models\Unit;
 use App\Models\User;
 use App\Services\HouseholdUrlService;
@@ -183,5 +184,27 @@ class HouseholdController extends Controller
 
         return redirect($this->householdUrlService->indexUrl())
             ->with('success', 'Mājsaimniecība veiksmīgi dzēsta');
+    }
+
+    public function subtractProductsFromRecipe(Request $request, Recipe $recipe): RedirectResponse
+    {
+        $household = auth()->user()->activeHousehold();
+        $recipe->load('recipeProducts.product');
+
+        foreach ($recipe->recipeProducts as $recipeProduct) {
+            $householdProduct = $household->householdProducts->firstWhere('product_id', $recipeProduct->product_id);
+
+            if(!$householdProduct) continue;
+
+            $householdProduct->amount -= $recipeProduct->amount;
+
+            if($householdProduct->amount <= 0) {
+                $householdProduct->delete();
+            }else{
+                $householdProduct->save();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Izmantotie produkti veiksmīgi noņemti no mājsiamniecības');
     }
 }

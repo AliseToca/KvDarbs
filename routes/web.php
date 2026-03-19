@@ -44,6 +44,11 @@ Route::middleware('auth')->group(function(){
         ->name('households.edit');
     Route::delete('/households/{household}/delete', [HouseholdController::class, 'destroy'])
         ->name('households.destroy');
+    Route::post('/household/{recipe}/subtract-from-recipe', [HouseholdController::class, 'subtractFromRecipe'])
+        ->name('household-products.subtract-from-recipe');
+
+    Route::post('/household/{recipe}/subtract-products', [HouseholdController::class, 'subtractProductsFromRecipe'])
+        ->name('recipes.mark-as-done');
 
     Route::patch('/households/{household}/users', [HouseholdUserController::class, 'update'])
         ->name('households.users.update');
@@ -90,11 +95,11 @@ Route::middleware('auth')->group(function(){
         ->name('shopping-list.toggle');
     Route::delete('/shopping-list/{shoppingList}', [ShoppingListController::class, 'destroy'])
         ->name('shopping-list.destroy');
-
     Route::post('/shopping-list/{recipe}/add-from-recipe', [ShoppingListController::class, 'addFromRecipe'])
         ->name('shopping-list.add-from-recipe');
     Route::post('/shopping-list/{recipe}/add-from-recipe-household', [ShoppingListController::class, 'addFromRecipeHousehold'])
         ->name('shopping-list.add-from-recipe-household');
+
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

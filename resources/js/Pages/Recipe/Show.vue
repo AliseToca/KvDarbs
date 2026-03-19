@@ -1,5 +1,5 @@
 <script setup>
-import {router, usePage} from '@inertiajs/vue3';
+import {usePage} from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
 import MainLayout from '../../Layouts/Main.vue';
 import FormatTime from '../../Components/FormatTime.vue';
@@ -9,14 +9,21 @@ import Pagination from "../../Components/Pagination.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import Dropdown from "../../Components/Dropdown.vue";
 import ConfirmAddToShoppingList from "../../Components/Modals/ConfirmAddToShoppingList.vue";
+import ConfirmMarkAsDoneModal from "../../Components/Modals/ConfirmMarkAsDoneModal.vue";
 
-const { translations, recipe, breadcrumbs} = usePage().props;
+const {translations, recipe, breadcrumbs} = usePage().props;
 
 const dropdown = ref(null);
 const isConfirmAddToShoppingListOpen = ref(false);
+const isConfirmMarkAsDoneOpen = ref(false);
 
 function openShoppingListModal() {
     isConfirmAddToShoppingListOpen.value = true;
+    dropdown.value.close();
+}
+
+function openMarkAsDoneModal() {
+    isConfirmMarkAsDoneOpen.value = true;
     dropdown.value.close();
 }
 
@@ -34,7 +41,7 @@ function incrementServings() {
 
 //Sastāvdaļas atbilstoši pašreizējam porciju skaitam
 const scaledIngredients = computed(() => {
-    return recipe.recipe_products.map(ingredient =>{
+    return recipe.recipe_products.map(ingredient => {
         const baseServings = recipe.servings;
 
         //Daudzuma aprēķins
@@ -68,47 +75,54 @@ function formatAmount(value) {
         <div class="recipe">
             <section class="recipe header">
                 <div class="recipe header-content">
-                        <header>
-                            <div>
-                                <h1>{{ recipe.name }}</h1>
+                    <header>
+                        <div>
+                            <h1>{{ recipe.name }}</h1>
 
-                                <span>
+                            <span>
                                     <i class="pi pi-star"></i>
                                     {{ recipe.average_rating || 0 }}
 
                                     <i class="pi pi-comments"></i>
                                     {{ recipe.reviews_count }}
                                 </span>
-                            </div>
+                        </div>
 
-                            <Dropdown ref="dropdown">
-                                <template #trigger>
-                                    <button class="button">
-                                        <i class="pi pi-ellipsis-v"></i>
-                                    </button>
-                                </template>
+                        <Dropdown ref="dropdown">
+                            <template #trigger>
+                                <button class="button">
+                                    <i class="pi pi-ellipsis-v"></i>
+                                </button>
+                            </template>
 
-                                <li>
-                                    <button @click="openShoppingListModal">
-                                        <i class="pi pi-list-check"/>
-                                        {{ translations.shopping_list.add_to_list }}
-                                    </button>
-                                </li>
-                                <li>
-                                    <button>
-                                        <i class="pi pi-check"/>
-                                        Mark as done
-                                    </button>
-                                </li>
-                            </Dropdown>
+                            <li>
+                                <button @click="openShoppingListModal">
+                                    <i class="pi pi-list-check"/>
+                                    {{ translations.shopping_list.add_to_list }}
+                                </button>
+                            </li>
+                            <li>
+                                <button @click="openMarkAsDoneModal">
+                                    <i class="pi pi-check"/>
+                                    Atzīmēt kā pabeigtu
+                                </button>
+                            </li>
+                        </Dropdown>
 
-                            <ConfirmAddToShoppingList
-                                v-model="isConfirmAddToShoppingListOpen"
-                                :title="translations.shopping_list.add_to_list"
-                                :message="translations.shopping_list.ask_confirm"
-                                :recipeId="recipe.id"
-                            />
-                        </header>
+                        <ConfirmAddToShoppingList
+                            v-model="isConfirmAddToShoppingListOpen"
+                            :title="translations.shopping_list.add_to_list"
+                            :message="translations.shopping_list.ask_confirm"
+                            :recipeId="recipe.id"
+                        />
+
+                        <ConfirmMarkAsDoneModal
+                            v-model="isConfirmMarkAsDoneOpen"
+                            title="Vai vēlies atzīmēt recpeti kā izdarītu?"
+                            message="No tavas mājsaimniecības tiks atņemtas visas receptē esošās sastāvdaļas."
+                            :recipeId="recipe.id"
+                        />
+                    </header>
                     <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
 
                     <div>
@@ -134,11 +148,6 @@ function formatAmount(value) {
                 </div>
             </section>
 
-<!--            <section class="recipe header-buttons">-->
-<!--                <button class="button primary full-width">Print</button>-->
-<!--                <button class="button full-width">Save</button>-->
-<!--            </section>-->
-
             <section class="recipe ingredients">
                 <div class="ingredients-header">
                     <h3>{{ translations.recipe.ingredients }}</h3>
@@ -161,7 +170,7 @@ function formatAmount(value) {
                 <ol>
                     <!--Izvada pagatavošanas soļus ar numuru-->
                     <li v-for="(step, index) in recipe.instructions" :key="index">
-                        {{index + 1}}. {{ step }}
+                        {{ index + 1 }}. {{ step }}
                     </li>
                 </ol>
             </section>
@@ -173,13 +182,12 @@ function formatAmount(value) {
                     v-for="review in reviews"
                     :key="review.id"
                     :id="review.id"
-                    :rating = "review.rating"
-                    :content = "review.content"
-                    :username = "review.user.username"
-                    :created_at = "review.created_at"
+                    :rating="review.rating"
+                    :content="review.content"
+                    :username="review.user.username"
+                    :created_at="review.created_at"
                 />
-                <Pagination :links="usePage().props.reviews.links" />
-
+                <Pagination :links="usePage().props.reviews.links"/>
             </section>
         </div>
     </MainLayout>
