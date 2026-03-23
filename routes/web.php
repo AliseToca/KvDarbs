@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
@@ -89,6 +90,9 @@ Route::middleware('auth')->group(function(){
     Route::delete('/reviews/{review}/delete', [ReviewController::class, 'destroy'])
         ->name('recipes.reviews.delete');
 
+    Route::get('/folders', [FolderController::class, 'index'])
+        ->name('folders.index');
+
     Route::get('/shopping-list', [ShoppingListController::class, 'show'])
         ->name('shopping-list.show');
     Route::post('/shopping-list', [ShoppingListController::class, 'store'])
@@ -101,7 +105,6 @@ Route::middleware('auth')->group(function(){
         ->name('shopping-list.add-from-recipe');
     Route::post('/shopping-list/{recipe}/add-from-recipe-household', [ShoppingListController::class, 'addFromRecipeHousehold'])
         ->name('shopping-list.add-from-recipe-household');
-
 });
 
 Route::middleware(LocalOnly::class)->group(function () {

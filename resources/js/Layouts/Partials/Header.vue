@@ -86,6 +86,12 @@ onUnmounted(() => {
                     </Link>
                 </li>
                 <li>
+                    <Link :href="route('folders.index')">
+                        <i class="pi pi-bookmark" />
+                        Recepšu saraksti
+                    </Link>
+                </li>
+                <li>
                     <Link :href="route('profile.edit')">
                         <i class="pi pi-user-edit" />
                         {{ translations.profile.edit_profile }}
