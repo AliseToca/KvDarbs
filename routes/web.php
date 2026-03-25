@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/folders', [FolderController::class, 'index'])
         ->name('folders.index');
+    Route::post('/folders/create', [FolderController::class, 'store'])
+        ->name('folders.store');
 
     Route::get('/shopping-list', [ShoppingListController::class, 'show'])
         ->name('shopping-list.show');

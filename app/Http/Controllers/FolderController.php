@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,5 +17,16 @@ class FolderController extends Controller
             'folders' => $folders,
         ]);
 
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+        ]);
+
+        $request->user()->folders()->create($validated);
+
+        return redirect()->back()->with('success', 'Recepšu saraksts veiksmīgi izveidots');
     }
 }
