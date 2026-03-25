@@ -1,0 +1,7 @@
+@use '@environment' as *;
+
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}

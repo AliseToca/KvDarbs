@@ -7,6 +7,7 @@
 
 @use 'pages/auth';
 @use 'pages/my-recipes';
+@use 'pages/folders';
 
 @use 'constructor/common';
 
@@ -27,3 +28,4 @@
 @use 'components/avatar';
 @use 'components/dropdown';
 @use 'components/shopping-list';
+@use 'components/folder-card';

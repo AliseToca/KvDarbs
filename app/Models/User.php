@@ -80,4 +80,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Recipe::class);
     }
+
+    public function folders(): hasMany
+    {
+        return $this->hasMany(Folder::class);
+    }
 }

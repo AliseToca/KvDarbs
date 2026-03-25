@@ -88,7 +88,7 @@ onUnmounted(() => {
                 <li>
                     <Link :href="route('folders.index')">
                         <i class="pi pi-bookmark" />
-                        Recepšu saraksti
+                        {{ translations.folders.name }}
                     </Link>
                 </li>
                 <li>

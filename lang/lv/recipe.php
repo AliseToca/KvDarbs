@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'singular' => 'Recepte',
+    'plural' => 'Receptes',
     'create_recipe' => 'Izveidot recepti',
     'edit_recipe' => 'Rediģēt recepti',
     'prep_time' => 'Sagatavošanas laiks',
