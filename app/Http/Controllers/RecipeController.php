@@ -21,9 +21,6 @@ class RecipeController extends Controller
 {
     use AuthorizesRequests;
 
-    protected PagesService $pagesService;
-    protected BreadcrumbService $breadcrumbService;
-
     /**
      * Dependency Injection – lai nevajadzētu izmantot app()
      */
@@ -118,10 +115,7 @@ class RecipeController extends Controller
             'types' => RecipeType::all(),
             'products' => Product::all(),
             'units' => Unit::all(),
-            'breadcrumbs' => [
-                ['name' => trans('recipe.my_recipes.title'), 'url' => route('recipe.my')],
-                ['name' => trans('recipe.create_recipe'), 'url' => null],
-            ],
+            'breadcrumbs' => $this->breadcrumbService->forRecipeCreate(),
         ]);
     }
 
@@ -163,7 +157,7 @@ class RecipeController extends Controller
             'recipe' => $recipe,
             'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
-            'breadcrumbs' => $this->breadcrumbService->getBreadcrumbs($recipe),
+            'breadcrumbs' => $this->breadcrumbService->forRecipe($recipe),
         ]);
     }
 
@@ -197,10 +191,7 @@ class RecipeController extends Controller
             'recipe' => $recipe,
             'products' => Product::all(),
             'units' => Unit::all(),
-            'breadcrumbs' => [
-                ['name' => trans('recipe.my_recipes.title'), 'url' => route('recipe.my')],
-                ['name' => trans('button.edit') . ' "' . $recipe->name . '"' , 'url' => null],
-            ],
+            'breadcrumbs' => $this->breadcrumbService->forRecipeEdit($recipe),
         ]);
     }
 

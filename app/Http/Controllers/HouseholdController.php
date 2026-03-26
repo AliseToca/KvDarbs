@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use App\Models\Recipe;
 use App\Models\Unit;
 use App\Models\User;
+use App\Services\BreadcrumbService;
 use App\Services\HouseholdUrlService;
 use App\Services\PagesService;
 use Illuminate\Http\RedirectResponse;
@@ -23,16 +24,13 @@ class HouseholdController extends Controller
     use AuthorizesRequests;
 
     /**
-     * Serviss, kas atbild par lapu struktūru un valodām
-     */
-
-    /**
      * Dependency Injection – lai nevajadzētu izmantot app()
      */
-    public function __construct(PagesService $pagesService, HouseholdUrlService $householdUrlService)
+    public function __construct(PagesService $pagesService, HouseholdUrlService $householdUrlService, BreadcrumbService $breadcrumbService)
     {
         $this->pagesService = $pagesService;
         $this->householdUrlService = $householdUrlService;
+        $this->breadcrumbService = $breadcrumbService;
     }
 
     /**
@@ -122,16 +120,7 @@ class HouseholdController extends Controller
         return Inertia::render('Household/Edit', [
             'household' => $household,
             'household_users'=> $householdUsers,
-            'breadcrumbs' => [
-                [
-                    'name' => $household->name,
-                    'url' => $this->householdShowUrl($owner),
-                ],
-                [
-                    'name' => trans('household.edit'),
-                    'url' => null,
-                ],
-            ],
+            'breadcrumbs' => $this->breadcrumbService->forHouseholdEdit($household),
         ]);
     }
 
