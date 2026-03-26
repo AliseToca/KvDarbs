@@ -1,11 +1,12 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import {usePage} from "@inertiajs/vue3";
+import {router, usePage} from "@inertiajs/vue3";
 import FolderCard from "../../Components/FolderCard.vue";
 import CreateFolderModal from "../../Components/Modals/CreateFolderModal.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
-const {translations, folders} = usePage().props;
+const {translations} = usePage().props;
+const folders = computed(() => usePage().props.folders);
 
 const showCreateModal = ref(false);
 </script>
@@ -29,7 +30,7 @@ const showCreateModal = ref(false);
                 v-for="folder in folders"
                 :key="folder.id"
                 :folder="folder"
-                @click="router.visit(route('folders.show', folder.id))"
+                @click="router.visit(route('folders.show', { user: folder.user.username, folder: folder.name }))"
             />
         </div>
     </MainLayout>

@@ -1,30 +1,23 @@
 <script setup>
-import {computed} from 'vue'
+import {computed} from 'vue';
 import {usePage} from "@inertiajs/vue3";
 
-const {translations} = usePage().props;
+const { translations } = usePage().props;
 
 const props = defineProps({
     folder: {
         type: Object,
         required: true,
     },
-})
+});
 
-defineEmits(['click'])
+defineEmits(['click']);
 
 const images = computed(() => {
-    const withImage = props.folder.recipes
-        .filter(r => r.image_src)
-        .map(r => r.image_src)
-    return Array.from({length: 3}, (_, i) => withImage[i] ?? null)
-})
+    const withImage = props.folder.recipes.filter(r => r.image_src).map(r => r.image_src);
 
-const recipeCount = computed(() => {
-    const count = props.folder.recipes.length
-
-    return `${count} ${count === 1 ? translations.recipe.singular : translations.recipe.plural}`
-})
+    return [0, 1, 2].map(i => withImage[i] ?? null);
+});
 </script>
 
 <template>
@@ -47,8 +40,13 @@ const recipeCount = computed(() => {
         </div>
 
         <div class="folder-meta">
-            <p class="folder-name">{{ folder.name }}</p>
-            <p class="folder-count">{{ recipeCount }}</p>
+            <p class="folder-name">
+                {{ folder.name }}
+            </p>
+            <p class="folder-count">
+                {{ folder.recipes.length }}
+                {{ folder.recipes.length === 1 ? translations.recipe.singular : translations.recipe.plural }}
+            </p>
         </div>
     </div>
 </template>
