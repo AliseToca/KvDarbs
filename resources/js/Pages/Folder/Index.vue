@@ -13,7 +13,7 @@ const showCreateModal = ref(false);
 
 <template>
     <MainLayout>
-        <header>
+        <header class="folder-header">
             <h1> {{ translations.folders.your_folders }}</h1>
 
             <button class="button primary" @click="showCreateModal = true">

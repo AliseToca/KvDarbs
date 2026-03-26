@@ -15,7 +15,7 @@ class Folder extends Model
         'name',
     ];
 
-    public function users()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -23,5 +23,10 @@ class Folder extends Model
     public function recipes(): BelongsToMany
     {
         return $this->belongsToMany(Recipe::class, 'folder_recipe');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'name';
     }
 }

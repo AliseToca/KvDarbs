@@ -1,7 +1,16 @@
 @use '@environment' as *;
 
-header {
+.folder-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+
+    button {
+        height: 37px;
+    }
+
+    .folder-actions {
+        display: flex;
+        gap: 4px;
+    }
 }

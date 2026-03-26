@@ -6,6 +6,8 @@ use App\Services\PagesService;
 use App\Services\HouseholdUrlService;
 use App\Models\Household;
 use App\Models\Recipe;
+use App\Models\Folder;
+use App\Models\User;
 
 class BreadcrumbService
 {
@@ -48,6 +50,14 @@ class BreadcrumbService
         return [
             ['name' => $household->name, 'url' => $this->householdUrlService->showUrl($owner)],
             ['name' => trans('household.edit'), 'url' => null],
+        ];
+    }
+
+    public function forFolderShow(User $user, Folder $folder): array
+    {
+        return [
+            ['name' => trans('folders.your_folders'), 'url' => route('folders.index', $user->username)],
+            ['name' => $folder->name, 'url' => null],
         ];
     }
 }

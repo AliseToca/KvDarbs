@@ -92,6 +92,9 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/folders', [FolderController::class, 'index'])
         ->name('folders.index');
+    Route::get('/folders/{user:username}/{folder}', [FolderController::class, 'show'])
+        ->scopeBindings()
+        ->name('folders.show');
     Route::post('/folders/create', [FolderController::class, 'store'])
         ->name('folders.store');
 

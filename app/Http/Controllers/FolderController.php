@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Folder;
 use App\Models\User;
+use App\Services\BreadcrumbService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,11 @@ use Inertia\Response;
 class FolderController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(BreadcrumbService $breadcrumbService)
+    {
+        $this->breadcrumbService = $breadcrumbService;
+    }
 
     public function index(Request $request): Response
     {
@@ -31,6 +37,7 @@ class FolderController extends Controller
 
         return Inertia::render('Folder/Show', [
             'folder' => $folder,
+            'breadcrumbs' => $this->breadcrumbService->forFolderShow($user, $folder),
         ]);
     }
 
