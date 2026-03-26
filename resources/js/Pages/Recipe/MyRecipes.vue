@@ -14,12 +14,15 @@ const { translations, recipes, filters} = usePage().props;
             <header>
                 <h1>{{ translations.recipe.my_recipes.title }}</h1>
 
-                <Link :href="route('recipe.create')" as="button" class="button primary">
-                    <i class="pi pi-plus"/>
-                </Link>
+                <div>
+                    <SearchBar :model-value="filters.search" placedHolder="Meklē receptes..." />
+
+                    <Link :href="route('recipe.create')" as="button" class="button primary">
+                        <i class="pi pi-plus"/>
+                    </Link>
+                </div>
             </header>
 
-            <SearchBar :model-value="filters.search" placedHolder="Meklē receptes..." />
 
             <div class="grid-container">
                 <RecipeCard
@@ -30,8 +33,7 @@ const { translations, recipes, filters} = usePage().props;
                     :imageSrc="recipe.image_src"
                     :rating="recipe.average_rating"
                     :time_minutes="recipe.total_time"
-                    :missing_products_count="recipe.missing_products_count"
-                    :compatibility="recipe.compatibility"
+                    :show_missing_products="false"
                 />
 
                 <p v-if="recipes.data.length === 0">

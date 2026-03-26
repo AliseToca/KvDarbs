@@ -13,6 +13,10 @@ const props = defineProps({
     time_minutes: Number,
     missing_products_count: Number,
     compatibility: Number,
+    show_missing_products: {
+        type: Boolean,
+        default: true,
+    },
 })
 </script>
 
@@ -39,13 +43,14 @@ const props = defineProps({
                 <div class="tag">
                     <FormatTime :timeMinutes="time_minutes"/>
                 </div>
-                <div class="tag">  {{ missing_products_count > 0
+                <div v-show="show_missing_products" class="tag">
+                    {{ missing_products_count > 0
                     ? `Nav ${missing_products_count} sastāvdaļu`
                     : 'Visas sastāvdaļas pieejamas '
                     }}
                 </div>
             </div>
-            <div class="compatibility-bar">
+            <div v-show="show_missing_products" class="compatibility-bar">
                 <div
                     class="compatibility-fill"
                     :style="{ width: compatibility + '%' }"
