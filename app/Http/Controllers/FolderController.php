@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Folder;
 use App\Models\User;
 use App\Services\BreadcrumbService;
+use App\Services\PagesService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,9 +16,10 @@ class FolderController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(BreadcrumbService $breadcrumbService)
+    public function __construct(BreadcrumbService $breadcrumbService, PagesService $pagesService)
     {
         $this->breadcrumbService = $breadcrumbService;
+        $this->pagesService = $pagesService;
     }
 
     public function index(Request $request): Response
@@ -34,6 +36,15 @@ class FolderController extends Controller
         $this->authorize('view', $user, $folder);
 
         $folder->load('recipes');
+
+        $folder->recipes->transform(function ($recipe) {
+            $page = $this->pagesService->getRecipeIndexPage();
+
+            return [
+                ...$recipe->toArray(),
+                'url' => $page->getUrl('show', ['recipe' => $recipe->slug]),
+            ];
+        });
 
         return Inertia::render('Folder/Show', [
             'folder' => $folder,
