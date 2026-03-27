@@ -1,15 +1,12 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch, computed } from 'vue'
-import { router, usePage, Link} from '@inertiajs/vue3'
+import {onMounted, onUnmounted, ref, watch, computed} from 'vue';
+import {usePage, Link} from '@inertiajs/vue3';
 import NavBar from "../../Components/NavBar.vue";
-import Avatar from "../../Components/Avatar.vue";
-import Dropdown from "../../Components/Dropdown.vue";
+import UserActionsDropdown from "../../Components/Dropdowns/UserActionsDropdown.vue";
 
-const page = usePage();
-const { translations, headerMenu, languagePage } = page.props;
+const {translations, headerMenu, languagePage} = usePage().props;
 
-const user = computed(() => page.props.user);
-const avatarSrc = computed(() => page.props.user?.avatar_src);
+const user = computed(() => usePage().props.user);
 
 const isMenuOpen = ref(false);
 const isMobile = ref(false);
@@ -57,7 +54,6 @@ onUnmounted(() => {
 });
 </script>
 
-
 <template>
     <header :class="['container', 'site-header', { mobile: isMobile }]">
         <!--Logo/mājaslapas nosaukuma saite  uz sākumlapu-->
@@ -73,38 +69,7 @@ onUnmounted(() => {
         />
 
         <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
-        <div v-if="!isMobile && user !== null">
-            <Dropdown :user="user" :avatar-src="avatarSrc">
-                <template #trigger>
-                    <Avatar :avatar-src="avatarSrc" clickable/>
-                </template>
-
-                <li>
-                    <Link :href="route('recipe.my')">
-                        <i class="pi pi-book" />
-                        {{ translations.profile.recipes }}
-                    </Link>
-                </li>
-                <li>
-                    <Link :href="route('folders.index')">
-                        <i class="pi pi-bookmark" />
-                        {{ translations.folders.name }}
-                    </Link>
-                </li>
-                <li>
-                    <Link :href="route('profile.edit')">
-                        <i class="pi pi-user-edit" />
-                        {{ translations.profile.edit_profile }}
-                    </Link>
-                </li>
-                <li>
-                    <Link :href="route('logout')" method="post">
-                        <i class="pi pi-power-off" />
-                        {{ translations.auth.logout }}
-                    </Link>
-                </li>
-            </Dropdown>
-        </div>
+        <UserActionsDropdown v-if="!isMobile && user !== null"/>
 
         <Link v-if="user === null" :href="route('login')" as="button" class="button primary">
             {{ translations.auth.login }}

@@ -7,9 +7,7 @@ import Review from "../../Components/Review.vue";
 import ReviewForm from "../../Components/ReviewForm.vue";
 import Pagination from "../../Components/Pagination.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
-import Dropdown from "../../Components/Dropdown.vue";
-import ConfirmAddToShoppingList from "../../Components/Modals/ConfirmAddToShoppingList.vue";
-import ConfirmMarkAsDoneModal from "../../Components/Modals/ConfirmMarkAsDoneModal.vue";
+import RecipeActionsDropdown from "../../Components/Dropdowns/RecipeActionsDropdown.vue";
 import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
@@ -100,41 +98,9 @@ function formatAmount(value) {
                                 </span>
                         </div>
 
-                        <Dropdown ref="dropdown">
-                            <template #trigger>
-                                <button class="button">
-                                    <i class="pi pi-ellipsis-v"></i>
-                                </button>
-                            </template>
-
-                            <li>
-                                <button @click="openShoppingListModal">
-                                    <i class="pi pi-list-check"/>
-                                    {{ translations.shopping_list.add_to_list }}
-                                </button>
-                            </li>
-                            <li>
-                                <button @click="openMarkAsDoneModal">
-                                    <i class="pi pi-check"/>
-                                    Atzīmēt kā pabeigtu
-                                </button>
-                            </li>
-                        </Dropdown>
-
-                        <ConfirmAddToShoppingList
-                            v-model="isConfirmAddToShoppingListOpen"
-                            :title="translations.shopping_list.add_to_list"
-                            :message="translations.shopping_list.ask_confirm"
-                            :recipeId="recipe.id"
-                        />
-
-                        <ConfirmMarkAsDoneModal
-                            v-model="isConfirmMarkAsDoneOpen"
-                            title="Vai vēlies atzīmēt recpeti kā izdarītu?"
-                            message="No tavas mājsaimniecības tiks atņemtas visas receptē esošās sastāvdaļas."
-                            :recipeId="recipe.id"
-                        />
+                        <RecipeActionsDropdown :recipeId="recipe.id" :translations="translations"/>
                     </header>
+
                     <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
 
                     <div>
