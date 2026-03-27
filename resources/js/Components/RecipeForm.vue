@@ -173,7 +173,7 @@ function getFilteredUnits(index) {
         </section>
 
         <button class="button" type="submit" :disabled="form.processing">
-            {{ translations.button.create }}
+            {{ translations.button.save }}
         </button>
     </form>
 </template>

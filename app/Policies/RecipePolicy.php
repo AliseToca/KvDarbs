@@ -47,7 +47,7 @@ class RecipePolicy
      */
     public function update(User $user, Recipe $recipe): bool
     {
-        return $user->can('update_recipe');
+        return $recipe->user_id === $user->id || $user->can('update_recipe');
     }
 
     /**

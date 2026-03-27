@@ -15,6 +15,7 @@ use Inertia\Inertia;
 use App\Services\PagesService;
 use App\Models\Recipe;
 use App\Services\BreadcrumbService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RecipeController extends Controller
@@ -201,7 +202,9 @@ class RecipeController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string',
-            'image_src' => 'nullable|image|max:2048',
+            'image_src' => $request->hasFile('image_src')
+                ? 'nullable|image|max:2048'
+                : 'nullable',
             'visibility' => 'required|string',
             'prep_time' => 'required|numeric',
             'cook_time' => 'required|numeric',
