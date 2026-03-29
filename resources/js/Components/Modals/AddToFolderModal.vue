@@ -17,7 +17,7 @@ function saveToFolder(folder) {
 
         <template #body>
             <ul v-if="folders.length > 0" class="folder-list">
-                <li v-for="folder in folders" @click="saveToFolder(folder)" class="folder-item">
+                <li v-for="folder in folders" :key="folder.id" @click="saveToFolder(folder)" class="folder-item">
                     <div class="folder-info">
                         <img v-if="folder.thumbnail" :src="`/storage/${folder.thumbnail}`" class="thumbnail"/>
                         <div v-else class="placeholder"></div>

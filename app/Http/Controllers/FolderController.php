@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Validation\Rule;
 
 class FolderController extends Controller
 {
@@ -24,7 +25,7 @@ class FolderController extends Controller
 
     public function index(Request $request): Response
     {
-        $folders = $request->user()->folders()->with(['recipes', 'user:id,username'])->latest()->get();
+        $folders = $request->user()->folders()->with(['recipes', 'user:id,username'])->latest()->paginate(12);
 
         return Inertia::render('Folder/Index', [
             'folders' => $folders,
@@ -55,7 +56,12 @@ class FolderController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:50'],
+            'name' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('folders')->where('user_id', $request->user()->id),
+            ],
         ]);
 
         $request->user()->folders()->create($validated);

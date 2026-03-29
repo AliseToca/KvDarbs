@@ -1,8 +1,9 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import {router, usePage} from "@inertiajs/vue3";
 import FolderCard from "../../Components/FolderCard.vue";
 import CreateFolderModal from "../../Components/Modals/CreateFolderModal.vue";
+import Pagination from "../../Components/Pagination.vue";
+import {router, usePage} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 
 const {translations} = usePage().props;
@@ -27,11 +28,13 @@ const showCreateModal = ref(false);
 
         <div class="grid-container">
             <FolderCard
-                v-for="folder in folders"
+                v-for="folder in folders.data"
                 :key="folder.id"
                 :folder="folder"
                 @click="router.visit(route('folders.show', { user: folder.user.username, folder: folder.name }))"
             />
         </div>
+
+        <Pagination :links="folders.links" />
     </MainLayout>
 </template>
