@@ -154,11 +154,19 @@ class RecipeController extends Controller
             ->latest()
             ->paginate(5);
 
+        $folders = auth()->user()->folders()->with(['recipes:id,image_src'])->get();
+
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
             'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
             'breadcrumbs' => $this->breadcrumbService->forRecipe($recipe),
+            'folders' => $folders->map(fn($folder) => [
+                'id' => $folder->id,
+                'name' => $folder->name,
+                'thumbnail' => $folder->recipes->first()?->image_src,
+                'recipe_count' => $folder->recipes->count(),
+            ]),
         ]);
     }
 

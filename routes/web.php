@@ -14,6 +14,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\HouseholdEmailInviteController;
 use App\Http\Controllers\HouseholdUserController;
 use App\Http\Controllers\ShoppingListController;
+use App\Http\Controllers\FolderRecipeController;
 
 Route::get('/', function () {
     return redirect('/lv/');
@@ -97,6 +98,9 @@ Route::middleware('auth')->group(function(){
         ->name('folders.show');
     Route::post('/folders/create', [FolderController::class, 'store'])
         ->name('folders.store');
+
+    Route::post('/folders/{folder}/add/{recipe}', [FolderRecipeController::class, 'store'])
+        ->name('folders.recipes.store');
 
     Route::get('/shopping-list', [ShoppingListController::class, 'show'])
         ->name('shopping-list.show');

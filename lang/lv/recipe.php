@@ -33,4 +33,9 @@ return [
         'recipe_deletion' => 'Receptes dzēšana',
         'delete_confirm' => 'Vai esi pārliecināties, ka vēlies dzēst recepti',
     ],
+    'actions'=> [
+        'add_to_shopping_list' => 'Pievienot Iepirkšanās Sarakstam',
+        'mark_as_done' => 'Atzīmēt kā pabeigtu',
+        'save' => 'Saglabāt recepti'
+    ]
 ];

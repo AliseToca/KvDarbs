@@ -25,7 +25,7 @@ class Folder extends Model
         return $this->belongsToMany(Recipe::class, 'folder_recipe');
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'name';
     }

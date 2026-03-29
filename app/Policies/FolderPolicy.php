@@ -37,7 +37,7 @@ class FolderPolicy
      */
     public function update(User $user, Folder $folder): bool
     {
-        return false;
+        return $user->id === $folder->user_id;
     }
 
     /**

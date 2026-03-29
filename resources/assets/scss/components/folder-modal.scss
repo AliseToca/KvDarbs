@@ -1,0 +1,56 @@
+@use '@environment' as *;
+
+.folder-list {
+    overflow-y: auto;
+    max-height: 300px;
+
+    .folder-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 100px;
+        padding: 5px;
+        border-radius: 8px;
+
+        &:hover {
+            background-color: $color-body-dark;
+            cursor: pointer;
+        }
+
+        .folder-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .folder-name {
+            text-overflow: ellipsis;
+        }
+
+        .thumbnail {
+            width: 58px;
+            height: 58px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .placeholder {
+            width: 58px;
+            height: 58px;
+            border-radius: 6px;
+            background-color: $color-gray-light;
+        }
+    }
+}
+
+.no-folders {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: $color-text-muted;
+
+    i {
+        font-size: 50px;
+    }
+}

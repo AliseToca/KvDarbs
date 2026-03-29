@@ -12,21 +12,6 @@ import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
 
-//--Receptes izvēlnes logs--
-const dropdown = ref(null);
-const isConfirmAddToShoppingListOpen = ref(false);
-const isConfirmMarkAsDoneOpen = ref(false);
-
-function openShoppingListModal() {
-    isConfirmAddToShoppingListOpen.value = true;
-    dropdown.value.close();
-}
-
-function openMarkAsDoneModal() {
-    isConfirmMarkAsDoneOpen.value = true;
-    dropdown.value.close();
-}
-
 //--Atsauksmes--
 const reviews = computed(() => usePage().props.reviews.data || []);
 
