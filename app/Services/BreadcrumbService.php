@@ -27,6 +27,18 @@ class BreadcrumbService
         ];
     }
 
+    public function forRecipeFromFolder(Recipe $recipe, Folder $folder): array
+    {
+        return [
+            ['name' => trans('folders.your_folders'), 'url' => route('folders.index')],
+            ['name' => $folder->name, 'url' => route('folders.show', [
+                'user' => $folder->user->username,
+                'folder' => $folder,
+            ])],
+            ['name' => $recipe->name, 'url' => null],
+        ];
+    }
+
     public function forRecipeCreate(): array
     {
         return [

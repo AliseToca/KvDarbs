@@ -70,7 +70,7 @@ const dropdown = ref(null);
             <RecipeCard
                 v-for="recipe in folder.recipes || []"
                 :key="recipe.id"
-                :url = recipe.url
+                :url="`${recipe.url}?from_folder=${folder.id}`"
                 :name = recipe.name
                 :imageSrc = recipe.image_src
                 :rating = recipe.average_rating

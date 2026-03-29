@@ -120,7 +120,7 @@ class RecipeController extends Controller
         ]);
     }
 
-    public function show(Recipe $recipe)
+    public function show(Request $request, Recipe $recipe)
     {
         $this->authorize('view', $recipe);
 
@@ -156,11 +156,19 @@ class RecipeController extends Controller
 
         $folders = auth()->user()->folders()->with(['recipes:id,image_src'])->get();
 
+
+        $fromFolderId = $request->query('from_folder');
+        $fromFolder = $fromFolderId
+            ? auth()->user()->folders()->find($fromFolderId)
+            : null;
+
         return Inertia::render('Recipe/Show', [
             'recipe' => $recipe,
             'reviews' => $reviews,
             'url' => $this->recipeShowUrl($recipe),
-            'breadcrumbs' => $this->breadcrumbService->forRecipe($recipe),
+            'breadcrumbs' => $fromFolder
+                ? $this->breadcrumbService->forRecipeFromFolder($recipe, $fromFolder)
+                : $this->breadcrumbService->forRecipe($recipe),
             'folders' => $folders->map(fn($folder) => [
                 'id' => $folder->id,
                 'name' => $folder->name,
@@ -259,6 +267,7 @@ class RecipeController extends Controller
 
         return redirect()->to($this->recipeShowUrl($recipe))->with('success', 'Recepte ir atjaunināta');
     }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -319,7 +328,7 @@ class RecipeController extends Controller
     {
         $this->authorize('delete', $recipe);
 
-        if($recipe->image_src) {
+        if ($recipe->image_src) {
             Storage::disk('public')->delete($recipe->image_src);
         }
 
