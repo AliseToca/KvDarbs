@@ -1,10 +1,12 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
 import {usePage} from "@inertiajs/vue3";
+import {computed, ref} from "vue";
 import RecipeCard from "../../Components/RecipeCard.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import EditFolderModal from "../../Components/Modals/EditFolderModal.vue";
-import {computed, ref} from "vue";
+import Dropdown from "../../Components/Dropdowns/Dropdown.vue";
+import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
 const { translations } = usePage().props;
 
@@ -12,6 +14,8 @@ const folder = computed(() => usePage().props.folder);
 const breadcrumbs = computed(() => usePage().props.breadcrumbs);
 
 const showEditModal = ref(false);
+const showConfirmDelete = ref(false);
+const dropdown = ref(null);
 </script>
 
 <template>
@@ -28,18 +32,37 @@ const showEditModal = ref(false);
                 </div>
             </div>
 
-            <div class="folder-actions">
-                <button class="button">
-                    <i class="pi pi-print"/>
-                </button>
-                <button class="button primary" @click="showEditModal = true">
-                    <i class="pi pi-file-edit"/>
-                    {{ translations.button.edit }}
-                </button>
-            </div>
+            <Dropdown ref="dropdown">
+                <template #trigger>
+                    <button class="button">
+                        <i class="pi pi-ellipsis-v"/>
+                    </button>
+                </template>
+
+                <li>
+                    <button @click="dropdown?.close(); showEditModal = true">
+                        <i class="pi pi-file-edit"/>
+                        {{ translations.button.edit }}
+                    </button>
+                </li>
+                <li>
+                    <button @click="dropdown?.close(); showConfirmDelete = true">
+                        <i class="pi pi-trash"/>
+                        {{ translations.button.delete }}
+                    </button>
+                </li>
+            </Dropdown>
 
             <EditFolderModal
                 v-model="showEditModal"
+            />
+
+            <ConfirmDeleteModal
+                v-model="showConfirmDelete"
+                :title="translations.folders.folder"
+                :message="translations.folders.delete_message"
+                route-name="folders.destroy"
+                :route-param="folder"
             />
         </header>
 

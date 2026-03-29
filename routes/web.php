@@ -100,6 +100,8 @@ Route::middleware('auth')->group(function(){
         ->name('folders.store');
     Route::put('/folders/{folder}', [FolderController::class, 'update'])
         ->name('folders.update');
+    Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])
+        ->name('folders.destroy');
 
     Route::post('/folders/{folder}/add/{recipe}', [FolderRecipeController::class, 'store'])
         ->name('folders.recipes.store');

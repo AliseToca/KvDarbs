@@ -8,4 +8,6 @@ return [
     'add_to_folder' => 'Pievienot recepti sarakstam',
     'edit_folder' => 'Rediģēt sarakstu',
     'empty_folder' => 'Tukšs saraksts',
+    'folder' => 'Saraksta',
+    'delete_message' => 'Vai tiešām vēlies dzēst receptes sarakstu un tā vienības?',
 ];

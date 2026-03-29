@@ -76,4 +76,13 @@ class FolderController extends Controller
             'folder' => $folder->fresh(),
         ])->with('success', 'Veiksmīgi atjaunināta saraksta informācija');
     }
+
+    public function destroy(Folder $folder): RedirectResponse
+    {
+        $this->authorize('delete', $folder);
+
+        $folder->delete();
+
+        return redirect()->route('folders.index')->with('success', 'Veiksmīgi dzēsts saraksts');
+    }
 }

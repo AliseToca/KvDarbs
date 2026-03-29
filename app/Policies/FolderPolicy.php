@@ -45,7 +45,7 @@ class FolderPolicy
      */
     public function delete(User $user, Folder $folder): bool
     {
-        return false;
+        return $user->id === $folder->user_id;
     }
 
     /**
