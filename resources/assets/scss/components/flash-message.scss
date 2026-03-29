@@ -1,0 +1,52 @@
+@use '@environment' as *;
+
+.flash-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $color-text-muted;
+    background: $color-beige;
+}
+
+.flash-success {
+    border-left: 4px solid $color-success;
+
+    i {
+        color: $color-success;
+    }
+}
+
+.flash-info {
+    border-left: 4px solid $color-info;
+
+    i {
+        color: $color-info;
+    }
+}
+
+.flash-error {
+    border-left: 4px solid $color-warning;
+
+    i {
+        color: $color-warning;
+    }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: all 0.35s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+    opacity: 0;
+    transform: translateX(120%);
+}

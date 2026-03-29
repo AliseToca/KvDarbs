@@ -3,7 +3,7 @@ $color-black: #000000;
 
 $color-beige: #fdfaf0;
 $color-beige-dark: #f1edde;
-$color-beige-light: #c7b08f;
+$color-beige-light: #fefdf8;
 
 $color-red: #ee4141;
 $color-red-dark: #e63737;
@@ -23,7 +23,11 @@ $color-text-error: $color-red;
 
 $color-primary: $color-red-dark;
 $color-secondary: $color-gray-dark;
-$color-muted: $color-beige-light;
+$color-muted: $color-brown-light;
 
 $color-star-active: $color-gold;
 $color-star: $color-gray;
+
+$color-success: #5dbd0e;
+$color-info: #ffc107;
+$color-warning: #ee4141;

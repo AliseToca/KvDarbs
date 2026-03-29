@@ -62,6 +62,7 @@ class InertiaServiceProvider extends ServiceProvider
             ],
             'flash' => [
                 'success' => fn () => session('success'),
+                'info' => fn () => session('info'),
                 'error' => fn () => session('error'),
             ],
         ]);
