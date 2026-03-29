@@ -24,7 +24,7 @@ const avatarSrc = computed(() => page.props.user?.avatar_src);
         </li>
         <li>
             <Link :href="route('folders.index')">
-                <i class="pi pi-bookmark"/>
+                <i class="pi pi-folder"/>
                 {{ translations.folders.name }}
             </Link>
         </li>

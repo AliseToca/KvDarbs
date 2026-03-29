@@ -62,4 +62,18 @@ class FolderController extends Controller
 
         return redirect()->back()->with('success', 'Recepšu saraksts veiksmīgi izveidots');
     }
+
+    public function update(Request $request, Folder $folder): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+        ]);
+
+        $folder->update($validated);
+
+        return redirect()->route('folders.show', [
+            'user' => $folder->user->username,
+            'folder' => $folder->fresh(),
+        ])->with('success', 'Veiksmīgi atjaunināta saraksta informācija');
+    }
 }

@@ -13,6 +13,7 @@ return [
     'details' => 'Detaļas',
     'ingredients' => 'Sastāvdaļas',
     'instructions' => 'Pagatavošanas soļi',
+    'no_recipes' => 'Nav recepšu',
     'reviews' => [
         'heading' => 'Novertē šo recepti!',
         'plural' => 'Atsauksmes',

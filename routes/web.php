@@ -98,9 +98,13 @@ Route::middleware('auth')->group(function(){
         ->name('folders.show');
     Route::post('/folders/create', [FolderController::class, 'store'])
         ->name('folders.store');
+    Route::put('/folders/{folder}', [FolderController::class, 'update'])
+        ->name('folders.update');
 
     Route::post('/folders/{folder}/add/{recipe}', [FolderRecipeController::class, 'store'])
         ->name('folders.recipes.store');
+    Route::delete('/folders/{folder}/remove/{recipe}', [FolderRecipeController::class, 'destroy'])
+        ->name('folders.recipes.destroy');
 
     Route::get('/shopping-list', [ShoppingListController::class, 'show'])
         ->name('shopping-list.show');

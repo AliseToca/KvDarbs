@@ -13,4 +13,23 @@
         display: flex;
         gap: 4px;
     }
+
+    .folder-info-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        i {
+            font-size: 50px;
+        }
+    }
+}
+
+.empty-folder {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }

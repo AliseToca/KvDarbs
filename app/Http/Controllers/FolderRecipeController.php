@@ -24,4 +24,13 @@ class FolderRecipeController extends Controller
 
         return redirect()->back()->with('success', 'Recepte veiksmīgi pievienota sarakstam');
     }
+
+    public function destroy(Folder $folder, Recipe $recipe): RedirectResponse
+    {
+        $this->authorize('update', $folder);
+
+        $folder->recipes()->detach($recipe->id);
+
+        return redirect()->back()->with('success', 'Recepte veiksmīgi noņemta no saraksta');
+    }
 }
