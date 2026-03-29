@@ -6,6 +6,7 @@ use App\Models\Folder;
 use App\Models\User;
 use App\Services\BreadcrumbService;
 use App\Services\PagesService;
+use App\Services\RecipeAvailabilityService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,10 +18,11 @@ class FolderController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(BreadcrumbService $breadcrumbService, PagesService $pagesService)
+    public function __construct(BreadcrumbService $breadcrumbService, PagesService $pagesService, RecipeAvailabilityService $recipeAvailabilityService)
     {
         $this->breadcrumbService = $breadcrumbService;
         $this->pagesService = $pagesService;
+        $this->recipeAvailabilityService = $recipeAvailabilityService;
     }
 
     public function index(Request $request): Response
@@ -36,14 +38,19 @@ class FolderController extends Controller
     {
         $this->authorize('view', $user, $folder);
 
-        $folder->load('recipes');
+        $folder->load(['recipes.recipeProducts.product.measurementType.units']);
 
-        $folder->recipes->transform(function ($recipe) {
-            $page = $this->pagesService->getRecipeIndexPage();
+        $authUser = auth()->user();
+        $page = $this->pagesService->getRecipeIndexPage();
+
+        $folder->recipes->transform(function ($recipe) use ($authUser, $page) {
+            $availability = RecipeAvailabilityService::calculate($recipe, $authUser);
 
             return [
                 ...$recipe->toArray(),
                 'url' => $page->getUrl('show', ['recipe' => $recipe->slug]),
+                'missing_products_count' => $availability['missing_products_count'],
+                'compatibility' => $availability['compatibility'],
             ];
         });
 

@@ -75,6 +75,8 @@ const dropdown = ref(null);
                 :imageSrc = recipe.image_src
                 :rating = recipe.average_rating
                 :time_minutes = recipe.total_time
+                :missing_products_count = recipe.missing_products_count
+                :compatibility = recipe.compatibility
             />
         </div>
 
