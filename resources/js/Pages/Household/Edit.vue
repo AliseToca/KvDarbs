@@ -6,6 +6,7 @@ import InputField from "../../Components/Inputs/InputField.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import Select from "../../Components/Inputs/SelectField.vue";
 import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
+import Avatar from "../../Components/Avatar.vue";
 
 const {translations, breadcrumbs, household, enums, user} = usePage().props;
 
@@ -83,7 +84,10 @@ function submitRoles() {
                 <form class="form-field" @submit.prevent="submitRoles">
                     <ul class="household-user-list">
                         <li v-for="(member, index) in household_users" :key="member.id">
-                            <span>@{{ member.username }}</span>
+                            <div class="user-info">
+                                <Avatar :avatarSrc="member.avatar_src" small/>
+                                <span>{{ member.username }}</span>
+                            </div>
                             <div class="user-actions">
                                 <Select
                                     v-model="usersForm.users[index].role"

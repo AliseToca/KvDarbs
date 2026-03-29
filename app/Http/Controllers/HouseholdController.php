@@ -108,13 +108,14 @@ class HouseholdController extends Controller
             ->first();
 
         $householdUsers = $household->users()
-            ->select('users.id', 'users.username')
+            ->select('users.id', 'users.username', 'users.avatar_src')
             ->withPivot('role')
             ->get()
             ->map(fn($user) => [
                 'id'       => $user->id,
                 'username' => $user->username,
                 'role'     => $user->pivot->role,
+                'avatar_src' => $user->avatar_src,
             ]);
 
         return Inertia::render('Household/Edit', [
