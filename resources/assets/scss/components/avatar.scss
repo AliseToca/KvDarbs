@@ -20,6 +20,15 @@
         }
     }
 
+    &.mini {
+        width: 30px;
+        height: 30px;
+
+        i {
+            font-size: 15px;
+        }
+    }
+
     &.clickable {
         cursor: pointer;
     }

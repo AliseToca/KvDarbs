@@ -125,7 +125,7 @@ class RecipeController extends Controller
         $this->authorize('view', $recipe);
 
         $recipe->load([
-            'user:id,username',
+            'user:id,username,avatar_src',
             'recipeProducts.product.measurementType.units',
         ]);
 

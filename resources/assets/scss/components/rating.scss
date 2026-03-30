@@ -1,10 +1,18 @@
 @use '@environment' as *;
 
-.star {
-    color: $color-star;
-    transition: color 0.2s;
+.rating-stars {
+    font-size: 32px;
+    cursor: pointer;
 }
-.star.active {
+
+.rating-star,
+.empty {
+    color: darken($color-star, 5%);
+}
+
+.rating-star.active,
+.full,
+.half {
     color: $color-star-active;
 }
 
@@ -16,4 +24,17 @@
     p {
         margin-right: 10px;
     }
+}
+
+.star {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    margin-right: 2px;
+}
+
+.star i {
+    position: absolute;
+    top: 0;
+    left: 0;
 }

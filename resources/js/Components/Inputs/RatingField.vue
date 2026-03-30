@@ -14,24 +14,17 @@ function update(value) {
 </script>
 
 <template>
-    <div class="stars">
+    <div class="rating-stars">
         <span
             v-for="star in 5"
             :key="star"
-            class="star"
+            class="rating-star"
             :class="{ active: star <= hover || star <= modelValue }"
             @click="update(star)"
             @mouseenter="hover = star"
             @mouseleave="hover = 0"
         >
-          <i class="pi pi-star-fill"></i>
+            <i class="pi pi-star-fill"></i>
         </span>
     </div>
 </template>
-
-<style scoped>
-.stars {
-    font-size: 32px;
-    cursor: pointer;
-}
-</style>
