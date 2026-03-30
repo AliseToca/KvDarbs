@@ -1,9 +1,10 @@
 <script setup>
+import {usePage} from "@inertiajs/vue3";
 import {ref} from "vue";
 import AcordionItem from "./AcordionItem.vue";
 import EditHouseholdProductModal from "./Modals/EditHouseholdProductModal.vue";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal.vue";
-import {usePage} from "@inertiajs/vue3";
+import ExpiryBadge from "./ExpiryBadge.vue";
 
 const {translations} = usePage().props;
 
@@ -51,9 +52,7 @@ function openDelete(product) {
                             {{ product.amount }}{{ product.unit }} {{ product.productName }}
                         </span>
 
-                        <span class="tag" v-if="product.expirationDate">
-                            {{product.expirationDate}}
-                        </span>
+                        <ExpiryBadge :product="product" v-if="product.expiryBreakdown"/>
                     </div>
                 </div>
 

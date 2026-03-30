@@ -1,0 +1,27 @@
+@use '@environment' as *;
+
+.expiry-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $color-text-muted;
+
+    &--green {
+        background-color: $color-yellow;
+    }
+
+    &--yellow {
+        background-color: $color-yellow;
+    }
+
+    &--orange {
+        background-color: $color-orange;
+    }
+
+    &--red {
+        background-color: $color-red-dark;
+    }
+}

@@ -19,4 +19,22 @@ return [
         'owner' => 'Saimnieks',
         'member' => 'Biedrs'
     ],
+    'expiration' => [
+        'expired' => 'Beidzās d.t.',
+        'expired_ago' => 'Beidzās pirms',
+        'expires_today' => 'Beidzas šodien',
+        'expires_in' => 'Beidzas pēc ',
+        'days' => [
+            'singular' => ' dienas',
+            'plural' => ' dienām',
+        ],
+        'weeks' => [
+            'singular' => ' nedēļas',
+            'plural' => ' nedēļām',
+        ],
+        'months' => [
+            'singular' => ' mēneša',
+            'plural' => ' mēnešiem',
+        ]
+    ]
 ];

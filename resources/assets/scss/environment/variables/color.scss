@@ -5,9 +5,13 @@ $color-beige: #fdfaf0;
 $color-beige-dark: #f1edde;
 $color-beige-light: #fefdf8;
 
-$color-red: #ee4141;
+$color-red: #ec3f42;
 $color-red-dark: #e63737;
+$color-yellow: #f8cd13;
 $color-gold: #ffc107;
+$color-orange: #fd943f;
+$color-green: #83cc14;
+$color-green-dark: #22c663;
 $color-gray: #333;
 $color-gray-light: #ddd;
 $color-gray-dark: #2a2525;
@@ -28,6 +32,6 @@ $color-muted: $color-brown-light;
 $color-star-active: $color-gold;
 $color-star: $color-gray;
 
-$color-success: #5dbd0e;
-$color-info: #ffc107;
-$color-warning: #ee4141;
+$color-success: $color-green;
+$color-info: $color-yellow;
+$color-warning: $color-red;

@@ -78,6 +78,7 @@ class HouseholdController extends Controller
                     'unit' => $formatted['unit'],
                     'unitId' => $formatted['unit_id'],
                     'expirationDate' => $householdProduct->expiration_date,
+                    'expiryBreakdown' => $householdProduct->getExpiryBreakdown(),
                     'categoryName' => $householdProduct->product->productCategory->name,
                     'measurementTypeId' => $householdProduct->product->measurementType->id,
                 ];
