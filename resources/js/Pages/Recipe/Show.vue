@@ -9,6 +9,9 @@ import Pagination from "../../Components/Pagination.vue";
 import Breadcrumb from "../../Components/Breadcrumb.vue";
 import RecipeActionsDropdown from "../../Components/Dropdowns/RecipeActionsDropdown.vue";
 import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
+import Rating from "../../Components/Rating.vue";
+import Avatar from "../../Components/Avatar.vue";
+import Checkbox from "../../Components/Inputs/Checkbox.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
 
@@ -65,53 +68,77 @@ function formatAmount(value) {
 
 <template>
     <MainLayout>
-        <Breadcrumb :items="breadcrumbs"/>
-
         <div class="recipe">
-            <section class="recipe header">
-                <div class="recipe header-content">
+            <header class="page-header">
+                <Breadcrumb :items="breadcrumbs"/>
+                <RecipeActionsDropdown :recipeId="recipe.id" :translations="translations"/>
+            </header>
+
+            <section class="recipe-header">
+                <div class="recipe-header-content">
                     <header>
-                        <div>
-                            <h1>{{ recipe.name }}</h1>
+                        <h1>{{ recipe.name }}</h1>
 
-                            <span>
-                                    <i class="pi pi-star"></i>
-                                    {{ recipe.average_rating || 0 }}
+                        <div class="recipe-header-info">
+                            <Rating :rating="recipe.average_rating"/>
 
-                                    <i class="pi pi-comments"></i>
-                                    {{ recipe.reviews_count }}
-                                </span>
+                            <span class="rating-value">
+                                {{ recipe.average_rating.toFixed(1) }}
+                            </span>
+
+                            <span class="divider">•</span>
+
+                            <span class="comments">
+                                {{ recipe.reviews_count }}
+                                Atsauksmes
+                            </span>
+
+                            <span class="divider">•</span>
+
+                            <span class="author">
+                                <Avatar :avatarSrc="recipe.user.avatar_src" mini/>
+                                {{ recipe.user.username }}
+                            </span>
                         </div>
-
-                        <RecipeActionsDropdown :recipeId="recipe.id" :translations="translations"/>
                     </header>
 
-                    <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
+                    <div class="time-grid">
+                        <div class="time-item">
+                            <span class="label">{{ translations.recipe.prep_time }}</span>
+                            <span class="value">
+                                <FormatTime :timeMinutes="recipe.prep_time"/>
+                            </span>
+                        </div>
 
-                    <div>
-                        <!--Receptes gatavošanas ilgumi stundās un minūtēs-->
-                        <p>
-                            <strong>{{ translations.recipe.prep_time }}:</strong>
-                            <FormatTime :timeMinutes="recipe.prep_time"/>
-                        </p>
-                        <p>
-                            <strong>{{ translations.recipe.cook_time }}: </strong>
-                            <FormatTime :timeMinutes="recipe.cook_time"/>
-                        </p>
-                        <p>
-                            <strong>{{ translations.recipe.total_time }}: </strong>
-                            <FormatTime :timeMinutes="recipe.total_time"/>
-                        </p>
-                        <!--Receptes autors-->
-                        <p>
-                            <strong>{{ translations.recipe.author }}: </strong>
-                            <span>@{{ recipe.user.username }}</span>
-                        </p>
+                        <div class="time-item">
+                            <span class="label">{{ translations.recipe.cook_time }}</span>
+                            <span class="value">
+                                <FormatTime :timeMinutes="recipe.cook_time"/>
+                            </span>
+                        </div>
+
+                        <div class="time-item">
+                            <span class="label">{{ translations.recipe.total_time }}</span>
+                            <span class="value">
+                                <FormatTime :timeMinutes="recipe.total_time"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tags recipe-tags">
+                        <span class="tag">
+                            Brokastis
+                        </span>
+                        <span class="tag">
+                            Veģetārs
+                        </span>
                     </div>
                 </div>
+
+                <img :src="recipe.image_src ? `/storage/${recipe.image_src}` : '/storage/placeholder.jpg'">
             </section>
 
-            <section class="recipe ingredients">
+            <section class="recipe-ingredients">
                 <div class="ingredients-header">
                     <h3>{{ translations.recipe.ingredients }}</h3>
 
@@ -123,12 +150,16 @@ function formatAmount(value) {
                     </div>
                 </div>
                 <!--Sastāvdaļus saraksts atbilstoši poricju skaitam-->
-                <div v-for="ingredient in scaledIngredients" :key="ingredient.id">
-                    {{ formatAmount(ingredient.scaledAmount) }}{{ ingredient.unit.name }} {{ ingredient.product.name }}
+                <div v-for="ingredient in scaledIngredients" :key="ingredient.id" class="ingredient">
+                    <input type="checkbox" class="ingredient-checkbox">
+                    <span>
+                        {{ formatAmount(ingredient.scaledAmount) }}{{ ingredient.unit.name }}
+                        {{ ingredient.product.name }}
+                      </span>
                 </div>
             </section>
 
-            <section class="recipe instructions">
+            <section class="recipe-instructions">
                 <h3>{{ translations.recipe.instructions }}</h3>
                 <ol>
                     <!--Izvada pagatavošanas soļus ar numuru-->
