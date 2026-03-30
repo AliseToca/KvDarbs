@@ -13,14 +13,6 @@ use Illuminate\Http\RedirectResponse;
 class HouseholdProductController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request): RedirectResponse
@@ -47,7 +39,7 @@ class HouseholdProductController extends Controller
             ->first();
 
         // Ja mājsaimniecībā ir produkts, tam pieskaita lietotāja ievadīto daudzumu
-        if ($existingProduct)
+        if ($existingProduct && $existingProduct->expiration_date == $validated['expiration_date'])
         {
             $existingProduct->increment('amount', $amountInBaseUnit);
         } else // citādāk tas tiek izveidots

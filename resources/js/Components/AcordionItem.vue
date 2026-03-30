@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 
 const isOpen = ref(true);
-
 const toggle = () => {
     isOpen.value = !isOpen.value;
 }

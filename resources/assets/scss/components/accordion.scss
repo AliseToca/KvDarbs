@@ -24,6 +24,12 @@
     transform: rotate(180deg);
 }
 
+.category-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
 //@include for-at-least($tablet) {
 //    .accordion-head {
 //        padding-inline: rem(32);

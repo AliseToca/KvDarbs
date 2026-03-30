@@ -65,24 +65,43 @@ class HouseholdController extends Controller
         $householdProducts = $household->householdProducts()
             ->with(['product.productCategory', 'product.measurementType'])
             ->get()
-            ->map(function ($householdProduct) {
-                $formatted = MeasurmentConversionService::fromBaseAmount(
-                    $householdProduct->amount,
-                    $householdProduct->product
+            ->groupBy('product_id')
+            ->map(function ($group) {
+                $first = $group->first();
+
+                $totalBaseAmount = $group->sum('amount');
+                $formattedTotal = MeasurmentConversionService::fromBaseAmount(
+                    $totalBaseAmount,
+                    $first->product
                 );
 
+                $entries = $group->map(function ($householdProduct) {
+                    $formatted = MeasurmentConversionService::fromBaseAmount(
+                        $householdProduct->amount,
+                        $householdProduct->product
+                    );
+
+                    return [
+                        'id' => $householdProduct->id,
+                        'amount' => $formatted['amount'],
+                        'unit' => $formatted['unit'],
+                        'unitId' => $formatted['unit_id'],
+                        'expirationDate' => $householdProduct->expiration_date,
+                        'expiryBreakdown' => $householdProduct->getExpiryBreakdown(),
+                    ];
+                })->values();
+
                 return [
-                    'id' => $householdProduct->id,
-                    'productName' => $householdProduct->product->name,
-                    'amount' => $formatted['amount'],
-                    'unit' => $formatted['unit'],
-                    'unitId' => $formatted['unit_id'],
-                    'expirationDate' => $householdProduct->expiration_date,
-                    'expiryBreakdown' => $householdProduct->getExpiryBreakdown(),
-                    'categoryName' => $householdProduct->product->productCategory->name,
-                    'measurementTypeId' => $householdProduct->product->measurementType->id,
+                    'productId' => $first->product->id,
+                    'productName' => $first->product->name,
+                    'totalAmount' => $formattedTotal['amount'],
+                    'unit' => $formattedTotal['unit'],
+                    'unitId' => $formattedTotal['unit_id'],
+                    'categoryName' => $first->product->productCategory->name,
+                    'measurementTypeId' => $first->product->measurementType->id,
+                    'entries' => $entries,
                 ];
-            });
+            })->values();
 
         $userRole = $household->users()
             ->where('user_id', $user->id)
@@ -92,8 +111,8 @@ class HouseholdController extends Controller
         return Inertia::render('Household/Show', [
             'household' => $household,
             'householdProducts' => $householdProducts,
-            'products' => Product::select('id','name','measurement_type_id')->get(),
-            'productCategories' => ProductCategory::select('id','name')->get(),
+            'products' => Product::select('id', 'name', 'measurement_type_id')->get(),
+            'productCategories' => ProductCategory::select('id', 'name')->get(),
             'units' => Unit::all(),
             'userRole' => $userRole,
             'householdUsersCount' => $household->household_users_count,
@@ -113,15 +132,15 @@ class HouseholdController extends Controller
             ->withPivot('role')
             ->get()
             ->map(fn($user) => [
-                'id'       => $user->id,
+                'id' => $user->id,
                 'username' => $user->username,
-                'role'     => $user->pivot->role,
+                'role' => $user->pivot->role,
                 'avatar_src' => $user->avatar_src,
             ]);
 
         return Inertia::render('Household/Edit', [
             'household' => $household,
-            'household_users'=> $householdUsers,
+            'household_users' => $householdUsers,
             'breadcrumbs' => $this->breadcrumbService->forHouseholdEdit($household),
         ]);
     }
@@ -141,14 +160,14 @@ class HouseholdController extends Controller
         $household = Household::create($validated);
 
         // Pārbaudam vai lietotājām jau ir mājsaimniecība
-        $user =  $request->user();
+        $user = $request->user();
 
-        if($user->households()->exists()) {
+        if ($user->households()->exists()) {
             abort(403, 'User already has a household.');
         }
 
         // Piesaistām mājsaimniecību lietotājam
-        $user->households()->attach($household->id, ['role' =>  Role::Owner]);
+        $user->households()->attach($household->id, ['role' => Role::Owner]);
 
         // Pāradresējam uz mājsaimniecības lietotāja lapu
         return redirect(
@@ -185,13 +204,13 @@ class HouseholdController extends Controller
         foreach ($recipe->recipeProducts as $recipeProduct) {
             $householdProduct = $household->householdProducts->firstWhere('product_id', $recipeProduct->product_id);
 
-            if(!$householdProduct) continue;
+            if (!$householdProduct) continue;
 
             $householdProduct->amount -= $recipeProduct->amount;
 
-            if($householdProduct->amount <= 0) {
+            if ($householdProduct->amount <= 0) {
                 $householdProduct->delete();
-            }else{
+            } else {
                 $householdProduct->save();
             }
         }

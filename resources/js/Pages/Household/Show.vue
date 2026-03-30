@@ -47,7 +47,7 @@ const categorizedProducts = computed(() => {
 <template>
     <MainLayout>
         <section class="household">
-            <header>
+            <header class="household-header">
                 <div class="household-title">
                     <h1 class="capitalize">{{ household.name }}</h1>
                     <div>

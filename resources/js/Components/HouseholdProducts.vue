@@ -18,14 +18,14 @@ const isDeleteOpen = ref(false);
 const selectedProduct = ref(null);
 
 // Atvērt mājsaimniecības produkta rediģēšanas logu
-function openEdit(product) {
-    selectedProduct.value = product;
+function openEdit(entry, productName, measurementTypeId) {
+    selectedProduct.value = {...entry, productName, measurementTypeId};
     isEditOpen.value = true;
 }
 
 // Atvērt mājsaimniecības produkta dzēšanas logu
-function openDelete(product) {
-    selectedProduct.value = product;
+function openDelete(entry, productName) {
+    selectedProduct.value = {...entry, productName};
     isDeleteOpen.value = true;
 }
 </script>
@@ -36,37 +36,62 @@ function openDelete(product) {
         v-for="(products, category) in categorizedProducts"
         :key="category"
     >
-        <!-- Mājsaimniecībsa produktu kategorijas nosaukums -->
+        <!-- Mājsaimniecības produktu kategorijas nosaukums -->
         <template #header>
-            <h2>{{ category }}</h2>
+            <header class="category-header">
+                <h2>{{ category }}</h2>
+                <span class="product-count">
+                    {{ products.length }}
+                    {{
+                        products.length === 1 ?
+                            translations.household.products.singular :
+                            translations.household.products.plural
+                    }}
+                </span>
+            </header>
         </template>
 
-        <!-- Mājsaimniecības produkti attiecīgajā kateogrijā -->
-        <ul v-if="products.length">
-            <li v-for="product in products" :key="product.id">
-                <div class="product-item" @click="openEdit(product)" >
-                    <div class="product-item-inner">
-                        <i class="pi pi-pencil"></i>
+        <!-- Mājsaimniecības produkti attiecīgajā kategorijā -->
+        <ul v-if="products.length" class="product-list">
+            <li v-for="product in products" :key="product.productId" class="product-card">
+                <header class="product-card-header">
+                    <span class="product-name">{{ product.productName }}</span>
+                    <span class="product-total-badge">{{ product.totalAmount }}{{ product.unit }}</span>
+                </header>
 
-                        <span>
-                            {{ product.amount }}{{ product.unit }} {{ product.productName }}
-                        </span>
+                <ul class="entry-list">
+                    <li v-for="entry in product.entries" :key="entry.id" class="entry-row">
+                        <button
+                            class="entry-main"
+                            @click="openEdit(entry, product.productName, product.measurementTypeId)"
+                        >
+                            <i class="pi pi-pencil entry-edit-icon"/>
+                            <span class="entry-amount">{{ entry.amount }}{{ entry.unit }}</span>
+                            <ExpiryBadge
+                                v-if="entry.expiryBreakdown"
+                                :breakdown="entry.expiryBreakdown"
+                            />
+                        </button>
 
-                        <ExpiryBadge :product="product" v-if="product.expiryBreakdown"/>
-                    </div>
-                </div>
-
-                <i class="pi pi-trash" @click.stop="openDelete(product)"></i>
+                        <button
+                            class="entry-delete"
+                            @click.stop="openDelete(entry, product.productName)"
+                            :aria-label="`Delete ${product.productName}`"
+                        >
+                            <i class="pi pi-trash" aria-hidden="true"/>
+                        </button>
+                    </li>
+                </ul>
             </li>
         </ul>
 
-        <!-- Ziņojums kas nav prodktu kategorijā -->
+        <!-- Ziņojums kad nav produktu kategorijā -->
         <p v-else class="empty">
             {{ noProductText }}
         </p>
     </AcordionItem>
 
-    <!-- Paziņojuma logi  -->
+    <!-- Paziņojuma logi -->
     <EditHouseholdProductModal
         v-model="isEditOpen"
         :product="selectedProduct"

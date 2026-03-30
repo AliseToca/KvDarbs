@@ -1,19 +1,16 @@
 <script setup>
 import { computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
-    product: Object,
+    breakdown: Object,
 });
 
 const expiryClass = computed(() => {
-    const breakdown = props.product.expiryBreakdown;
-
-    if (!breakdown) return 'expiry-badge--green';
-    if (breakdown.expired)  return 'expiry-badge--red';
-    if (breakdown.days <= 0) return 'expiry-badge--orange';
-    if (breakdown.days <= 3) return 'expiry-badge--orange';
-    if (breakdown.days <= 7) return 'expiry-badge--yellow';
+    if (!props.breakdown) return 'expiry-badge--green';
+    if (props.breakdown.expired)   return 'expiry-badge--red';
+    if (props.breakdown.days <= 0) return 'expiry-badge--orange';
+    if (props.breakdown.days <= 3) return 'expiry-badge--orange';
+    if (props.breakdown.days <= 7) return 'expiry-badge--yellow';
 
     return 'expiry-badge--green';
 });
@@ -21,6 +18,6 @@ const expiryClass = computed(() => {
 
 <template>
     <span class="expiry-badge" :class="expiryClass">
-        {{ product.expiryBreakdown.label }}
+        {{ breakdown.label }}
     </span>
 </template>

@@ -19,6 +19,10 @@ return [
         'owner' => 'Saimnieks',
         'member' => 'Biedrs'
     ],
+    'products' => [
+        'singular' => ' produkts',
+        'plural' => ' produkti',
+    ],
     'expiration' => [
         'expired' => 'Beidzās d.t.',
         'expired_ago' => 'Beidzās pirms',
