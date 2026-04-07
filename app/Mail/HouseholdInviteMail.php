@@ -19,7 +19,7 @@ class HouseholdInviteMail extends Mailable
      */
     public function __construct(public HouseholdInvitation $invitation)
     {
-        //
+
     }
 
     /**

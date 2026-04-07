@@ -52,7 +52,7 @@ function submitRoles() {
         <section class="household">
             <Breadcrumb :items="breadcrumbs"/>
 
-            <header>
+            <header class="household-header">
                 <h1>{{ translations.household.your }}</h1>
 
                 <button

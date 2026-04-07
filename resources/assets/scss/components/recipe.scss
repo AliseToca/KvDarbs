@@ -197,7 +197,64 @@
         }
     }
 
-    &.reviews {
+    &-instructions {
+        ol {
+            margin-top: 20px;
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+
+            li {
+                counter-increment: step-counter;
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 15px;
+                padding-left: 0;
+                position: relative;
+
+                &:before {
+                    content: counter(step-counter);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    background-color: $color-secondary;
+                    color: $color-white;
+                    font-weight: bold;
+                    font-size: 0.9rem;
+                    margin-right: 5px;
+                }
+
+                p {
+                    margin: 0;
+                    line-height: 1.5;
+                    font-size: 1rem;
+                    color: $color-text-primary;
+                }
+            }
+
+            li:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            padding: 15px;
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            ol li {
+                font-size: 0.95rem;
+            }
+        }
+    }
+
+    &-reviews {
         margin-top: 20px;
 
         h2 {

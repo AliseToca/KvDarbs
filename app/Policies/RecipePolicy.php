@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Recipe;
+use App\Enums\Recipe\Visibility;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RecipePolicy
@@ -23,7 +24,21 @@ class RecipePolicy
      */
     public function view(User $user, Recipe $recipe): bool
     {
-        return $user->can('view_recipe');
+        if ($recipe->visibility === Visibility::Public) {
+            return true;
+        }
+
+        if ($recipe->visibility === Visibility::Private) {
+            return $user->id === $recipe->user_id;
+        }
+
+        if ($recipe->visibility === Visibility::Household) {
+            $userHouseholdIds = $user->households()->pluck('households.id')->toArray();
+            $recipeHouseholdIds = $recipe->user->households()->pluck('households.id')->toArray();
+            return !empty(array_intersect($userHouseholdIds, $recipeHouseholdIds));
+        }
+
+        return false;
     }
 
     /**

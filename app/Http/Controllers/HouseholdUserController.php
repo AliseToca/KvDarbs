@@ -71,6 +71,15 @@ class HouseholdUserController extends Controller
             $household->delete();
         }
 
+        if ($user->households()->count() === 0) {
+            $newHousehold = Household::create([
+                'name' => $user->name . " Mājsaimniecība",
+            ]);
+
+            $user->households()->attach($newHousehold->id, ['role' => Role::Owner]);
+        }
+
+
         return redirect($this->householdUrlService->indexUrl())
             ->with('success', 'Veiksmīgi atvienojies no mājsaimniecības');
     }

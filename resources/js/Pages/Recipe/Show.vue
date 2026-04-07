@@ -167,12 +167,12 @@ function formatAmount(value) {
                 <ol>
                     <!--Izvada pagatavošanas soļus ar numuru-->
                     <li v-for="(step, index) in recipe.instructions" :key="index">
-                        {{ index + 1 }}. {{ step }}
+                        {{ step }}
                     </li>
                 </ol>
             </section>
 
-            <section class="recipe reviews">
+            <section class="recipe-reviews">
                 <h2>{{ translations.recipe.reviews.heading }}</h2>
                 <ReviewForm/>
             </section>

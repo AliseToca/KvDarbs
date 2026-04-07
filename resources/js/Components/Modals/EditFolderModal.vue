@@ -9,7 +9,7 @@ const { translations } = usePage().props;
 const folder = computed(() => usePage().props.folder);
 
 const form = useForm({
-    name: folder.name,
+    name: folder.value.name,
 });
 
 function submit() {
