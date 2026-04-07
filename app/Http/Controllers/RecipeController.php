@@ -127,6 +127,8 @@ class RecipeController extends Controller
         $recipe->load([
             'user:id,username,avatar_src',
             'recipeProducts.product.measurementType.units',
+            'recipeType',
+            'recipeCategories',
         ]);
 
         $recipe->recipeProducts->transform(function ($recipeProduct) {
@@ -182,7 +184,11 @@ class RecipeController extends Controller
     {
         $this->authorize('update', $recipe);
 
-        $recipe->load(['recipeProducts.product.measurementType.units']);
+        $recipe->load([
+            'recipeProducts.product.measurementType.units',
+            'recipeType',
+            'recipeCategories',
+        ]);
 
         $recipe->recipeProducts->transform(function ($recipeProduct) {
             $converted = MeasurmentConversionService::fromBaseAmount(
@@ -208,6 +214,8 @@ class RecipeController extends Controller
             'recipe' => $recipe,
             'products' => Product::all(),
             'units' => Unit::all(),
+            'types' => RecipeType::all(),
+            'categories' => RecipeCategory::all(),
             'breadcrumbs' => $this->breadcrumbService->forRecipeEdit($recipe),
         ]);
     }
@@ -231,6 +239,9 @@ class RecipeController extends Controller
             'recipe_products.*.product_id' => 'required|numeric',
             'recipe_products.*.amount' => 'required|numeric|min:0',
             'recipe_products.*.unit_id' => 'required|numeric',
+            'recipe_type_id' => 'nullable|exists:recipe_types,id',
+            'recipe_category_ids' => 'nullable|array',
+            'recipe_category_ids.*' => 'exists:recipe_categories,id',
         ]);
 
         if ($request->hasFile('image_src')) {
@@ -250,8 +261,10 @@ class RecipeController extends Controller
             'cook_time' => $data['cook_time'],
             'servings' => $data['servings'],
             'instructions' => $data['instructions'],
+            'recipe_type_id' => $data['recipe_type_id'] ?? null,
         ]);
 
+        $recipe->recipeCategories()->sync($data['recipe_category_ids'] ?? []);
         $recipe->recipeProducts()->delete();
 
         foreach ($data['recipe_products'] as $recipeProduct) {
@@ -285,6 +298,11 @@ class RecipeController extends Controller
             'recipe_products.*.product_id' => 'required|numeric',
             'recipe_products.*.amount' => 'required|numeric|min:0',
             'recipe_products.*.unit_id' => 'required|numeric',
+
+            'recipe_type_id' => 'nullable|exists:recipe_types,id',
+            'recipe_category_ids' => 'nullable|array',
+            'recipe_category_ids.*' => 'exists:recipe_categories,id',
+
         ]);
 
         if ($request->hasFile('image_src')) {
@@ -307,7 +325,10 @@ class RecipeController extends Controller
             'servings' => $data['servings'],
             'instructions' => $data['instructions'],
             'user_id' => $user->id,
+            'recipe_type_id' => $data['recipe_type_id'] ?? null,
         ]);
+
+        $recipe->recipeCategories()->sync($data['recipe_category_ids'] ?? []);
 
         foreach ($data['recipe_products'] as $recipeProduct) {
             $unit = Unit::findOrFail($recipeProduct['unit_id']);

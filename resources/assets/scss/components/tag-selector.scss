@@ -1,0 +1,36 @@
+@use '@environment' as *;
+
+.tag-selector {
+    .tag-group {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .tags-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tag-selectable {
+        border: 1px solid $color-body-dark;
+        cursor: pointer;
+        transition: all 0.12s ease;
+        user-select: none;
+
+        &:hover {
+            border-color: $color-primary;
+            color: $color-primary;
+        }
+
+        &.selected {
+            background: $color-red-light;
+            border-color: $color-primary;
+            color: $color-white;
+        }
+
+        .check {
+            font-size: 11px;
+        }
+    }
+}

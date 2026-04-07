@@ -4,6 +4,7 @@ import DurationField from "./Inputs/DurationField.vue";
 import SearchableSelect from "./Inputs/SearchableSelect.vue";
 import SelectField from "./Inputs/SelectField.vue";
 import ImageUpload from "./Inputs/ImageUpload.vue";
+import TagSelector from "./Inputs/TagSelector.vue";
 import { usePage } from "@inertiajs/vue3";
 
 const { translations, enums } = usePage().props;
@@ -80,7 +81,7 @@ function getFilteredUnits(index) {
                 v-model="form.visibility"
                 :items="visibilityOptions"
                 :label="translations.fields.labels.recipe.visibility"
-                placeholderValue="Select visibility"
+                :placeholderValue="translations.recipe.visibility.placeholder"
             />
         </section>
 
@@ -105,12 +106,19 @@ function getFilteredUnits(index) {
                     :error="form.errors.servings"
                 />
             </div>
+
+            <TagSelector
+                v-model:selectedTypeId="form.recipe_type_id"
+                v-model:selectedCategoryIds="form.recipe_category_ids"
+            />
         </section>
 
         <section>
             <div class="title">
                 <h3>{{ translations.recipe.ingredients }}</h3>
-                <button type="button" class="button" @click="addProduct">+</button>
+                <button type="button" class="button primary" @click="addProduct">
+                    <i class="pi pi-plus"/>
+                </button>
             </div>
 
             <div v-for="(product, index) in form.recipe_products" :key="index" class="ingredient-row">
@@ -150,7 +158,9 @@ function getFilteredUnits(index) {
         <section>
             <div class="title">
                 <h3>{{ translations.recipe.instructions }}</h3>
-                <button type="button" class="button" @click="addInstruction">+</button>
+                <button type="button" class="button primary" @click="addInstruction">
+                    <i class="pi pi-plus"/>
+                </button>
             </div>
 
             <div v-for="(step, index) in form.instructions" :key="index" class="instruction-row">

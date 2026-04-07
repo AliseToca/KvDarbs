@@ -6,7 +6,7 @@ import Breadcrumb from "../../Components/Breadcrumb.vue";
 import RecipeForm from "../../Components/RecipeForm.vue";
 import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 
-const { translations, products, units, breadcrumbs, recipe } = usePage().props;
+const { translations, products, units, breadcrumbs, recipe} = usePage().props;
 
 const showDeleteModal = ref(false);
 
@@ -23,6 +23,8 @@ const form = useForm({
     })),
     instructions: recipe.instructions,
     visibility: recipe.visibility,
+    recipe_type_id: recipe.recipe_type_id ?? null,
+    recipe_category_ids: recipe.recipe_categories?.map(c => c.id) ?? [],
 });
 
 function submit() {
@@ -36,7 +38,7 @@ function submit() {
     <MainLayout>
         <div class="recipe">
             <Breadcrumb :items="breadcrumbs" />
-            <header>
+            <header class="page-header">
                 <h1>{{ translations.recipe.edit_recipe }}</h1>
 
                 <button class="button primary" @click="showDeleteModal = true">

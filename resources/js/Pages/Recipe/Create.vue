@@ -21,6 +21,8 @@ const form = useForm({
     ],
     instructions: [''],
     visibility: 'household',
+    recipe_type_id: null,
+    recipe_category_ids: [],
 });
 
 function submit() {

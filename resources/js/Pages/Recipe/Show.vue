@@ -11,7 +11,6 @@ import RecipeActionsDropdown from "../../Components/Dropdowns/RecipeActionsDropd
 import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 import Rating from "../../Components/Rating.vue";
 import Avatar from "../../Components/Avatar.vue";
-import Checkbox from "../../Components/Inputs/Checkbox.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
 
@@ -83,14 +82,9 @@ function formatAmount(value) {
                             <Rating :rating="recipe.average_rating"/>
 
                             <span class="rating-value">
-                                {{ recipe.average_rating.toFixed(1) }}
-                            </span>
-
-                            <span class="divider">•</span>
-
-                            <span class="comments">
-                                {{ recipe.reviews_count }}
-                                Atsauksmes
+                                {{ recipe.average_rating ? recipe.average_rating.toFixed(1) : '0.0' }}
+                                ({{ recipe.reviews_count }}
+                                {{ translations.recipe.reviews.plural }})
                             </span>
 
                             <span class="divider">•</span>
@@ -125,13 +119,22 @@ function formatAmount(value) {
                         </div>
                     </div>
 
-                    <div class="tags recipe-tags">
-                        <span class="tag">
-                            Brokastis
-                        </span>
-                        <span class="tag">
-                            Veģetārs
-                        </span>
+                    <div class="recipe-tags">
+                        <div class="tag-group">
+                            <span class="label">{{ translations.recipe.types }}</span>
+                            <div class="tags">
+                                <span class="tag">{{ recipe.recipe_type?.name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="tag-group">
+                            <span class="label">{{ translations.recipe.categories }}</span>
+                            <div class="tags">
+                                <span  v-for="category in recipe.recipe_categories"  class="tag">
+                                    {{ category.name }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

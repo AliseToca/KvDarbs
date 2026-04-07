@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('visibility', ['private', 'household', 'public'])->default('household');
 
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('recipe_type_id')->nullable()->constrained('recipe_types')->nullOnDelete();
 
             $table->timestamps();
         });

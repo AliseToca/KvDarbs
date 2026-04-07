@@ -14,6 +14,8 @@ return [
     'ingredients' => 'Sastāvdaļas',
     'instructions' => 'Pagatavošanas soļi',
     'no_recipes' => 'Nav recepšu',
+    'types' => 'Ēdienreize',
+    'categories' => 'Kategorijas',
     'reviews' => [
         'heading' => 'Novertē šo recepti!',
         'plural' => 'Atsauksmes',
@@ -25,6 +27,7 @@ return [
         'public' => 'Publisks',
         'household' => 'Mājsaimniecība',
         'private' => 'Privāts',
+        'placeholder' => 'Izvēlies redzamību'
     ],
     'not_found' => 'Recepte nav atrasta',
     'my_recipes' => [

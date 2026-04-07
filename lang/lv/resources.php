@@ -64,7 +64,7 @@ return [
         'plural' => 'Recepšu kategorijas',
     ],
     'recipe_types' => [
-        'singular' => 'Recepta tips',
-        'plural' => 'Recepta tipi',
+        'singular' => 'Receptes veids',
+        'plural' => 'Recepšu veidi',
     ]
 ];

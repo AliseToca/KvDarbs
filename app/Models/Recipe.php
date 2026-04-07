@@ -30,6 +30,7 @@ class Recipe extends Model
         'instructions',
         'product_id',
         'user_id',
+        'recipe_type_id',
     ];
 
     // Datu pārveidošana uz tipu
@@ -73,9 +74,9 @@ class Recipe extends Model
         return $this->belongsToMany(RecipeCategory::class);
     }
 
-    public function recipeTypes(): BelongsToMany
+    public function recipeType(): BelongsTo
     {
-        return $this->belongsToMany(RecipeType::class);
+        return $this->belongsTo(RecipeType::class);
     }
 
     //--- Vērtibu piekļuves metodes ---
