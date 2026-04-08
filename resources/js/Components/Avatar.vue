@@ -12,6 +12,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    large: {
+        type: Boolean,
+        default: false,
+    },
     clickable: {
         type: Boolean,
         default: false,
@@ -22,7 +26,7 @@ const emit = defineEmits(['click']);
 </script>
 
 <template>
-    <div class="avatar" :class="{ 'small': small, 'mini': mini, 'clickable': clickable }">
+    <div class="avatar" :class="{ 'small': small, 'mini': mini, 'large': large, 'clickable': clickable }">
         <img v-if="avatarSrc" :src="`/storage/${avatarSrc}`"/>
 
         <div v-else class="placeholder">

@@ -29,6 +29,15 @@
         }
     }
 
+    &.large {
+        width: 100px;
+        height: 100px;
+
+        i {
+            font-size: 30px;
+        }
+    }
+
     &.clickable {
         cursor: pointer;
     }

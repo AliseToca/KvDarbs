@@ -3,6 +3,8 @@ import {onMounted, onUnmounted, ref, watch, computed} from 'vue';
 import {usePage, Link} from '@inertiajs/vue3';
 import NavBar from "../../Components/NavBar.vue";
 import UserActionsDropdown from "../../Components/Dropdowns/UserActionsDropdown.vue";
+import Avatar from "../../Components/Avatar.vue";
+import UserActions from "../../Components/UserActions.vue";
 
 const {translations, headerMenu, languagePage} = usePage().props;
 
@@ -76,7 +78,7 @@ onUnmounted(() => {
         </Link>
 
         <!--Mobilās izvēlnes poga-->
-        <button v-if="isMobile" @click="openMenu" aria-label="Open menu">
+        <button v-if="isMobile && user !== null" @click="openMenu">
             <i class="pi pi-bars"></i>
         </button>
 
@@ -93,19 +95,32 @@ onUnmounted(() => {
                     </button>
                 </header>
 
-                <!-- Mobilā navigācijas josla -->
-                <NavBar
-                    :language-page="languagePage"
-                    :menu="headerMenu"
-                />
+                <div class="menu-content">
+                    <div class="user-info">
+                        <Avatar :avatarSrc="user.avatar_src" large/>
 
-                <!--Pieslēgšanās/izrakstīšanās mobilās pogas-->
-                <button v-if="user" @click="logout" class="button primary">
+                        <h3> {{ user.name }} </h3>
+                        <span> @{{ user.username }} </span>
+                    </div>
+
+                    <!-- Mobilā navigācijas josla -->
+                    <NavBar
+                        :language-page="languagePage"
+                        :menu="headerMenu"
+                    />
+
+                    <nav>
+                        <ul>
+                            <UserActions/>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!--Izrakstīšanās mobilā poga-->
+                <Link v-if="user !== null" :href="route('logout')" method="post" as="button" class="button primary full-width">
+                    <i class="pi pi-power-off"/>
                     {{ translations.auth.logout }}
-                </button>
-                <button v-else @click="login" class="button primary">
-                    {{ translations.auth.login }}
-                </button>
+                </Link>
             </div>
         </Transition>
     </header>
