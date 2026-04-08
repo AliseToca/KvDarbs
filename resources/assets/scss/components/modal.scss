@@ -8,6 +8,7 @@ body.no-scroll {
 .modal-overlay {
     position: fixed;
     inset: 0;
+    padding: 10px;
 
     display: flex;
     justify-content: center;
@@ -62,8 +63,8 @@ body.no-scroll {
     color: $color-text-primary;
     border-radius: 8px;
     min-height: 300px;
-    max-height: 90%;
-    min-width: 500px;
+    max-height: min(90%, 90dvh);
+    min-width: min(500px, 100%);
     padding: 20px;
     padding-bottom: 15px;
 

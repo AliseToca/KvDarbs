@@ -4,11 +4,15 @@
     overflow-y: auto;
     max-height: 300px;
 
+    @include until($phone-sm) {
+        max-height: 240px;
+    }
+
     .folder-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 100px;
+        gap: clamp(12px, 5vw, 100px);
         padding: 5px;
         border-radius: 8px;
 
@@ -21,24 +25,37 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            min-width: 0;
         }
 
         .folder-name {
+            overflow: hidden;
+            white-space: nowrap;
             text-overflow: ellipsis;
         }
 
-        .thumbnail {
+        .thumbnail,
+        .placeholder {
             width: 58px;
             height: 58px;
+            flex-shrink: 0;
             border-radius: 6px;
+        }
+
+        .thumbnail {
             object-fit: cover;
         }
 
         .placeholder {
-            width: 58px;
-            height: 58px;
-            border-radius: 6px;
             background-color: $color-gray-light;
+        }
+
+        @include until($phone-sm) {
+            .thumbnail,
+            .placeholder {
+                width: 44px;
+                height: 44px;
+            }
         }
     }
 }
@@ -58,5 +75,9 @@
 
     i {
         font-size: 50px;
+
+        @include until($phone-sm) {
+            font-size: 36px;
+        }
     }
 }
