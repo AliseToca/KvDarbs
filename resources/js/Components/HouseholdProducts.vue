@@ -35,6 +35,7 @@ function openDelete(entry, productName) {
     <AcordionItem
         v-for="(products, category) in categorizedProducts"
         :key="category"
+        :default-open="products.length > 0"
     >
         <!-- Mājsaimniecības produktu kategorijas nosaukums -->
         <template #header>

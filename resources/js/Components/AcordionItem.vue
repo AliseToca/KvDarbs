@@ -1,7 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
-const isOpen = ref(true);
+const props = defineProps({
+    defaultOpen: {
+        type: Boolean,
+        default: false,
+    }
+});
+
+const isOpen = ref(props.defaultOpen);
 const toggle = () => {
     isOpen.value = !isOpen.value;
 }
@@ -10,7 +17,7 @@ const toggle = () => {
 <template>
     <div class="accordion-item">
         <button class="accordion-header" @click="toggle" type="button">
-            <slot name="header" />
+            <slot name="header"/>
 
             <i class="pi pi-chevron-down" :class="{'open': isOpen}"></i>
         </button>
