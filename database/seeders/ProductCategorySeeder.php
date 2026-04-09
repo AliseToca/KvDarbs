@@ -14,12 +14,20 @@ class ProductCategorySeeder extends Seeder
     public function run(): void
     {
         $productCategories = [
-            //TO DO : Add ALL product categories
             ['name' => 'Gaļa un zivis'],
-            ['name' => 'Piena produkti'],
+            ['name' => 'Piena produkti un olas'],
             ['name' => 'Dārzeņi'],
             ['name' => 'Augļi'],
             ['name' => 'Garšvielas'],
+            ['name' => 'Maize un milti'],
+            ['name' => 'Eļļas un tauki'],
+            ['name' => 'Konditorejas izstrādājumi'],
+            ['name' => 'Pākšaugi'],
+            ['name' => 'Rieksti un sēklas'],
+            ['name' => 'Graudaugi un putraimi'],
+            ['name' => 'Buljons un mērces'],
+            ['name' => 'Sēnes'],
+            ['name' => 'Dzērieni'],
         ];
 
         DB::table('product_categories')->insert($productCategories);
