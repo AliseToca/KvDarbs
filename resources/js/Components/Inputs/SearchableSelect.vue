@@ -13,6 +13,11 @@ const props = defineProps({
     label: String,
     placeholderValue: String,
     notFoundMessage: String,
+    disabled: {
+        type: Boolean,
+        default: false,
+    },
+    disabledPlaceholder: String,
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -27,11 +32,10 @@ watch(
             search.value = '';
             return;
         }
-
         const item = props.items.find(i => i.id === id);
         search.value = item ? item.name : '';
     },
-    { immediate: true }
+    {immediate: true}
 );
 
 const filteredItems = computed(() => {
@@ -62,28 +66,38 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', handleClickOutsi
 
 
 <template>
-        <div class="select" ref="container">
-            <label>{{ label }}</label>
+    <div class="select" ref="container">
+        <label>{{ label }}</label>
+        <div class="input-wrapper">
             <input
                 type="text"
                 v-model="search"
-                :placeholder="placeholderValue"
+                :placeholder="disabled ? disabledPlaceholder : placeholderValue"
                 @focus="isOpen = true"
-                @input="emit('update:modelValue', search.value)"
+                @input="emit('update:modelValue', search)"
+                :disabled="disabled"
             />
 
-            <ul v-if="isOpen" class="dropdown">
-                <li
-                    v-for="item in filteredItems"
-                    :key="item.id"
-                    @click="selectItems(item)"
-                >
-                    {{ item.name }}
-                </li>
-
-                <li v-if="filteredItems.length === 0" class="empty">
-                    {{ notFoundMessage }}
-                </li>
-            </ul>
+            <span class="select-arrow" :class="{ 'select-arrow--open': isOpen }">
+                <i
+                    class="pi select-arrow"
+                    :class="isOpen ? 'pi-chevron-up' : 'pi-chevron-down'"
+                />
+            </span>
         </div>
+
+        <ul v-if="isOpen" class="dropdown">
+            <li
+                v-for="item in filteredItems"
+                :key="item.id"
+                @click="selectItems(item)"
+            >
+                {{ item.name }}
+            </li>
+
+            <li v-if="filteredItems.length === 0" class="empty">
+                {{ notFoundMessage }}
+            </li>
+        </ul>
+    </div>
 </template>

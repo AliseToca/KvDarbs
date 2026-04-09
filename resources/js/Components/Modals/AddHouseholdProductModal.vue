@@ -1,17 +1,17 @@
 <script setup>
-import { computed, reactive } from 'vue';
+import { computed, watch } from 'vue';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import Modal from './Modal.vue';
 import InputField from "@/Components/Inputs/InputField.vue";
 import SearchableSelect from "@/Components/Inputs/SearchableSelect.vue";
+
+const { products, units, translations } = usePage().props;
 
 const props = defineProps({
     modelValue: Boolean,
 });
 
 const emit = defineEmits(['update:modelValue']);
-
-const { products, units, translations } = usePage().props;
 
 const form = useForm({
     product_id: '',
@@ -28,6 +28,11 @@ const filteredUnits = computed(() => {
     return units.filter(
         u => u.measurement_type_id === product.measurement_type_id
     );
+});
+
+// Atjaunina mērvienību, kad produkts tiek nomainīts
+watch(() => form.product_id, () => {
+    form.unit_id = '';
 });
 
 function closeModal() {
@@ -47,7 +52,6 @@ function submit() {
         }
     });
 }
-
 </script>
 
 <template>
@@ -78,6 +82,8 @@ function submit() {
                     :items="filteredUnits"
                     :label="translations.fields.labels.product.unit"
                     :clearable="false"
+                    :disabled="!form.product_id"
+                    :disabledPlaceholder="translations.household.select_product_first"
                 />
 
                 <InputField

@@ -9,6 +9,7 @@ return [
     'no_products' => 'Tukšs :(',
     'add_product' => 'Pievienot produktu',
     'search_products' => 'Meklē produktus...',
+    'select_product_first' => 'Sākumā izvēlies produktu',
     'search_units' => 'Mekle mērvienības...',
     'delete_message' => [
         'household' => 'Mājsaimniecības',
