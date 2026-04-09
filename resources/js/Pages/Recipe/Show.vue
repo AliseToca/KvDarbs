@@ -70,7 +70,7 @@ function formatAmount(value) {
         <div class="recipe">
             <header class="page-header">
                 <Breadcrumb :items="breadcrumbs"/>
-                <RecipeActionsDropdown :recipeId="recipe.id" :translations="translations"/>
+                <RecipeActionsDropdown :recipe="recipe" :translations="translations"/>
             </header>
 
             <section class="recipe-header">

@@ -43,6 +43,7 @@ class InertiaServiceProvider extends ServiceProvider
             'headerMenu' => fn () => $this->getMenuItems('header'),
             'footerMenu' => fn () => $this->getMenuItems('footer'),
             'user' => fn () => auth()->user() ? [
+                'id' => auth()->user()->id,
                 'name' => auth()->user()->name,
                 'username' => auth()->user()->username,
                 'avatar_src' => auth()->user()->avatar_src,

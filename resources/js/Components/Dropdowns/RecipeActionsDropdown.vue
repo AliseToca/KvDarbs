@@ -4,10 +4,13 @@ import Dropdown from './Dropdown.vue';
 import ConfirmAddToShoppingList from '../Modals/ConfirmAddToShoppingList.vue';
 import ConfirmMarkAsDoneModal from '../Modals/ConfirmMarkAsDoneModal.vue';
 import AddToFolderModal from "../Modals/AddToFolderModal.vue";
+import {Link, usePage} from "@inertiajs/vue3";
+
+const {translations, user} = usePage().props;
 
 const props = defineProps({
-    recipeId: {
-        type: Number,
+    recipe: {
+        type: Object,
         required: true
     },
     translations: {
@@ -30,6 +33,12 @@ const isConfirmAddToFolderOpen = ref(false);
             </button>
         </template>
 
+        <li v-if="user.id === recipe.user_id">
+            <Link :href="route('recipes.edit', { recipe: recipe.slug })">
+                <i class="pi pi-pen-to-square"/>
+                {{ translations.recipe.edit_recipe }}
+            </Link>
+        </li>
         <li>
             <button @click="isConfirmAddToShoppingListOpen = true; dropdown.close()">
                 <i class="pi pi-list-check"/>
@@ -54,14 +63,14 @@ const isConfirmAddToFolderOpen = ref(false);
         v-model="isConfirmAddToShoppingListOpen"
         :title="translations.shopping_list.add_to_list"
         :message="translations.shopping_list.ask_confirm"
-        :recipeId="recipeId"
+        :recipeId="recipe.id"
     />
 
     <ConfirmMarkAsDoneModal
         v-model="isConfirmMarkAsDoneOpen"
         title="Vai vēlies atzīmēt recpeti kā izdarītu?"
         message="No tavas mājsaimniecības tiks atņemtas visas receptē esošās sastāvdaļas."
-        :recipeId="recipeId"
+        :recipeId="recipe.id"
     />
 
     <AddToFolderModal
