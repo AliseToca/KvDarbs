@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed} from "vue";
+import {ref, computed, onMounted, onBeforeUnmount} from "vue";
 
 const props = defineProps({
     label: String,
@@ -22,10 +22,21 @@ function selectItems(item) {
     emit('update:modelValue', item.id);
     isOpen.value = false;
 }
+
+const container = ref(null);
+
+function handleClickOutside(e) {
+    if (container.value && !container.value.contains(e.target)) {
+        isOpen.value = false;
+    }
+}
+
+onMounted(() => document.addEventListener('mousedown', handleClickOutside));
+onBeforeUnmount(() => document.removeEventListener('mousedown', handleClickOutside));
 </script>
 
 <template>
-    <div class="select" >
+    <div class="select" ref="container">
         <label> {{ label }}</label>
 
         <div class="select-wrapper">
