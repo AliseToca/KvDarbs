@@ -3,7 +3,7 @@ import {ref, computed, watch, onMounted, onBeforeUnmount} from 'vue';
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, Number],
         default: '',
     },
     items: {

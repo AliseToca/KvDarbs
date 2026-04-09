@@ -80,7 +80,6 @@ const categorizedProducts = computed(() => {
 
             <AddHouseholdProductModal
                 v-model="isAddProductModalOpen"
-                :household-id="household.id"
             />
 
             <HouseholdProducts :categorizedProducts="categorizedProducts" :no-product-text="translations.household.no_products"/>

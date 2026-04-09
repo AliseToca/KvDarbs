@@ -7,7 +7,7 @@ const props = defineProps({
     name: String,
     label: String,
     placeholderValue: String,
-    modelValue: String,
+    modelValue: [String, Number],
     error: [String, Array],
     maxLength: Number,
     lengthCheck: Boolean,
