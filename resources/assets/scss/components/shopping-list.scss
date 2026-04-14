@@ -1,20 +1,59 @@
 @use '@environment' as *;
 
 .shopping-list-wrapper {
-    max-width: 80%;
+    max-width: 70%;
+
+    .form-field {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+
+        .button {
+            flex-shrink: 0;
+            max-height: 40px;
+        }
+
+        .input-field {
+            flex: 1;
+        }
+    }
 }
 
 .shopping-list {
-    border-top: 1px solid $color-gray-light;
-    margin-top: 20px;
-    padding-top: 20px;
+    margin-top: 10px;
 
-    .shopping-list-item {
+    &-header {
+        margin-bottom: 20px;
+
+        &-info {
+            text-transform: capitalize;
+            color: $color-gray;
+            font-size: 14px;
+
+            .divider {
+                margin-inline: 4px;
+            }
+        }
+    }
+
+    &-divider {
+        margin-top: 20px;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: $color-gray;
+    }
+
+    &-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
         transition: opacity 0.2s ease;
+
+        &:hover {
+            background: $color-body-dark;
+        }
 
         label {
             display: flex;
@@ -30,7 +69,7 @@
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
-            flex-shrink: 0;
+            display: inline-block;
             border: 2px solid $color-gray;
             border-radius: 5px;
             background: $color-body;
@@ -75,6 +114,12 @@
             label {
                 text-decoration: line-through;
             }
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }

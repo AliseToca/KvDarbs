@@ -10,7 +10,7 @@ return [
     'add_product' => 'Pievienot produktu',
     'search_products' => 'Meklē produktus...',
     'select_product_first' => 'Sākumā izvēlies produktu',
-    'search_units' => 'Mekle mērvienības...',
+    'search_units' => 'Meklē mērvienības...',
     'delete_message' => [
         'household' => 'Mājsaimniecības',
         'ask_confirmation' => 'Vai esi pārliecināts, ka vēlies dzēst',

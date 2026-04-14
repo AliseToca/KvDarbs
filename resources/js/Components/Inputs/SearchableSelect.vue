@@ -64,7 +64,6 @@ onMounted(() => document.addEventListener('mousedown', handleClickOutside));
 onBeforeUnmount(() => document.removeEventListener('mousedown', handleClickOutside));
 </script>
 
-
 <template>
     <div class="select" ref="container">
         <label>{{ label }}</label>

@@ -33,6 +33,9 @@ class ShoppingListController extends Controller
         return Inertia::render('ShoppingList/Show', [
             'page_name' => $page_name,
             'shopping_list' => $shoppingList,
+            'household' => [
+                'name' => $household?->name ?? '',
+            ],
         ]);
     }
 

@@ -1,15 +1,14 @@
 <script setup>
 import MainLayout from '../../Layouts/Main.vue';
-import {Link, usePage} from '@inertiajs/vue3';
+import {usePage} from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
 import HouseholdProducts from "../../Components/HouseholdProducts.vue";
 import AddHouseholdProductModal from "../../Components/Modals/AddHouseholdProductModal.vue";
 import InviteHouseholdModal from "../../Components/Modals/InviteHouseholdModal.vue";
 import LeaveHouseholdModal from "../../Components/Modals/LeaveHouseholdModal.vue";
-import Dropdown from "../../Components/Dropdowns/Dropdown.vue";
 import HouseholdActionsDropdown from "../../Components/Dropdowns/HouseholdActionsDropdown.vue";
 
-const {productCategories, translations, userRole, householdUsersCount } = usePage().props;
+const {productCategories, translations, householdUsersCount } = usePage().props;
 
 const householdProducts = computed(() => usePage().props.householdProducts);
 const household = computed(() => usePage().props.household);
@@ -17,8 +16,6 @@ const household = computed(() => usePage().props.household);
 const isAddProductModalOpen = ref(false);
 const isInviteModalOpen = ref(false);
 const isLeaveModalOpen = ref(false);
-
-const dropdown = ref(null);
 
 //Sagrupēti produkti pēc kategorijas
 const categorizedProducts = computed(() => {
