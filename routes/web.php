@@ -15,6 +15,7 @@ use App\Http\Controllers\HouseholdEmailInviteController;
 use App\Http\Controllers\HouseholdUserController;
 use App\Http\Controllers\ShoppingListController;
 use App\Http\Controllers\FolderRecipeController;
+use App\Http\Controllers\RecipePdfController;
 
 Route::get('/', function () {
     return redirect('/lv/');
@@ -90,6 +91,9 @@ Route::middleware('auth')->group(function(){
         ->name('recipes.reviews.store');
     Route::delete('/reviews/{review}/delete', [ReviewController::class, 'destroy'])
         ->name('recipes.reviews.delete');
+
+    Route::get('recipes/{recipe}/pdf', RecipePdfController::class)
+        ->name('recipes.pdf');
 
     Route::get('/folders', [FolderController::class, 'index'])
         ->name('folders.index');

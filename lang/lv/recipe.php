@@ -5,6 +5,7 @@ return [
     'plural' => 'Receptes',
     'create_recipe' => 'Izveidot recepti',
     'edit_recipe' => 'Rediģēt Recepti',
+    'export_recipe' => 'PDF izdruka',
     'prep_time' => 'Sagatavošanas laiks',
     'cook_time' => 'Gatavošanas laiks',
     'total_time' => 'Kopējais laiks',

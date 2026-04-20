@@ -33,12 +33,6 @@ const isConfirmAddToFolderOpen = ref(false);
             </button>
         </template>
 
-        <li v-if="user.id === recipe.user_id">
-            <Link :href="route('recipes.edit', { recipe: recipe.slug })">
-                <i class="pi pi-pen-to-square"/>
-                {{ translations.recipe.edit_recipe }}
-            </Link>
-        </li>
         <li>
             <button @click="isConfirmAddToShoppingListOpen = true; dropdown.close()">
                 <i class="pi pi-list-check"/>
@@ -52,10 +46,22 @@ const isConfirmAddToFolderOpen = ref(false);
             </button>
         </li>
         <li>
+            <a :href="route('recipes.pdf', recipe)" target="_blank">
+                <i class="pi pi-file-pdf"/>
+                {{ translations.recipe.export_recipe }}
+            </a>
+        </li>
+        <li>
             <button @click="isConfirmAddToFolderOpen = true; dropdown.close()">
                 <i class="pi pi-bookmark"/>
                 {{ translations.recipe.actions.save }}
             </button>
+        </li>
+        <li v-if="user.id === recipe.user_id">
+            <Link :href="route('recipes.edit', { recipe: recipe.slug })">
+                <i class="pi pi-pen-to-square"/>
+                {{ translations.recipe.edit_recipe }}
+            </Link>
         </li>
     </Dropdown>
 
