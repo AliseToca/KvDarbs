@@ -115,8 +115,10 @@ class RecipeController extends Controller
         $page = $this->pagesService->getRecipeIndexPage();
         $user = auth()->user();
 
-        $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
-            ->where('user_id', $user->id)
+        $baseQuery = Recipe::where('user_id', $user->id);
+
+        $recipes = $baseQuery
+            ->select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
             ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->paginate(12)
             ->withQueryString()
@@ -126,9 +128,11 @@ class RecipeController extends Controller
             'page_name' => $page->name,
             'blocks' => json_decode($page->blocks) ?? [],
             'recipes' => $recipes,
+            'recipe_count' => $baseQuery->count(),
             'filters' => [
                 'search' => $request->search,
-            ]
+            ],
+            'folders' => $this->mapFolders($user),
         ]);
     }
 

@@ -71,6 +71,7 @@ function applyFilters() {
                 <RecipeCard
                     v-for="recipe in recipes.data || []"
                     :key="recipe.id"
+                    :id="recipe.id"
                     :url=recipe.url
                     :name=recipe.name
                     :imageSrc=recipe.image_src

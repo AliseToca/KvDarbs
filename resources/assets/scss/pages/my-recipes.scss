@@ -10,7 +10,12 @@
             font-size: 15px;
         }
 
-        div {
+        .header-info {
+            font-size: 13px;
+            color: $color-gray;
+        }
+
+        .header-actions {
             display: flex;
             justify-content: flex-end;
             align-items: center;

@@ -6,16 +6,19 @@ import Pagination from "../../Components/Pagination.vue";
 import SearchBar from "../../Components/SearchBar.vue";
 import NotFound from "../../Components/NotFound.vue";
 
-const { translations, recipes, filters} = usePage().props;
+const { translations, recipes, recipe_count, filters} = usePage().props;
 </script>
 
 <template>
     <MainLayout>
         <div class="my-recipes">
             <header>
-                <h1>{{ translations.recipe.my_recipes.title }}</h1>
-
                 <div>
+                    <h1>{{ translations.recipe.my_recipes.title }}</h1>
+                    <span class="header-info">{{ recipe_count }} {{ translations.recipe.plural }}</span>
+                </div>
+
+                <div class="header-actions">
                     <SearchBar :model-value="filters.search" placedHolder="Meklē receptes..." />
 
                     <Link :href="route('recipe.create')" as="button" class="button primary">
@@ -29,11 +32,14 @@ const { translations, recipes, filters} = usePage().props;
                 <RecipeCard
                     v-for="recipe in recipes.data || []"
                     :key="recipe.id"
+                    :id="recipe.id"
                     :name="recipe.name"
                     :url="route('recipes.edit', { recipe: recipe.slug })"
                     :imageSrc="recipe.image_src"
                     :rating="recipe.average_rating"
+                    :reviews_count=recipe.reviews_count
                     :time_minutes="recipe.total_time"
+                    :servings=recipe.servings
                     :show_missing_products="false"
                 />
             </div>
