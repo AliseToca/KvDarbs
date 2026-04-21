@@ -11,6 +11,7 @@ import NotFound from "../../Components/NotFound.vue";
 const {translations, recipes, filters, blocks, page_name, categories, types} = usePage().props;
 
 const urlParams = new URLSearchParams(window.location.search);
+const resultsKey = ref(0);
 
 const selectedType = ref(Number(urlParams.get('type')) || null);
 
@@ -31,7 +32,13 @@ function applyFilters() {
             search: filters.search || undefined,
             type: selectedType.value || undefined,
         },
-        { preserveScroll: true, replace: true }
+        {
+            preserveScroll: true,
+            replace: true,
+            onSuccess: () => {
+                resultsKey.value++;
+            },
+        }
     );
 }
 </script>
@@ -67,31 +74,39 @@ function applyFilters() {
                 </div>
             </div>
 
-            <div class="grid-container">
-                <RecipeCard
-                    v-for="recipe in recipes.data || []"
-                    :key="recipe.id"
-                    :id="recipe.id"
-                    :url=recipe.url
-                    :name=recipe.name
-                    :imageSrc=recipe.image_src
-                    :rating=recipe.average_rating
-                    :reviews_count=recipe.reviews_count
-                    :time_minutes=recipe.total_time
-                    :missing_products_count=recipe.missing_products_count
-                    :available_products_count=recipe.available_products_count
-                    :total_products_count=recipe.total_products_count
-                    :compatibility=recipe.compatibility
-                    :servings=recipe.servings
-                />
-            </div>
+            <div :key="resultsKey" class="results-fade">
+                <TransitionGroup
+                    name="card-fade"
+                    tag="div"
+                    class="grid-container"
+                >
+                    <RecipeCard
+                        v-for="recipe in recipes.data || []"
+                        :key="recipe.id"
+                        :id="recipe.id"
+                        :url=recipe.url
+                        :name=recipe.name
+                        :imageSrc=recipe.image_src
+                        :rating=recipe.average_rating
+                        :reviews_count=recipe.reviews_count
+                        :time_minutes=recipe.total_time
+                        :missing_products_count=recipe.missing_products_count
+                        :available_products_count=recipe.available_products_count
+                        :total_products_count=recipe.total_products_count
+                        :compatibility=recipe.compatibility
+                        :servings=recipe.servings
+                    />
+                </TransitionGroup>
 
-            <NotFound
-                v-if="recipes.data.length === 0"
-                iconClass="pi pi-search-minus"
-                :title="translations.recipe.not_found"
-                :message = "translations.recipe.not_found_message"
-            />
+                <Transition name="fade" mode="out-in">
+                    <NotFound
+                        v-if="recipes.data.length === 0"
+                        iconClass="pi pi-search-minus"
+                        :title="translations.recipe.not_found"
+                        :message="translations.recipe.not_found_message"
+                    />
+                </Transition>
+            </div>
 
             <Pagination :links="recipes.links"/>
         </div>
