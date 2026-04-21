@@ -3,6 +3,7 @@ import { watch } from 'vue';
 
 const props = defineProps({
     modelValue: Boolean,
+    innerClass: String,
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -21,7 +22,7 @@ const close = () => emit('update:modelValue', false);
     <Teleport to="#modals">
         <div v-if="modelValue" class="modal-container">
             <div class="modal-overlay" @click="close">
-                <div class="modal-inner" @click.stop>
+                <div class="modal-inner" :class="innerClass" @click.stop>
                     <!-- Paziņojuma loga galvene -->
                     <div class="modal-header">
                         <slot name="header"/>

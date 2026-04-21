@@ -1,5 +1,9 @@
 @use '@environment' as *;
 
+.add-to-folder-modal {
+    justify-content: flex-start;
+}
+
 .folder-list {
     overflow-y: auto;
     max-height: 300px;

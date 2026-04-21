@@ -10,7 +10,7 @@ function saveToFolder(folder) {
 </script>
 
 <template>
-    <Modal>
+    <Modal innerClass="add-to-folder-modal">
         <template #header>
             <h2>{{ translations.folders.add_to_folder }}</h2>
         </template>
