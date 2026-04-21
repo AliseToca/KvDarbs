@@ -3,10 +3,14 @@ import Modal from "./Modal.vue";
 import {usePage, router} from "@inertiajs/vue3";
 import NotFound from "../NotFound.vue";
 
-const {folders, translations, recipe} = usePage().props;
+const {folders, translations} = usePage().props;
+
+const props = defineProps({
+    recipe: Number,
+})
 
 function saveToFolder(folder) {
-    router.post(route('folders.recipes.store', {folder: folder, recipe: recipe}));
+    router.post(route('folders.recipes.store', {folder: folder, recipe: props.recipe}));
 }
 </script>
 

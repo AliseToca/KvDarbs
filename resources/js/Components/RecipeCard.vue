@@ -7,6 +7,7 @@ import {HamIcon} from '@hugeicons/core-free-icons';
 import AddToFolderModal from "../Components/Modals/AddToFolderModal.vue";
 
 const props = defineProps({
+    id: Number,
     url: String,
     slug: String,
     name: String,
@@ -49,6 +50,7 @@ const isConfirmAddToFolderOpen = ref(false);
 
                     <AddToFolderModal
                         v-model="isConfirmAddToFolderOpen"
+                        :recipe="id"
                     />
 
                     <h2 class="recipe-title">{{ name }}</h2>
