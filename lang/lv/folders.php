@@ -10,4 +10,8 @@ return [
     'empty_folder' => 'Tukšs saraksts',
     'folder' => 'Saraksta',
     'delete_message' => 'Vai tiešām vēlies dzēst receptes sarakstu un tā vienības?',
+    'not_found' =>[
+        'title' => 'Tev vēl nav neviena saraksta',
+        'message' => 'Izveido jaunu!',
+    ],
 ];

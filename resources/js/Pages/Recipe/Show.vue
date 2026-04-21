@@ -11,6 +11,7 @@ import RecipeActionsDropdown from "../../Components/Dropdowns/RecipeActionsDropd
 import ConfirmDeleteModal from "../../Components/Modals/ConfirmDeleteModal.vue";
 import Rating from "../../Components/Rating.vue";
 import Avatar from "../../Components/Avatar.vue";
+import NotFound from "../../Components/NotFound.vue";
 
 const {translations, recipe, breadcrumbs} = usePage().props;
 
@@ -189,6 +190,13 @@ function formatAmount(value) {
                     :avatarSrc="review.user.avatar_src"
                     :createdAt="review.created_at"
                     @delete="openDelete(review.id)"
+                />
+
+                <NotFound
+                    v-if="reviews.length === 0"
+                    iconClass="pi pi-folder-open"
+                    :title="translations.recipe.reviews.no_rating"
+                    :message="translations.recipe.reviews.heading"
                 />
                 <ConfirmDeleteModal
                     v-model="openConfirmDeleteModal"

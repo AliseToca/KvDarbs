@@ -5,6 +5,7 @@ import CreateFolderModal from "../../Components/Modals/CreateFolderModal.vue";
 import Pagination from "../../Components/Pagination.vue";
 import {router, usePage} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
+import NotFound from "../../Components/NotFound.vue";
 
 const {translations} = usePage().props;
 const folders = computed(() => usePage().props.folders);
@@ -35,6 +36,12 @@ const showCreateModal = ref(false);
             />
         </div>
 
+        <NotFound
+            v-if="folders.data.length === 0"
+            iconClass="pi pi-folder-open"
+            :title="translations.folders.not_found.title"
+            :message="translations.folders.not_found.message"
+        />
         <Pagination :links="folders.links" />
     </MainLayout>
 </template>

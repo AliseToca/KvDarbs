@@ -6,6 +6,7 @@ import RecipeCard from '../../Components/RecipeCard.vue';
 import Pagination from "../../Components/Pagination.vue";
 import SearchBar from "../../Components/SearchBar.vue";
 import ConstructorRenderer from "../../Components/ConstructorRenderer.vue";
+import NotFound from "../../Components/NotFound.vue";
 
 const {translations, recipes, filters, blocks, page_name, categories, types} = usePage().props;
 
@@ -84,6 +85,12 @@ function applyFilters() {
                 />
             </div>
 
+            <NotFound
+                v-if="recipes.data.length === 0"
+                iconClass="pi pi-search-minus"
+                :title="translations.recipe.not_found"
+                :message = "translations.recipe.not_found_message"
+            />
 
             <Pagination :links="recipes.links"/>
         </div>

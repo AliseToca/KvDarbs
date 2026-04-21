@@ -22,7 +22,7 @@ return [
         'plural' => 'Atsauksmes',
         'add_review' => 'Atstāj atsauksmi',
         'ur_rating' => 'Tavs novērtējums:',
-        'no_rating' => 'Nav novērtēta',
+        'no_rating' => 'Nav vēl nevienas atsauksmes',
     ],
     'visibility' => [
         'public' => 'Publisks',
@@ -31,6 +31,7 @@ return [
         'placeholder' => 'Izvēlies redzamību'
     ],
     'not_found' => 'Recepte nav atrasta',
+    'not_found_message' => 'Mēģini citus filtrus vai vaicājumus',
     'my_recipes' => [
         'title' => 'Manas Receptes',
     ],

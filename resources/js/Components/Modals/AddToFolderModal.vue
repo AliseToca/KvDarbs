@@ -1,6 +1,7 @@
 <script setup>
 import Modal from "./Modal.vue";
 import {usePage, router} from "@inertiajs/vue3";
+import NotFound from "../NotFound.vue";
 
 const {folders, translations, recipe} = usePage().props;
 
@@ -31,12 +32,12 @@ function saveToFolder(folder) {
                 </li>
             </ul>
 
-            <div v-else class="no-folders">
-                <i class="pi pi-folder-open"/>
-                <span>
-                    {{ translations.folders.no_folders }}
-                </span>
-            </div>
+            <NotFound
+                v-else
+                iconClass="pi pi-folder-open"
+                :title="translations.folders.not_found.title"
+                :message="translations.folders.not_found.message"
+            />
         </template>
     </Modal>
 </template>

@@ -4,6 +4,7 @@ import MainLayout from '../../Layouts/Main.vue';
 import RecipeCard from '../../Components/RecipeCard.vue';
 import Pagination from "../../Components/Pagination.vue";
 import SearchBar from "../../Components/SearchBar.vue";
+import NotFound from "../../Components/NotFound.vue";
 
 const { translations, recipes, filters} = usePage().props;
 </script>
@@ -35,11 +36,14 @@ const { translations, recipes, filters} = usePage().props;
                     :time_minutes="recipe.total_time"
                     :show_missing_products="false"
                 />
-
-                <p v-if="recipes.data.length === 0">
-                    {{ translations.recipe.not_found }}
-                </p>
             </div>
+
+            <NotFound
+                v-if="recipes.data.length === 0"
+                iconClass="pi pi-search-minus"
+                :title="translations.recipe.not_found"
+                :message = "translations.recipe.not_found_message"
+            />
 
             <Pagination :links="recipes.links" />
         </div>
