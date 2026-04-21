@@ -28,9 +28,13 @@ const { translations, recipes, filters, blocks, page_name} = usePage().props;
                 :name = recipe.name
                 :imageSrc = recipe.image_src
                 :rating = recipe.average_rating
+                :reviews_count = recipe.reviews_count
                 :time_minutes = recipe.total_time
                 :missing_products_count = recipe.missing_products_count
+                :available_products_count = recipe.available_products_count
+                :total_products_count = recipe.total_products_count
                 :compatibility = recipe.compatibility
+                :servings = recipe.servings
             />
 
             <p v-if="recipes.data.length === 0">

@@ -58,11 +58,29 @@ class RecipeController extends Controller
             'prep_time' => $recipe->prep_time,
             'cook_time' => $recipe->cook_time,
             'total_time' => $recipe->total_time,
+            'servings' => $recipe->servings,
             'average_rating' => $recipe->average_rating,
+            'reviews_count' => $recipe->reviewsCount,
             'missing_products_count' => $availability['missing_products_count'],
+            'available_products_count' => $availability['available_products_count'],
+            'total_products_count' => $availability['total_products_count'],
             'compatibility' => $availability['compatibility'],
             'url' => $this->recipeShowUrl($recipe),
         ];
+    }
+
+    private function mapFolders($user): array
+    {
+        return $user->folders()
+            ->with(['recipes:id,image_src'])
+            ->get()
+            ->map(fn($folder) => [
+                'id' => $folder->id,
+                'name' => $folder->name,
+                'thumbnail' => $folder->recipes->first()?->image_src,
+                'recipe_count' => $folder->recipes->count(),
+            ])
+            ->toArray();
     }
 
     public function index(Request $request): Response
@@ -70,7 +88,7 @@ class RecipeController extends Controller
         $page = $this->pagesService->getRecipeIndexPage();
         $user = auth()->user();
 
-        $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time')
+        $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
             ->visibleTo($user)
             ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->paginate(12)
@@ -81,9 +99,8 @@ class RecipeController extends Controller
             'page_name' => $page->name,
             'blocks' => json_decode($page->blocks) ?? [],
             'recipes' => $recipes,
-            'filters' => [
-                'search' => $request->search,
-            ]
+            'folders' => $this->mapFolders($user),
+            'filters' => ['search' => $request->search],
         ]);
     }
 
@@ -156,12 +173,10 @@ class RecipeController extends Controller
             ->latest()
             ->paginate(5);
 
-        $folders = auth()->user()->folders()->with(['recipes:id,image_src'])->get();
+        $user = auth()->user();
 
-
-        $fromFolderId = $request->query('from_folder');
-        $fromFolder = $fromFolderId
-            ? auth()->user()->folders()->find($fromFolderId)
+        $fromFolder = $request->query('from_folder')
+            ? $user->folders()->find($request->query('from_folder'))
             : null;
 
         return Inertia::render('Recipe/Show', [
@@ -171,12 +186,7 @@ class RecipeController extends Controller
             'breadcrumbs' => $fromFolder
                 ? $this->breadcrumbService->forRecipeFromFolder($recipe, $fromFolder)
                 : $this->breadcrumbService->forRecipe($recipe),
-            'folders' => $folders->map(fn($folder) => [
-                'id' => $folder->id,
-                'name' => $folder->name,
-                'thumbnail' => $folder->recipes->first()?->image_src,
-                'recipe_count' => $folder->recipes->count(),
-            ]),
+            'folders' => $this->mapFolders($user),
         ]);
     }
 
