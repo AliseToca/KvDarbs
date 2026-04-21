@@ -19,13 +19,13 @@
         user-select: none;
 
         &:hover {
-            border-color: $color-primary;
-            color: $color-primary;
+            border-color: $color-secondary;
+            color: $color-secondary;
         }
 
         &.selected {
-            background: $color-red-light;
-            border-color: $color-primary;
+            background: $color-secondary;
+            border-color: $color-secondary;
             color: $color-white;
         }
 
@@ -33,4 +33,12 @@
             font-size: 11px;
         }
     }
+}
+
+.tag {
+    padding: 4px 8px;
+    border-radius: 5px;
+    background-color: $color-beige-dark;
+    font-size: 14px;
+    color: #7b6959;
 }

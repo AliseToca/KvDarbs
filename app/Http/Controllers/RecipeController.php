@@ -91,6 +91,8 @@ class RecipeController extends Controller
         $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
             ->visibleTo($user)
             ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
+            ->when($request->categories, fn($q, $ids) => $q->whereHas('recipeCategories', fn($q) => $q->whereIn('recipe_categories.id', $ids)))
+            ->when($request->type, fn($q, $id) => $q->where('recipe_type_id', $id))
             ->paginate(12)
             ->withQueryString()
             ->through(fn($recipe) => $this->mapRecipe($recipe, $user));
@@ -100,6 +102,10 @@ class RecipeController extends Controller
             'blocks' => json_decode($page->blocks) ?? [],
             'recipes' => $recipes,
             'folders' => $this->mapFolders($user),
+            'categories' => RecipeCategory::all(),
+            'types' => RecipeType::all(),
+            'categories' => RecipeCategory::all(),
+            'types' => RecipeType::all(),
             'filters' => ['search' => $request->search],
         ]);
     }
