@@ -4,6 +4,8 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use App\Models\Recipe;
+use App\Models\User;
 
 class StatsOverview extends BaseWidget
 {
@@ -11,22 +13,52 @@ class StatsOverview extends BaseWidget
 
     protected function getStats(): array
     {
+        $recipesThisMonth = Recipe::whereMonth('created_at', now()->month)->count();
+        $recipesLastMonth = Recipe::whereMonth('created_at', now()->subMonth()->month)->count();
+        $recipesGrowth = $recipesLastMonth > 0
+            ? round((($recipesThisMonth - $recipesLastMonth) / $recipesLastMonth) * 100, 1)
+            : 0;
+
+        $usersThisMonth = User::whereMonth('created_at', now()->month)->count();
+        $usersLastMonth = User::whereMonth('created_at', now()->subMonth()->month)->count();
+        $usersGrowth = $usersLastMonth > 0
+            ? round((($usersThisMonth - $usersLastMonth) / $usersLastMonth) * 100, 1)
+            : 0;
+
+        $recipesPerUser = User::count() > 0
+            ? round(Recipe::count() / User::count(), 1)
+            : 0;
+
+        // Chart data - recipes created per month for last 7 months
+        $chartData = collect(range(6, 0))->map(fn($i) => Recipe::whereMonth('created_at', now()->subMonths($i)->month)
+            ->whereYear('created_at', now()->subMonths($i)->year)
+            ->count()
+        )->toArray();
+
         return [
-            Stat::make('Revenue (Placeholder)', '$0.0k') // <-- Replace with actual revenue
-            ->description('X% increase') // <-- Placeholder description
-            ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([4, 6, 7, 5, 10, 8, 9]) // <-- Dummy data; replace with actual data points
-                ->color('success'),
+            Stat::make(__('widgets.recipes_this_month'), $recipesThisMonth)
+                ->description($recipesGrowth >= 0
+                    ? $recipesGrowth . '% increase'
+                    : abs($recipesGrowth) . '% decrease')
+                ->descriptionIcon($recipesGrowth >= 0
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down')
+                ->chart($chartData)
+                ->color($recipesGrowth >= 0 ? 'success' : 'danger'),
 
-            Stat::make('New customers (Placeholder)', '123') // <-- Replace with actual count
-            ->description('X% decrease') // <-- Placeholder description
-            ->descriptionIcon('heroicon-m-arrow-trending-down')
-                ->color('danger'),
+            Stat::make(__('widgets.users_this_month'), $usersThisMonth)
+                ->description($usersGrowth >= 0
+                    ? $usersGrowth . '% increase'
+                    : abs($usersGrowth) . '% decrease')
+                ->descriptionIcon($usersGrowth >= 0
+                    ? 'heroicon-m-arrow-trending-up'
+                    : 'heroicon-m-arrow-trending-down')
+                ->color($usersGrowth >= 0 ? 'success' : 'danger'),
 
-            Stat::make('New orders (Placeholder)', '0') // <-- Replace with actual count
-            ->description('X% increase') // <-- Placeholder description
-            ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('success'),
+            Stat::make(__('widgets.recipes_per_user'), $recipesPerUser)
+                ->description(Recipe::count() . ' total / ' . User::count() . ' users')
+                ->descriptionIcon('heroicon-m-user')
+                ->color('info'),
         ];
     }
 }
