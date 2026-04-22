@@ -66,5 +66,9 @@ return [
     'recipe_types' => [
         'singular' => 'Receptes veids',
         'plural' => 'Recepšu veidi',
+    ],
+    'recipe_products' => [
+        'singular' => 'Receptes produkts',
+        'plural' => 'Receptes produkti',
     ]
 ];

@@ -25,9 +25,12 @@ return [
             'instructions' => 'Pagatavošanas norādes',
             'servings' => 'Porcijas',
             'step' => 'Solis',
+            'rating' => 'Novērtējums',
+            'reviews' => 'Atsauksmes',
         ],
         'product' => [
             'amount' => 'Daudzums',
+            'amount_helper' => 'Ievadiet daudzumu pamata mērvienībā (g/ml/gab)',
             'unit' => 'Mērvienība',
             'expiration_date' => 'Derīguma termiņš',
             'not_found' => 'Produkts nav atrasts',

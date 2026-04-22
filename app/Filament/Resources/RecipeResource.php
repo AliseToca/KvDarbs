@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RecipeResource\Pages;
 use App\Models\Recipe;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -21,6 +20,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use App\Forms\Components\DurationPicker;
+use App\Enums\Recipe\Visibility;
 
 class RecipeResource extends Resource
 {
@@ -45,86 +45,87 @@ class RecipeResource extends Resource
                     ->schema([
                         TextInput::make('name')
                             ->label(__('fields.labels.name'))
-                            ->required()
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                                if (($get('slug') ?? '') !== Str::slug($old)) {
-                                    return;
-                                }
+                            ->required(),
 
-                                $set('slug', Str::slug($state));
-                            }),
-                        TextInput::make('slug')
-                            ->label(__('fields.labels.slug'))
-                            ->prefix(function ($record) {
-                                return '';
-                            })
-                            ->required()
-                            ->unique(ignoreRecord: true),
                         FileUpload::make('image_src')
                             ->directory('recipes')
                             ->image()
                             ->imageCropAspectRatio('16:9')
                             ->imageEditor()
                             ->label(__('fields.labels.image')),
-                        //TO DO decide is content needed
-                        RichEditor::make('content')
-                            ->label(__('fields.labels.content'))
-                            ->columnSpanFull()
+
+                        Select::make('visibility')
+                            ->label(__('fields.labels.recipe.visibility'))
+                            ->options(Visibility::class)
                             ->required(),
-                        Fieldset::make('Cooking information')
-                            ->columns(2)
+                    ]),
+
+                Section::make(__('recipe.details'))
+                    ->schema([
+                        Fieldset::make()
+                            ->columns(3)
                             ->schema([
                                 DurationPicker::make('prep_time')
-                                    ->label(__('fields.labels.recipe.prep_time'))
-                                    ->columnSpan(1),
+                                    ->label(__('fields.labels.recipe.prep_time')),
                                 DurationPicker::make('cook_time')
-                                    ->label(__('fields.labels.recipe.cook_time'))
-                                    ->columnSpan(1),
+                                    ->label(__('fields.labels.recipe.cook_time')),
                                 TextInput::make('servings')
                                     ->label(__('fields.labels.recipe.servings'))
                                     ->integer()
                                     ->default(1)
-                                    ->columnSpan(1)
                                     ->required(),
-                                Repeater::make('recipeProducts')
-                                    ->relationship()
-                                    ->label(__('fields.labels.recipe.ingredients'))
-                                    ->schema([
-                                        Select::make('product_id')
-                                            ->label('Ingredient')
-                                            ->relationship('product', 'name')
-                                            ->preload()
-                                            ->searchable()
-                                            ->required()
-                                            ->columnSpan(6),
-                                        TextInput::make('amount')
-                                            ->numeric()
-                                            ->required()
-                                            ->columnSpan(3),
-                                        Select::make('unit_id')
-                                            ->label('Unit')
-                                            ->relationship('unit', 'name')
-                                            ->required()
-                                            ->columnSpan(3),
-                                    ])
-                                    ->columns(12)
-                                    ->reorderable()
-                                    ->defaultItems(1)
-                                    ->columnSpanFull(),
-                                Repeater::make('instructions')
-                                    ->label(__('fields.labels.recipe.instructions'))
-                                    ->schema([
-                                        Textarea::make('text')
-                                            ->label(__('fields.labels.description'))
-                                            ->required()
-                                            ->rows(3),
-                                    ])
-                                    ->itemLabel(fn (array $state, $uuid, $component): string => __('fields.labels.recipe.step') . ' ' . (array_search($uuid, array_keys($component->getState())) + 1))
-                                    ->defaultItems(1)
-                                    ->reorderable()
-                                    ->columnSpanFull(),
                             ]),
+
+                        Select::make('recipe_type_id')
+                            ->label(__('resources.recipe_types.singular'))
+                            ->relationship('recipeType', 'name')
+                            ->preload()
+                            ->searchable(),
+
+                        Select::make('recipeCategories')
+                            ->label(__('resources.recipe_categories.plural'))
+                            ->relationship('recipeCategories', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                    ]),
+
+                Section::make(__('recipe.ingredients'))
+                    ->schema([
+                        Repeater::make('recipeProducts')
+                            ->label(__('resources.recipe_products.plural'))
+                            ->relationship()
+                            ->schema([
+                                Select::make('product_id')
+                                    ->label(__('fields.labels.name'))
+                                    ->relationship('product', 'name')
+                                    ->preload()
+                                    ->searchable()
+                                    ->required()
+                                    ->columnSpan(9),
+                                TextInput::make('amount')
+                                    ->label(__('fields.labels.product.amount'))
+                                    ->numeric()
+                                    ->required()
+                                    ->columnSpan(3)
+                                    ->helperText(__('fields.labels.product.amount_helper')),
+                            ])
+                            ->columns(12)
+                            ->reorderable()
+                            ->defaultItems(1),
+                    ]),
+
+                Section::make(__('recipe.instructions'))
+                    ->schema([
+                        Repeater::make('instructions')
+                            ->label(__('fields.labels.recipe.instructions'))
+                            ->simple(
+                                Textarea::make('instruction')
+                                    ->required()
+                                    ->rows(3),
+                            )
+                            ->defaultItems(1)
+                            ->reorderable(),
                     ]),
             ]);
     }
@@ -134,17 +135,55 @@ class RecipeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('fields.labels.name')),
+                    ->label(__('fields.labels.name'))
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('user.username')
+                    ->label(__('fields.labels.author'))
+                    ->sortable(),
+
+                TextColumn::make('recipeType.name')
+                    ->label(__('fields.labels.recipe.type'))
+                    ->badge(),
+
+                TextColumn::make('visibility')
+                    ->label(__('fields.labels.recipe.visibility'))
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        \App\Enums\Recipe\Visibility::Public    => 'success',
+                        \App\Enums\Recipe\Visibility::Private   => 'danger',
+                        \App\Enums\Recipe\Visibility::Household => 'warning',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('servings')
+                    ->label(__('fields.labels.recipe.servings'))
+                    ->sortable(),
+
+                TextColumn::make('average_rating')
+                    ->label(__('fields.labels.recipe.rating'))
+                    ->sortable(),
+
+                TextColumn::make('reviews_count')
+                    ->label(__('fields.labels.recipe.reviews'))
+                    ->sortable(),
+
                 TextColumn::make('created_at')
                     ->label(__('fields.labels.created_at'))
-                    ->since(),
-                //TO DO add author, rating, review count,
+                    ->since()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('visibility')
+                    ->options(\App\Enums\Recipe\Visibility::class),
+
+                Tables\Filters\SelectFilter::make('recipeType')
+                    ->relationship('recipeType', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
