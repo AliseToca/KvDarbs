@@ -39,7 +39,7 @@ const isConfirmAddToFolderOpen = ref(false);
         <div class="recipe-card-wrapper">
             <div class="recipe-card">
                 <div>
-                    <img :src="imageSrc ? `/storage/${imageSrc}` : '/storage/placeholder.jpg'">
+                    <img :src="imageSrc ? `/storage/${imageSrc}` : '/storage/placeholder.jpeg'">
 
                     <button
                         @click="(e) => { e.stopPropagation(); e.preventDefault(); isConfirmAddToFolderOpen = true;}"

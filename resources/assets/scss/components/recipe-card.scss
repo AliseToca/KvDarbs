@@ -127,11 +127,13 @@
             opacity 0.3s ease,
             transform 0.3s ease;
     }
+
     .card-fade-leave-active {
         transition:
             opacity 0.2s ease,
             transform 0.2s ease;
     }
+
     .card-fade-enter-from,
     .card-fade-leave-to {
         opacity: 0;
@@ -142,6 +144,7 @@
     .fade-leave-active {
         transition: opacity 0.3s ease;
     }
+
     .fade-enter-from,
     .fade-leave-to {
         opacity: 0;
