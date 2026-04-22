@@ -45,7 +45,7 @@ return [
     ],
     'translations' => [
         'singular' => 'Tulkojums',
-        'plural' => 'Tulkotāji',
+        'plural' => 'Tulkojumi',
     ],
     'roles' => [
         'singular' => 'Loma',

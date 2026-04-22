@@ -19,8 +19,15 @@ class RecipeCategoryResource extends Resource
 {
     protected static ?string $model = RecipeCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationIcon = 'fluentui-tag-multiple-20-o';
 
+    protected static ?int $navigationSort = 5;
+
+
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.information');
+    }
     public static function getModelLabel(): string
     {
         return __('resources.recipe_categories.singular');

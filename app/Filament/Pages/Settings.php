@@ -16,19 +16,16 @@ class Settings extends SettingsPage
 
     protected static string $settings = GeneralSettings::class;
 
-    protected static ?string $navigationGroup = 'Settings';
-
-    public static function getModelLabel(): string
+    public static function getNavigationGroup(): string
     {
-        return __('resources.label');
+        return __('navigation.settings');
     }
-
-    public static function getPluralModelLabel(): string
+    public static function getModelLabel(): string
     {
         return __('resources.settings.plural');
     }
 
-    public static function getNavigationLabel(): string
+    public static function getPluralModelLabel(): string
     {
         return __('resources.settings.plural');
     }

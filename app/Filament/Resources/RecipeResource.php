@@ -13,9 +13,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
@@ -27,6 +24,13 @@ class RecipeResource extends Resource
     protected static ?string $model = Recipe::class;
 
     protected static ?string $navigationIcon = 'fluentui-receipt-24-o';
+
+    protected static ?int $navigationSort = 2;
+
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.information');
+    }
 
     public static function getModelLabel(): string
     {

@@ -19,7 +19,14 @@ class RecipeTypeResource extends Resource
 {
     protected static ?string $model = RecipeType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationIcon = 'fluentui-tag-20-o';
+
+    protected static ?int $navigationSort = 3;
+
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.information');
+    }
 
     public static function getModelLabel(): string
     {

@@ -14,6 +14,8 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'fluentui-document-one-page-24-o';
 
+    protected static ?string $navigationGroup = 'CMS';
+
     public static function getModelLabel(): string
     {
         return __('resources.pages.singular');

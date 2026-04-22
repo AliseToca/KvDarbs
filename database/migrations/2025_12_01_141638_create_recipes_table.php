@@ -23,7 +23,7 @@ return new class extends Migration
             $table->json('instructions')->nullable();
             $table->enum('visibility', ['private', 'household', 'public'])->default('household');
 
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('recipe_type_id')->nullable()->constrained('recipe_types')->nullOnDelete();
 
             $table->timestamps();

@@ -21,8 +21,10 @@ class CookieResource extends Resource
 
     protected static ?string $navigationIcon = 'iconoir-half-cookie';
 
-    protected static ?string $navigationGroup = 'Settings';
-
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.settings');
+    }
     public static function getModelLabel(): string
     {
         return __('resources.cookies.singular');

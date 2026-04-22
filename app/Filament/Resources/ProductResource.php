@@ -22,6 +22,12 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'fluentui-food-chicken-leg-16-o';
 
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.information');
+    }
     public static function getModelLabel(): string
     {
         return __('resources.product.singular');

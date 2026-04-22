@@ -53,6 +53,20 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
                 Settings::class,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label(fn () => __('navigation.information')),
+                NavigationGroup::make()
+                    ->label(fn () => __('navigation.cms')),
+                NavigationGroup::make()
+                    ->label(fn () => __('navigation.localization')),
+                NavigationGroup::make()
+                    ->label(fn () => __('navigation.rights')),
+                NavigationGroup::make()
+                    ->label(fn () => __('navigation.settings')),
+                NavigationGroup::make()
+                    ->label(fn () => __('navigation.content')),
+            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
