@@ -1,0 +1,7 @@
+@use '../environment' as *;
+
+.filters-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

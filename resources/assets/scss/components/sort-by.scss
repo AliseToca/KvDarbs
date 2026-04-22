@@ -1,0 +1,38 @@
+@use '../environment' as *;
+
+.sort-by {
+    .sort-trigger {
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: $color-body-dark;
+        color: $color-text-muted;
+        padding: 10px;
+        gap: 5px;
+        border-radius: 8px;
+    }
+
+    .dropdown-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 12px 14px;
+        width: 100%;
+        color: $color-text-muted;
+        background: none;
+        border: none;
+        text-align: left;
+
+        &-label {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .check-icon {
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+    }
+}

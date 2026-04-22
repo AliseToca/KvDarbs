@@ -6,7 +6,7 @@ const props = defineProps({
     label: String,
     placeholder: {
         type: String,
-        default: '/storage/placeholder.jpg',
+        default: '/storage/placeholder.jpeg',
     },
     width: {
         type: String,

@@ -38,15 +38,17 @@ onUnmounted(() => document.removeEventListener('click', closeOnOutside));
             <slot name="trigger" />
         </div>
 
-        <ul v-if="isOpen" class="dropdown">
-            <!-- Lietotāja informācijas bloks - tiek rādīts tikai tad, ja tiek nodots lietotāja parametrs -->
-            <li v-if="user" class="user-info">
-                <p><strong>{{ user.name }}</strong></p>
-                <p>@{{ user.username }}</p>
-            </li>
+        <Transition name="dropdown">
+            <ul v-if="isOpen" class="dropdown">
+                <!-- Lietotāja informācijas bloks - tiek rādīts tikai tad, ja tiek nodots lietotāja parametrs -->
+                <li v-if="user" class="user-info">
+                    <p><strong>{{ user.name }}</strong></p>
+                    <p>@{{ user.username }}</p>
+                </li>
 
-            <!-- Visi izvēlnes elementi iet šeit -->
-            <slot />
-        </ul>
+                <!-- Visi izvēlnes elementi iet šeit -->
+                <slot />
+            </ul>
+        </Transition>
     </div>
 </template>

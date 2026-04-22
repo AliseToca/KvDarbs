@@ -43,5 +43,13 @@ return [
         'add_to_shopping_list' => 'Pievienot Iepirkšanās Sarakstam',
         'mark_as_done' => 'Atzīmēt kā pabeigtu',
         'save' => 'Saglabāt recepti'
-    ]
+    ],
+    'all_recipes' => 'Visas receptes',
+    'find_recipes' => 'Meklē receptes...',
+    'sort_by' => [
+        'highest_rating' => 'Augstākais novērtējums',
+        'most_ratings' => 'Visvairāk novērtētās',
+        'quickest' => 'Ātri pagatavojamas',
+        'newest' => 'Jaunākās',
+    ],
 ];

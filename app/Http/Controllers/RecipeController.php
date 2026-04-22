@@ -9,6 +9,7 @@ use App\Models\Unit;
 use App\Services\MeasurmentConversionService;
 use App\Services\RecipeAvailabilityService;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use Inertia\Response;
 use Inertia\Inertia;
@@ -83,19 +84,37 @@ class RecipeController extends Controller
             ->toArray();
     }
 
+    private function applySorting($query, string $sort, Request $request)
+    {
+        match ($sort) {
+            'highest_rated' => $query->withAvg('reviews', 'rating')
+                ->orderByDesc('reviews_avg_rating'),
+
+            'most_reviewed' => $query->withCount('reviews')
+                ->orderByDesc('reviews_count'),
+
+            'quickest' => $query->orderByRaw('(prep_time + cook_time) ASC'),
+
+            default => $query->latest(),
+        };
+
+        return $query->paginate(12)->withQueryString();
+    }
+
     public function index(Request $request): Response
     {
         $page = $this->pagesService->getRecipeIndexPage();
         $user = auth()->user();
 
-        $recipes = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
+        $sort = $request->get('sort', 'newest');
+
+        $query = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
             ->visibleTo($user)
             ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
-            ->when($request->categories, fn($q, $ids) => $q->whereHas('recipeCategories', fn($q) => $q->whereIn('recipe_categories.id', $ids)))
-            ->when($request->type, fn($q, $id) => $q->where('recipe_type_id', $id))
-            ->paginate(12)
-            ->withQueryString()
-            ->through(fn($recipe) => $this->mapRecipe($recipe, $user));
+            ->when($request->type, fn($q, $id) => $q->where('recipe_type_id', $id));
+
+        $recipes = $this->applySorting($query, $sort, $request)
+            ->through(fn ($recipe) => $this->mapRecipe($recipe, $user));
 
         return Inertia::render('Recipe/Index', [
             'page_name' => $page->name,
@@ -104,9 +123,10 @@ class RecipeController extends Controller
             'folders' => $this->mapFolders($user),
             'categories' => RecipeCategory::all(),
             'types' => RecipeType::all(),
-            'categories' => RecipeCategory::all(),
-            'types' => RecipeType::all(),
-            'filters' => ['search' => $request->search],
+            'filters' => [
+                'search' => $request->search,
+                'sort' => $sort,
+            ],
         ]);
     }
 
