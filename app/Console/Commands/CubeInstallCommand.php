@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Role;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\text;
+use App\Models\Household;
 
 class CubeInstallCommand extends Command
 {
@@ -273,6 +274,14 @@ class CubeInstallCommand extends Command
             label: 'Name',
             required: true,
         );
+        $username = text(
+            label: 'Username',
+            required: true,
+            validate: fn(string $username): ?string => match (true) {
+                $userModel::where('username', $username)->exists() => 'A user with this username already exists',
+                default => null,
+            },
+        );
         $email = text(
             label: 'Email address',
             required: true,
@@ -296,6 +305,12 @@ class CubeInstallCommand extends Command
         $user = $userModel::where('email', $email)->first();
 
         if ($user) {
+            $user->username = $username;
+            $user->save();
+
+            $household = Household::create(['name' => trans('household.your')]);
+            $household->users()->attach($user->id, ['role' => 'owner']);
+
             $this->setSuperAdminRole($user);
         }
     }
