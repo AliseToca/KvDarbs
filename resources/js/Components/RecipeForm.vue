@@ -5,9 +5,9 @@ import SearchableSelect from "./Inputs/SearchableSelect.vue";
 import SelectField from "./Inputs/SelectField.vue";
 import ImageUpload from "./Inputs/ImageUpload.vue";
 import TagSelector from "./Inputs/TagSelector.vue";
-import { usePage } from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
 
-const { translations, enums } = usePage().props;
+const {translations, enums} = usePage().props;
 
 const props = defineProps({
     form: {
@@ -82,6 +82,7 @@ function getFilteredUnits(index) {
                 :items="visibilityOptions"
                 :label="translations.fields.labels.recipe.visibility"
                 :placeholderValue="translations.recipe.visibility.placeholder"
+                :error="form.errors.visibility"
             />
         </section>
 
@@ -92,11 +93,13 @@ function getFilteredUnits(index) {
                 <DurationField
                     v-model="form.prep_time"
                     :label="translations.fields.labels.recipe.prep_time"
+                    :error="form.errors.prep_time"
                 />
 
                 <DurationField
                     v-model="form.cook_time"
                     :label="translations.fields.labels.recipe.cook_time"
+                    :error="form.errors.cook_time"
                 />
 
                 <InputField
@@ -134,7 +137,6 @@ function getFilteredUnits(index) {
                     v-model="form.recipe_products[index].amount"
                     type="number"
                     :label="translations.fields.labels.product.amount"
-                    :error="form.errors.amount"
                 />
 
                 <SearchableSelect
@@ -142,16 +144,34 @@ function getFilteredUnits(index) {
                     :items="getFilteredUnits(index)"
                     :label="translations.fields.labels.product.unit"
                     :clearable="false"
+                    :disabled="!form.recipe_products[index].product_id"
+                    :disabledPlaceholder="translations.household.select_product_first"
                 />
 
-                <button
-                    type="button"
-                    class="button"
-                    @click="removeProduct(index)"
-                    :disabled="form.recipe_products.length == 1"
-                >
+                <button type="button" class="button" @click="removeProduct(index)"
+                        :disabled="form.recipe_products.length == 1">
                     {{ translations.button.remove }}
                 </button>
+            </div>
+
+            <div class="section-errors">
+                <ul v-for="(product, index) in form.recipe_products" :key="index" class="error-container">
+                    <li v-if="form.errors[`recipe_products.${index}.product_id`]">
+                        {{ translations.fields.labels.name }} {{
+                            index + 1
+                        }}: {{ form.errors[`recipe_products.${index}.product_id`] }}
+                    </li>
+                    <li v-if="form.errors[`recipe_products.${index}.amount`]">
+                        {{ translations.fields.labels.product.amount }} {{
+                            index + 1
+                        }}: {{ form.errors[`recipe_products.${index}.amount`] }}
+                    </li>
+                    <li v-if="form.errors[`recipe_products.${index}.unit_id`]">
+                        {{ translations.fields.labels.product.unit }} {{
+                            index + 1
+                        }}: {{ form.errors[`recipe_products.${index}.unit_id`] }}
+                    </li>
+                </ul>
             </div>
         </section>
 
@@ -168,17 +188,20 @@ function getFilteredUnits(index) {
                     v-model="form.instructions[index]"
                     type="text"
                     :label="(index + 1) + '. ' + translations.fields.labels.recipe.step"
-                    :error="form.errors.instructions"
                 />
-
-                <button
-                    type="button"
-                    class="button"
-                    @click="removeInstruction(index)"
-                    :disabled="form.instructions.length === 1"
-                >
+                <button type="button" class="button" @click="removeInstruction(index)" :disabled="form.instructions.length === 1">
                     {{ translations.button.remove }}
                 </button>
+            </div>
+
+            <div class="section-errors">
+                <template v-for="(step, index) in form.instructions" :key="index">
+                    <span v-if="form.errors[`instructions.${index}`]" class="error-message">
+                        {{ translations.fields.labels.recipe.step }} {{
+                            index + 1
+                        }}: {{ form.errors[`instructions.${index}`] }}
+                    </span>
+                </template>
             </div>
         </section>
 

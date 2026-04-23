@@ -547,3 +547,23 @@
     color: $color-text-error;
     font-size: 13px;
 }
+
+.error-container {
+    display: block;
+    color: $color-text-error;
+
+    li {
+        color: $color-text-error;
+        font-size: 13px;
+    }
+
+    &:empty {
+        display: none;
+    }
+}
+
+.section-errors {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

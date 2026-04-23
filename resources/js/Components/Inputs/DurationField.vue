@@ -7,6 +7,10 @@ const props = defineProps({
         default: 0,
     },
     label: String,
+    error: {
+        type: String,
+        default: null,
+    },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -48,5 +52,7 @@ watch([hours, minutes], () => {
                 <label>min</label>
             </div>
         </div>
+
+        <span v-if="error" class="input-error-message">{{ error }}</span>
     </div>
 </template>
