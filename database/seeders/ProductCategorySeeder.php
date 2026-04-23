@@ -16,18 +16,8 @@ class ProductCategorySeeder extends Seeder
         $productCategories = [
             ['name' => 'Gaļa un zivis'],
             ['name' => 'Piena produkti un olas'],
-            ['name' => 'Dārzeņi'],
-            ['name' => 'Augļi'],
-            ['name' => 'Garšvielas'],
-            ['name' => 'Maize un milti'],
-            ['name' => 'Eļļas un tauki'],
-            ['name' => 'Konditorejas izstrādājumi'],
-            ['name' => 'Pākšaugi'],
-            ['name' => 'Rieksti un sēklas'],
-            ['name' => 'Graudaugi un putraimi'],
-            ['name' => 'Buljons un mērces'],
-            ['name' => 'Sēnes'],
-            ['name' => 'Dzērieni'],
+            ['name' => 'Augļi un dārzeņi'],
+            ['name' => 'Citi krājumi'],
         ];
 
         DB::table('product_categories')->insert($productCategories);
