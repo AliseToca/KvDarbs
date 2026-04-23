@@ -6,7 +6,7 @@ return [
     'edit' => 'Rediģēt mājsaimniecību',
     'leave' => 'Pamest mājsaimniecību',
     'users' => 'Mājsaimniecības lietotāji',
-    'no_products' => 'Tukšs :(',
+    'no_products' => 'Nav neviena produkta',
     'add_product' => 'Pievienot produktu',
     'search_products' => 'Meklē produktus...',
     'select_product_first' => 'Sākumā izvēlies produktu',

@@ -1,7 +1,6 @@
 <script setup>
 import {usePage} from "@inertiajs/vue3";
 import {ref} from "vue";
-import AcordionItem from "./AcordionItem.vue";
 import EditHouseholdProductModal from "./Modals/EditHouseholdProductModal.vue";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal.vue";
 import ExpiryBadge from "./ExpiryBadge.vue";
@@ -31,14 +30,12 @@ function openDelete(entry, productName) {
 </script>
 
 <template>
-    <!-- Aizveramais akordeons pēc mājsaimniecības produktu kategorijām -->
-    <AcordionItem
-        v-for="(products, category) in categorizedProducts"
-        :key="category"
-        :default-open="products.length > 0"
-    >
-        <!-- Mājsaimniecības produktu kategorijas nosaukums -->
-        <template #header>
+    <div class="household-products">
+        <section
+            v-for="(products, category) in categorizedProducts"
+            :key="category"
+            class="category"
+        >
             <header class="category-header">
                 <h2>{{ category }}</h2>
                 <span class="product-count">
@@ -50,60 +47,59 @@ function openDelete(entry, productName) {
                     }}
                 </span>
             </header>
-        </template>
 
-        <!-- Mājsaimniecības produkti attiecīgajā kategorijā -->
-        <ul v-if="products.length" class="product-list">
-            <li v-for="product in products" :key="product.productId" class="product-card">
-                <header class="product-card-header">
-                    <span class="product-name">{{ product.productName }}</span>
-                    <span class="product-total-badge">{{ product.totalAmount }}{{ product.unit }}</span>
-                </header>
+            <ul v-if="products.length" class="category-products-list">
+                <li v-for="product in products" :key="product.productId" class="product-card">
+                    <div class="product-card-header">
+                        <span class="product-card-name">{{ product.productName }}</span>
+                        <span class="product-card-total-badge">{{ product.totalAmount }}{{ product.unit }}</span>
+                    </div>
 
-                <ul class="entry-list">
-                    <li v-for="entry in product.entries" :key="entry.id" class="entry-row">
-                        <button
-                            class="entry-main"
-                            @click="openEdit(entry, product.productName, product.measurementTypeId)"
-                        >
-                            <i class="pi pi-pencil entry-edit-icon"/>
-                            <span class="entry-amount">{{ entry.amount }}{{ entry.unit }}</span>
-                            <ExpiryBadge
-                                v-if="entry.expiryBreakdown"
-                                :breakdown="entry.expiryBreakdown"
-                            />
-                        </button>
+                    <ul class="product-card-list">
+                        <li v-for="entry in product.entries" :key="entry.id" class="product-card-list-row">
+                            <button
+                                class="entry-main"
+                                @click="openEdit(entry, product.productName, product.measurementTypeId)"
+                            >
+                                <i class="pi pi-pencil entry-edit-icon"/>
+                                <span class="entry-amount">{{ entry.amount }}{{ entry.unit }}</span>
+                                <ExpiryBadge
+                                    v-if="entry.expiryBreakdown"
+                                    :breakdown="entry.expiryBreakdown"
+                                />
+                            </button>
 
-                        <button
-                            class="entry-delete"
-                            @click.stop="openDelete(entry, product.productName)"
-                            :aria-label="`Delete ${product.productName}`"
-                        >
-                            <i class="pi pi-trash" aria-hidden="true"/>
-                        </button>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+                            <button
+                                class="entry-delete"
+                                @click.stop="openDelete(entry, product.productName)"
+                            >
+                                <i class="pi pi-trash"/>
+                            </button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
 
-        <!-- Ziņojums kad nav produktu kategorijā -->
-        <p v-else class="empty">
-            {{ noProductText }}
-        </p>
-    </AcordionItem>
+            <ul v-else>
+                <li class="product-card">
+                    {{ noProductText }}
+                </li>
+            </ul>
+        </section>
 
-    <!-- Paziņojuma logi -->
-    <EditHouseholdProductModal
-        v-model="isEditOpen"
-        :product="selectedProduct"
-        :key="selectedProduct?.id"
-    />
+        <!-- Paziņojuma logi -->
+        <EditHouseholdProductModal
+            v-model="isEditOpen"
+            :product="selectedProduct"
+            :key="selectedProduct?.id"
+        />
 
-    <ConfirmDeleteModal
-        v-model="isDeleteOpen"
-        :title="`${selectedProduct?.productName}`"
-        :message="`${translations.household.delete_message.ask_confirmation} &quot;<strong>${selectedProduct?.productName}</strong>&quot; ${translations.household.delete_message.from_household}`"
-        route-name="household-products.destroy"
-        :route-param="selectedProduct?.id"
-    />
+        <ConfirmDeleteModal
+            v-model="isDeleteOpen"
+            :title="`${selectedProduct?.productName}`"
+            :message="`${translations.household.delete_message.ask_confirmation} &quot;<strong>${selectedProduct?.productName}</strong>&quot; ${translations.household.delete_message.from_household}`"
+            route-name="household-products.destroy"
+            :route-param="selectedProduct?.id"
+        />
+    </div>
 </template>
