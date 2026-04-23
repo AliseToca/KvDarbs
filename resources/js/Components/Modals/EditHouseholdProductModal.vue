@@ -67,6 +67,7 @@ function submit() {
                     :items="availableUnits"
                     :label="translations.fields.labels.product.unit"
                     :clearable="false"
+                    :error="form.errors.unit_id"
                 />
 
                 <InputField

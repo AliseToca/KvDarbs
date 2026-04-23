@@ -18,6 +18,10 @@ const props = defineProps({
         default: false,
     },
     disabledPlaceholder: String,
+    error: {
+        type: String,
+        default: null,
+    },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -37,6 +41,10 @@ watch(
     },
     {immediate: true}
 );
+
+watch(search, (val) => {
+    if (!val) emit('update:modelValue', '');
+});
 
 const filteredItems = computed(() => {
     if (!search.value) return props.items;
@@ -73,7 +81,6 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', handleClickOutsi
                 v-model="search"
                 :placeholder="disabled ? disabledPlaceholder : placeholderValue"
                 @focus="isOpen = true"
-                @input="emit('update:modelValue', search)"
                 :disabled="disabled"
             />
 
@@ -84,6 +91,8 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', handleClickOutsi
                 />
             </span>
         </div>
+
+        <span v-if="error" class="error-message">{{ error }}</span>
 
         <ul v-if="isOpen" class="dropdown">
             <li

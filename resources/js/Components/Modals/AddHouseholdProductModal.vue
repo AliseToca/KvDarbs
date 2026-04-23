@@ -68,6 +68,7 @@ function submit() {
                     :label="translations.fields.labels.name"
                     :placeholderValue="translations.household.search_products"
                     :notFoundMessage="translations.fields.labels.product.not_found"
+                    :error="form.errors.product_id"
                 />
 
                 <InputField
@@ -84,6 +85,7 @@ function submit() {
                     :clearable="false"
                     :disabled="!form.product_id"
                     :disabledPlaceholder="translations.household.select_product_first"
+                    :error="form.errors.unit_id"
                 />
 
                 <InputField

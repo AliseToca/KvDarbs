@@ -542,3 +542,8 @@
     padding: 0;
     color: inherit;
 }
+
+.error-message {
+    color: $color-text-error;
+    font-size: 13px;
+}
