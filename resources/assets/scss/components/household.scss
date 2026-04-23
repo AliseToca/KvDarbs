@@ -227,10 +227,10 @@
         width: 100%;
         margin-top: 10px;
         margin-bottom: 10px;
-        gap: 10px; // ensures space even when content is long
+        gap: 10px;
 
         @include until($phone-lg) {
-            flex-wrap: wrap; // let actions drop below on very long names
+            flex-wrap: wrap;
         }
     }
 
@@ -238,9 +238,8 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        min-width: 0; // allow name to truncate
+        min-width: 0;
 
-        // assuming a name element is a direct child
         span,
         p {
             overflow: hidden;
@@ -252,6 +251,6 @@
     .user-actions {
         display: flex;
         gap: 10px;
-        flex-shrink: 0; // keep action buttons fully visible
+        flex-shrink: 0;
     }
 }

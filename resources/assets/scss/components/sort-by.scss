@@ -10,6 +10,14 @@
         padding: 10px;
         gap: 5px;
         border-radius: 8px;
+
+        .chevron {
+            transition: transform 0.2s ease;
+        }
+    }
+
+    &.is-open .chevron {
+        transform: rotate(180deg);
     }
 
     .dropdown-item {

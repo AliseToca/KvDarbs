@@ -25,12 +25,13 @@ function select(value) {
 }
 
 const dropdown = ref(null);
+const isOpen = ref(false);
 </script>
 
 <template>
-    <Dropdown class="sort-by" ref="dropdown">
+    <Dropdown class="sort-by" ref="dropdown" :class="{ 'is-open': isOpen }">
         <template #trigger>
-            <button type="button" class="sort-trigger">
+            <button type="button" class="sort-trigger" @click="isOpen = !isOpen">
                 <span><i :class="active.icon"></i> {{ active.label }}</span>
                 <i class="pi pi-chevron-down chevron"></i>
             </button>
