@@ -9,6 +9,7 @@ use App\Services\PagesService;
 use App\Enums\Recipe\Visibility;
 use App\Enums\HouseholdUser\Role;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class InertiaServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,10 @@ class InertiaServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (!$this->isDatabaseAvailable()) {
+            return;
+        }
+
         Inertia::share([
             'locale' => fn () => app()->getLocale(),
             'translations' => function () {
@@ -83,4 +88,16 @@ class InertiaServiceProvider extends ServiceProvider
 
         return $menu ? $menu->items : collect();
     }
+
+    private function isDatabaseAvailable(): bool
+        {
+            try {
+                DB::connection()->getPdo();
+            } catch (\Exception $e) {
+                return false;
+            }
+
+            return true;
+        }
+
 }
