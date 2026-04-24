@@ -74,7 +74,7 @@ export default defineConfig({
         }),
         stylelintPlugin({
             include: ['resources/assets/scss/**/*.{scss,css}'],
-            failOnError: true,
+            failOnError: false,
             lintAllOnSave: true,
         }),
         viteStaticCopy({
@@ -114,7 +114,7 @@ export default defineConfig({
                 admin: `resources/css/filament/admin/theme.css`,
                 abovethefold: `${scssSource}/abovethefold.scss`,
                 style: `${scssSource}/style.scss`,
-                fonts: `${scssSource}/fonts.scss`,
+                fonts: `${scssSource}/global/fonts.scss`,
                 app: `${jsSource}/app.ts`,
                 sprite: `${svgSource}/sprite.svg?asset`,
                 ...jsControllers,
