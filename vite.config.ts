@@ -42,8 +42,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
-                'resources/scss/style.scss',
-
+                'resources/assets/scss/style.scss',
             ],
             buildDirectory: 'front',
             refresh: true,
@@ -116,6 +115,7 @@ export default defineConfig({
                 style: `${scssSource}/style.scss`,
                 fonts: `${scssSource}/global/fonts.scss`,
                 app: `${jsSource}/app.ts`,
+                'inertia-app': 'resources/js/app.js',
                 sprite: `${svgSource}/sprite.svg?asset`,
                 ...jsControllers,
                 ...scssControllers,
