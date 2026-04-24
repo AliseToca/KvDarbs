@@ -1,97 +1,83 @@
-image: arbory/arbory:ci-php8.4-nodejs22
+image: arbory/arbory:ci-php8.3-nodejs20
 
 variables:
-  MYSQL_ROOT_PASSWORD: pass
-  MYSQL_DATABASE: test
-  DB_HOST: mysql
-  DB_DATABASE: test
-  DB_USERNAME: root
-  DB_PASSWORD: pass
-  XDEBUG_MODE: coverage
-  DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
+    MYSQL_ROOT_PASSWORD: pass
+    MYSQL_DATABASE: test
+    DB_HOST: mysql
+    DB_DATABASE: test
+    DB_USERNAME: root
+    DB_PASSWORD: pass
+    XDEBUG_MODE: coverage
+    DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
 
 .deploy: &deploy
-  stage: deploy
-  allow_failure: false
-  needs: []
-  tags:
-    - deploy
-  script:
-    - npx --yes -p shell-deployer@1.5.0 deploy-laravel app.tgz --with-build
+    stage: deploy
+    allow_failure: false
+    needs: []
+    tags:
+        - deploy
+    script:
+        - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
 
 stages:
-  - test
-  - deploy
+    - test
+    - deploy
 
 .tests: &tests
-  stage: test
-  except:
-   - tags
-  before_script:
-    - cp .env.example .env
-    - composer install --prefer-dist --no-progress --no-interaction --quiet
-    - npm install
-    - npm run build
-    - php artisan key:generate
-  artifacts:
-    when: always
-    paths:
-      - coverage
-      - tests/Browser/screenshots/
-      - tests/Browser/console/
-      - tests/storage/fixtures/
-      - storage/logs/
-    expire_in: 1 month
+    stage: test
+    except:
+        - tags
+    before_script:
+        - cp .env.example .env
+        - composer install --prefer-dist --no-progress --no-interaction --quiet
+        - npm install
+        - npm run build
+        - php artisan key:generate
+    artifacts:
+        when: always
+        paths:
+            - coverage
+            - tests/Browser/screenshots/
+            - tests/Browser/console/
+            - tests/storage/fixtures/
+            - storage/logs/
+        expire_in: 1 month
 
 unit tests:
-  <<: *tests
-  services:
-    - name: registry.cubesystems.lv/registry/registry/mysql:8.0
-      alias: mysql
-  script:
-    - ./vendor/bin/phpunit --coverage-html coverage  --coverage-text --colors=never
+    <<: *tests
+    services:
+        - name: registry.cubesystems.lv/registry/registry/mysql:8.0
+          alias: mysql
+    script:
+        - ./vendor/bin/phpunit --coverage-html coverage  --coverage-text --colors=never
 
 browser tests:
-  variables:
-    DUSK_DRIVER_URL: 'http://selenium-chrome:4444/wd/hub'
-    FF_NETWORK_PER_BUILD: 1
-    ARTISAN_TEST_HOST: 0.0.0.0
-    APP_URL: 'http://build:8000'
-    XDEBUG_MODE: 'off'
-  <<: *tests
-  services:
-    - name: registry.cubesystems.lv/registry/registry/mysql:8.0
-      alias: mysql
-    - name: selenium/standalone-chrome
-      alias: selenium-chrome
-  script:
-    - php artisan dusk:chrome-driver --detect
-    - php artisan dusk
+    variables:
+        DUSK_DRIVER_URL: 'http://selenium-chrome:4444/wd/hub'
+        FF_NETWORK_PER_BUILD: 1
+        ARTISAN_TEST_HOST: 0.0.0.0
+        APP_URL: 'http://build:8000'
+        XDEBUG_MODE: 'off'
+    <<: *tests
+    services:
+        - name: registry.cubesystems.lv/registry/registry/mysql:8.0
+          alias: mysql
+        - name: selenium/standalone-chrome
+          alias: selenium-chrome
+    script:
+        - php artisan dusk:chrome-driver --detect
+        - php artisan dusk
 
 deploy to staging:
-  <<: *deploy
-  when: manual
-  environment:
-    name: staging
-    url: https://boilerplate.cube.lv
-  variables:
-    DEPLOY_HOST: staging.cube.lv
-    DEPLOY_USER: boilerplate
-    DEPLOY_PHP_COMMAND: php8.3
-    DEPLOY_PATH: /home/boilerplate/app
-    DEPLOY_SSH_KNOWN_HOSTS: $AGENCY_STAGING_DEPLOY_KNOWN_HOSTS
-    DEPLOY_SSH_PRIVATE_KEY: $AGENCY_STAGING_DEPLOY_PRIVATE_KEY
-
-deploy to production:
-  <<: *deploy
-  when: manual
-  environment:
-    name: production
-    url: https://foo.example.com
-  variables:
-    DEPLOY_HOST: foo.example.com
-    DEPLOY_USER: bar
-    DEPLOY_PHP_COMMAND: php8.3
-    DEPLOY_PATH: /home/bar/app
-    DEPLOY_SSH_KNOWN_HOSTS: $PRODUCTION_DEPLOY_SSH_KNOWN_HOSTS
-    DEPLOY_SSH_PRIVATE_KEY: $PRODUCTION_DEPLOY_PRIVATE_KEY
+    <<: *deploy
+    when: manual
+    environment:
+        name: staging
+        url: https://majas-receptes.cube.lv
+    variables:
+        DEPLOY_HOST: staging.cube.lv
+        DEPLOY_USER: majas_receptes
+        DEPLOY_PHP_COMMAND: php8.3
+        DEPLOY_PATH: /home/majas_receptes/app
+        DEPLOY_SSH_KNOWN_HOSTS: $AGENCY_STAGING_DEPLOY_KNOWN_HOSTS
+        DEPLOY_SSH_PRIVATE_KEY: $AGENCY_STAGING_DEPLOY_PRIVATE_KEY
