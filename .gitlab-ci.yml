@@ -46,7 +46,7 @@ stages:
 unit tests:
     <<: *tests
     services:
-        - name: registry.cubesystems.lv/registry/registry/mysql:8.0
+        - name: mysql:8.0
           alias: mysql
     script:
         - ./vendor/bin/phpunit --coverage-html coverage  --coverage-text --colors=never
@@ -60,7 +60,7 @@ browser tests:
         XDEBUG_MODE: 'off'
     <<: *tests
     services:
-        - name: registry.cubesystems.lv/registry/registry/mysql:8.0
+        - name: mysql:8.0
           alias: mysql
         - name: selenium/standalone-chrome
           alias: selenium-chrome
