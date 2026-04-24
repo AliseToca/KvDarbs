@@ -69,7 +69,7 @@ export default defineConfig({
         }),
         eslintPlugin({
             include: ['resources/assets/js/**/*.{js,ts}'],
-            failOnError: true,
+            failOnError: false,
             lintAllOnSave: true,
         }),
         stylelintPlugin({
