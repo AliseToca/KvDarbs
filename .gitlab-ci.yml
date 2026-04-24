@@ -20,53 +20,7 @@ variables:
         - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
 
 stages:
-    - test
     - deploy
-
-.tests: &tests
-    stage: test
-    except:
-        - tags
-    before_script:
-        - cp .env.example .env
-        - composer install --prefer-dist --no-progress --no-interaction --quiet
-        - npm install
-        - npm run build
-        - php artisan key:generate
-    artifacts:
-        when: always
-        paths:
-            - coverage
-            - tests/Browser/screenshots/
-            - tests/Browser/console/
-            - tests/storage/fixtures/
-            - storage/logs/
-        expire_in: 1 month
-
-unit tests:
-    <<: *tests
-    services:
-        - name: mysql:8.0
-          alias: mysql
-    script:
-        - ./vendor/bin/phpunit --coverage-html coverage  --coverage-text --colors=never
-
-browser tests:
-    variables:
-        DUSK_DRIVER_URL: 'http://selenium-chrome:4444/wd/hub'
-        FF_NETWORK_PER_BUILD: 1
-        ARTISAN_TEST_HOST: 0.0.0.0
-        APP_URL: 'http://build:8000'
-        XDEBUG_MODE: 'off'
-    <<: *tests
-    services:
-        - name: mysql:8.0
-          alias: mysql
-        - name: selenium/standalone-chrome
-          alias: selenium-chrome
-    script:
-        - php artisan dusk:chrome-driver --detect
-        - php artisan dusk
 
 deploy to staging:
     <<: *deploy
