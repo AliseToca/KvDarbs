@@ -7,4 +7,8 @@ return [
     'rights' => 'Tiesības',
     'settings' => 'Iestatījumi',
     'content' => 'Saturs',
+    'footer' => [
+        'profile' => 'Profils',
+        'links' => 'Saites',
+    ]
 ];

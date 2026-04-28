@@ -3,16 +3,111 @@
 .site-footer {
     background-color: $color-secondary;
     color: $color-white;
-    padding: $cont-padding-base;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: $cont-padding-base 0;
     margin-top: 30px;
 
-    nav {
-        ul {
+    .container {
+        margin-inline: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        @media (max-width: $phone-lg) {
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+    }
+
+    .footer-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-self: flex-start;
+        padding-top: 10px;
+
+        @media (max-width: $phone-lg) {
+            align-self: center;
+            align-items: center;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .footer-socials {
             display: flex;
-            gap: $cont-padding-base;
+            gap: 15px;
+
+            &-link {
+                color: rgba($color-white, 0.7);
+                font-size: 18px;
+                transition: color 0.2s ease;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+
+                &:hover {
+                    color: $color-primary;
+                }
+            }
+        }
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: space-between;
+        gap: 70px;
+
+        @media (max-width: $tablet) {
+            gap: 40px;
+        }
+
+        @media (max-width: $phone) {
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        &-column {
+            &-title {
+                margin-bottom: 16px;
+                padding-bottom: 8px;
+                border-bottom: 2px solid $color-primary;
+                display: inline-block;
+                font-size: 15px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+
+                @media (max-width: $phone-lg) {
+                    font-size: 18px;
+                }
+            }
+
+            &-list {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+
+                li a {
+                    color: rgba($color-white, 0.7);
+                    text-decoration: none;
+                    font-size: 15px;
+                    margin-bottom: 5px;
+                    transition: color 0.2s ease;
+
+                    @media (max-width: $phone-lg) {
+                        font-size: 16px;
+                        margin-bottom: 10px;
+                    }
+
+                    &:hover {
+                        color: $color-white;
+                    }
+                }
+            }
         }
     }
 }
