@@ -1,31 +1,19 @@
 <script setup>
 const props = defineProps({
     pageName: String,
-    blocks: {
-        type: Array,
-        required: true,
-        default: () => []
-    }
+    blocks: Array,
 });
-
-const blockComponents = import.meta.glob('./Blocks/*.vue', {
-    eager: true,
-});
-
-const resolveBlock = (type) => {
-    const componentPath = `./Blocks/${type}.vue`
-    return blockComponents[componentPath]?.default ?? null
-};
 </script>
 
 <template>
     <h1>{{ pageName }}</h1>
-    <div v-if="blocks?.length">
-        <component
-            v-for="(block, index) in blocks"
-            :key="block.id ?? index"
-            :is="resolveBlock(block.type)"
-            v-bind="block.data"
-        />
+    <div class="blocks">
+        <template v-for="(block, index) in blocks" :key="index">
+            <!-- simple_text -->
+            <div v-if="block.type === 'simple_text'" v-html="block.data.text" />
+
+            <!-- add more block types here as needed -->
+            <!-- <div v-else-if="block.type === 'image'" ... /> -->
+        </template>
     </div>
 </template>
