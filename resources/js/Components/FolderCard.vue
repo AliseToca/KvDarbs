@@ -14,7 +14,9 @@ const props = defineProps({
 defineEmits(['click']);
 
 const images = computed(() => {
-    const withImage = props.folder.recipes.filter(r => r.image_src).map(r => r.image_src);
+    const withImage = props.folder.recipes
+        .filter(r => r.image_src)
+        .map(r => `/storage/${r.image_src}`);
 
     return [0, 1, 2].map(i => withImage[i] ?? null);
 });

@@ -3,7 +3,12 @@
 .folder-header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 20px;
+
+    button {
+        flex-grow: 0;
+    }
 
     .folder-actions {
         display: flex;
