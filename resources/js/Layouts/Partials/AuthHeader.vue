@@ -1,6 +1,5 @@
 <script setup>
 import {usePage} from "@inertiajs/vue3";
-import Header from "./Header.vue";
 
 const {languagePage} = usePage().props;
 </script>

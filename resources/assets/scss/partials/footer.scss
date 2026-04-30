@@ -3,11 +3,10 @@
 .site-footer {
     background-color: $color-secondary;
     color: $color-white;
-    padding: $cont-padding-base 0;
-    margin-top: 30px;
 
     .container {
-        margin-inline: 0;
+        margin-inline: auto;
+        padding: $cont-padding-base;
         display: flex;
         align-items: center;
         justify-content: space-between;

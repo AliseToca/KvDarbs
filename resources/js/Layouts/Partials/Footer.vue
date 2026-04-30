@@ -3,7 +3,7 @@ import {Link, usePage} from "@inertiajs/vue3";
 import NavBar from "../../Components/NavBar.vue";
 import UserActions from "../../Components/UserActions.vue";
 
-const { footerMenu, languagePage, auth, translations} = usePage().props;
+const { footerMenu, languagePage, user, translations} = usePage().props;
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const { footerMenu, languagePage, auth, translations} = usePage().props;
                     <Link class="footer-socials-link"><i class="pi pi-twitter"/></Link>
                 </div>
             </div>
-            <div class="footer-links">
+            <div v-if="user" class="footer-links">
                 <div class="footer-links-column">
                     <h3 class="footer-links-column-title">{{ translations.navigation.footer.links }}</h3>
 
@@ -26,7 +26,7 @@ const { footerMenu, languagePage, auth, translations} = usePage().props;
                         class="footer-links-column-list"
                         :menu="footerMenu"
                         :languagePage="languagePage"
-                        :auth="auth"
+                        :auth="user"
                     />
                 </div>
 
