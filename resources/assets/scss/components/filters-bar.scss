@@ -7,18 +7,43 @@
     gap: 12px;
     flex-wrap: wrap;
     margin-bottom: 8px;
-    padding-top: 10px;
+    margin-top: 16px;
+
+    @include until($tablet) {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
 }
 
-.filters-left {
-    flex: 1;
-    min-width: 0;
+.filters-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
 
-    .tags-wrap {
-        display: flex;
+    @include until($phone-lg) {
+        width: 100%;
         flex-wrap: wrap;
-        gap: 8px;
+
+        > * {
+            flex: 1;
+        }
     }
+
+    @include until($phone) {
+        flex-direction: column;
+        align-items: stretch;
+
+        > * {
+            width: 100%;
+        }
+    }
+}
+.active-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
 .filters-right {

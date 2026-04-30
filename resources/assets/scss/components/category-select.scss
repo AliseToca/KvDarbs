@@ -14,6 +14,8 @@
     border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
 
     .trigger-label {
         display: flex;

@@ -12,6 +12,9 @@
     cursor: pointer;
     white-space: nowrap;
     transition: color 0.2s ease;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .toggle-label {
