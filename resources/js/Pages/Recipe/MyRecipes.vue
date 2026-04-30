@@ -3,7 +3,7 @@ import {Link, usePage} from '@inertiajs/vue3';
 import MainLayout from '../../Layouts/Main.vue';
 import RecipeCard from '../../Components/RecipeCard.vue';
 import Pagination from "../../Components/Pagination.vue";
-import SearchBar from "../../Components/SearchBar.vue";
+import SearchBar from "../../Components/Inputs/SearchBar.vue";
 import NotFound from "../../Components/NotFound.vue";
 
 const { translations, recipes, recipe_count, filters} = usePage().props;

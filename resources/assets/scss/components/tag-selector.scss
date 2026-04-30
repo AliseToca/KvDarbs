@@ -17,6 +17,7 @@
         cursor: pointer;
         transition: all 0.12s ease;
         user-select: none;
+        font-size: 15px;
 
         &:hover {
             border-color: $color-secondary;

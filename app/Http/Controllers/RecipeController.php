@@ -108,10 +108,17 @@ class RecipeController extends Controller
 
         $sort = $request->get('sort', 'newest');
 
+        $categoryIds = array_filter(explode(',', $request->get('categories', '')));
+
         $query = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
             ->visibleTo($user)
             ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
-            ->when($request->type, fn($q, $id) => $q->where('recipe_type_id', $id));
+            ->when($request->type, fn($q, $id) => $q->where('recipe_type_id', $id))
+            ->when($categoryIds, function ($q) use ($categoryIds) {
+                foreach ($categoryIds as $categoryId) {
+                    $q->whereHas('recipeCategories', fn($q) => $q->where('recipe_categories.id', $categoryId));
+                }
+            });
 
         $recipes = $this->applySorting($query, $sort, $request)
             ->through(fn ($recipe) => $this->mapRecipe($recipe, $user));
@@ -126,6 +133,7 @@ class RecipeController extends Controller
             'filters' => [
                 'search' => $request->search,
                 'sort' => $sort,
+                'categories' => $request->get('categories', ''),
             ],
         ]);
     }
