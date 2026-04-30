@@ -13,6 +13,8 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(['close']);
+
 const isOpen = ref(false);
 const dropdownRef = ref(null);
 
@@ -22,6 +24,7 @@ const close = () => (isOpen.value = false);
 const closeOnOutside = (e) => {
     if (dropdownRef.value && !dropdownRef.value.contains(e.target)) {
         close();
+        emit('close');
     }
 }
 
