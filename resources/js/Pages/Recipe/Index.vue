@@ -9,6 +9,7 @@ import ConstructorRenderer from "../../Components/ConstructorRenderer.vue";
 import NotFound from "../../Components/NotFound.vue";
 import SortBy from "../../Components/Inputs/SortBy.vue";
 import CategorySelect from "../../Components/Inputs/CategorySelect.vue";
+import AvailableToggle from "../../Components/Inputs/AvailableToggle.vue";
 
 const {translations, recipes, blocks, filters, page_name, types, categories} = usePage().props;
 
@@ -23,6 +24,8 @@ const selectedCategories = ref(
         : []
 );
 
+const availableOnly = ref(urlParams.get('available') === 'true');
+
 function selectType(id) {
     selectedType.value = id;
     applyFilters();
@@ -30,6 +33,8 @@ function selectType(id) {
 
 function clearAll() {
     selectedType.value = null;
+    selectedCategories.value = [];
+    availableOnly.value = false;
     applyFilters();
 }
 
@@ -48,6 +53,7 @@ function applyFilters() {
             categories: selectedCategories.value.length
                 ? selectedCategories.value.join(',')
                 : undefined,
+            available: availableOnly.value || undefined,
         },
         {
             preserveScroll: true,
@@ -92,11 +98,16 @@ function applyFilters() {
                 </div>
 
                 <div class="filters-right">
+                    <AvailableToggle
+                        v-model="availableOnly"
+                        :label="translations.recipe.available_only"
+                        @update:modelValue="applyFilters"
+                    />
                     <CategorySelect
                         v-if="categories && categories.length"
                         v-model="selectedCategories"
                         :categories="categories"
-                        :placeholder="translations.recipe.filter_by_category || 'Kategorijas'"
+                        :placeholder="translations.recipe.categories"
                         @close="applyFilters"
                     />
                     <SortBy

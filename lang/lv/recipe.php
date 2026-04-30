@@ -17,6 +17,7 @@ return [
     'no_recipes' => 'Nav recepšu',
     'types' => 'Ēdienreize',
     'categories' => 'Kategorijas',
+    'available_only' => 'Pieejamās',
     'reviews' => [
         'heading' => 'Novertē šo recepti!',
         'plural' => 'Atsauksmes',

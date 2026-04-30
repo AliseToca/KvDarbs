@@ -101,13 +101,27 @@ class RecipeController extends Controller
         return $query->paginate(12)->withQueryString();
     }
 
+    private function applySortingWithoutPaginate($query, string $sort)
+    {
+        match ($sort) {
+            'highest_rated' => $query->withAvg('reviews', 'rating')
+                ->orderByDesc('reviews_avg_rating'),
+            'most_reviewed' => $query->withCount('reviews')
+                ->orderByDesc('reviews_count'),
+            'quickest' => $query->orderByRaw('(prep_time + cook_time) ASC'),
+            default => $query->latest(),
+        };
+
+        return $query;
+    }
+
     public function index(Request $request): Response
     {
         $page = $this->pagesService->getRecipeIndexPage();
         $user = auth()->user();
 
         $sort = $request->get('sort', 'newest');
-
+        $availableOnly = $request->boolean('available') && $user;
         $categoryIds = array_filter(explode(',', $request->get('categories', '')));
 
         $query = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
@@ -120,8 +134,27 @@ class RecipeController extends Controller
                 }
             });
 
-        $recipes = $this->applySorting($query, $sort, $request)
-            ->through(fn ($recipe) => $this->mapRecipe($recipe, $user));
+        if ($availableOnly) {
+            $perPage = 12;
+            $currentPage = $request->get('page', 1);
+
+            $allRecipes = $this->applySortingWithoutPaginate($query, $sort)
+                ->get()
+                ->map(fn($recipe) => $this->mapRecipe($recipe, $user))
+                ->filter(fn($recipe) => $recipe['compatibility'] == 100)
+                ->values();
+
+            $recipes = new \Illuminate\Pagination\LengthAwarePaginator(
+                $allRecipes->forPage($currentPage, $perPage),
+                $allRecipes->count(),
+                $perPage,
+                $currentPage,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+        } else {
+            $recipes = $this->applySorting($query, $sort, $request)
+                ->through(fn($recipe) => $this->mapRecipe($recipe, $user));
+        }
 
         return Inertia::render('Recipe/Index', [
             'page_name' => $page->name,
@@ -134,6 +167,7 @@ class RecipeController extends Controller
                 'search' => $request->search,
                 'sort' => $sort,
                 'categories' => $request->get('categories', ''),
+                'available' => $availableOnly,
             ],
         ]);
     }
