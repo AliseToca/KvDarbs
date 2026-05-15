@@ -28,6 +28,8 @@ Route::get('/households/join-email/{token}', [HouseholdEmailInviteController::cl
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('forgot-password');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
 });
 
 //Reģistrēta lietotāja adresācijas

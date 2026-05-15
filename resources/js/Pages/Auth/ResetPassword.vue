@@ -6,18 +6,19 @@ import { useForm, usePage } from "@inertiajs/vue3";
 const translations = usePage().props.translations;
 
 const props = defineProps({
-    prefillEmail: { type: String, default: '' },
-    inviteToken:  { type: String, default: '' },
+    token: { type: String, required: true },
+    email: { type: String, default: '' },
 });
 
 const form = useForm({
-    email: props.prefillEmail,
-    username: '',
+    token: props.token,
+    email: props.email,
     password: '',
+    password_confirmation: '',
 });
 
 const submit = () => {
-    form.post('/login', {
+    form.post('/reset-password', {
         onError: (errors) => {
             console.log('Validation errors:', errors);
         },
@@ -33,7 +34,7 @@ const submit = () => {
 
                 <div class="content">
                     <div class="content-info">
-                        <h2>{{ translations.auth.login_title }}</h2>
+                        <h2>{{ translations.auth.reset_password }}</h2>
                     </div>
 
                     <form class="form-field" @submit.prevent="submit">
@@ -53,27 +54,34 @@ const submit = () => {
                             type="password"
                             id="password"
                             name="password"
-                            :label="translations.auth.password"
+                            :label="translations.auth.new_password"
                             :error="form.errors.password"
                         />
 
-                        <button type="submit" class="button full-width primary">
-                            {{ translations.auth.login }}
+                        <InputField
+                            v-model="form.password_confirmation"
+                            class="form-field-item"
+                            type="password"
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            :label="translations.auth.password_confirmation"
+                            :error="form.errors.password_confirmation"
+                        />
+
+                        <button
+                            type="submit"
+                            class="button full-width primary"
+                            :disabled="form.processing"
+                        >
+                            {{ translations.auth.reset_password_button }}
                         </button>
                     </form>
-                    <div class="content-info">
-                        <a href="/forgot-password" class="link">{{ translations.auth.forgot_password }}</a>
-                    </div>
-
                 </div>
 
-                <div class="content-info">
-                    <p>
-                        {{ translations.auth.no_account }}
-                        <a href="/register" class="link-primary">{{ translations.auth.register_title }}</a>
-                    </p>
-                </div>
-
+                <p>
+                    {{ translations.auth.have_account }}
+                    <a href="/login" class="link">{{ translations.auth.login }}</a>
+                </p>
             </div>
         </div>
     </AuthLayout>

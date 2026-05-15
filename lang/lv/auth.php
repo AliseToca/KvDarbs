@@ -30,4 +30,12 @@ return [
     'register_button' => 'Reģistrēties',
 
     'from_user' => 'Lietotāja',
+
+    'forgot_password' => 'Aizmirsāt paroli?',
+    'forgot_password_hint' => 'Ievadiet savu e-pastu un mēs nosūtīsim jums paroles atiestatīšanas saiti.',
+    'forgot_password_button' => 'Nosūtīt atiestatīšanas saiti',
+    'forgot_password_success' => 'Pārbaudiet savu e-pastu — paroles atiestatīšanas saite ir nosūtīta.',
+
+    'reset_password' => 'Paroles atiestatīšana',
+    'reset_password_button' => 'Atiestatīt paroli',
 ];

@@ -10,7 +10,7 @@ const { footerMenu, languagePage, user, translations} = usePage().props;
     <footer class="site-footer">
         <div class="container">
             <div class="footer-info">
-                <h3>{{languagePage.content.site_name}}</h3>
+                <h3>{{languagePage.content.site_name}}{{languagePage.content.site_name_accent}}</h3>
 
                 <div class="footer-socials">
                     <Link class="footer-socials-link"><i class="pi pi-facebook"/></Link>

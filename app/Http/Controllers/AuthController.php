@@ -22,4 +22,17 @@ class AuthController extends Controller
             'inviteToken'  => $request->query('invite', ''),
         ]);
     }
+
+    public function showForgotPassword(Request $request)
+    {
+        return Inertia::render('Auth/ForgotPassword');
+    }
+
+    public function showResetPassword(Request $request, string $token)
+    {
+        return Inertia::render('Auth/ResetPassword', [
+            'token' => $token,
+            'email' => $request->query('email', ''),
+        ]);
+    }
 }
