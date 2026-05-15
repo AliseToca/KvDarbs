@@ -71,12 +71,14 @@ const dropdown = ref(null);
                 v-for="recipe in folder.recipes || []"
                 :key="recipe.id"
                 :url="`${recipe.url}?from_folder=${folder.id}`"
-                :name = recipe.name
-                :imageSrc = recipe.image_src
-                :rating = recipe.average_rating
-                :time_minutes = recipe.total_time
-                :missing_products_count = recipe.missing_products_count
-                :compatibility = recipe.compatibility
+                :name="recipe.name"
+                :imageSrc="recipe.image_src"
+                :rating="recipe.average_rating"
+                :time_minutes="recipe.total_time"
+                :missing_products_count="recipe.missing_products_count"
+                :available_products_count="recipe.available_products_count"
+                :total_products_count="recipe.total_products_count"
+                :compatibility="recipe.compatibility"
             />
         </div>
 

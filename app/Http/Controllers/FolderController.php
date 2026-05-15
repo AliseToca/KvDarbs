@@ -50,6 +50,8 @@ class FolderController extends Controller
                 ...$recipe->toArray(),
                 'url' => $page->getUrl('show', ['recipe' => $recipe->slug]),
                 'missing_products_count' => $availability['missing_products_count'],
+                'available_products_count' => $availability['available_products_count'],
+                'total_products_count' => $availability['total_products_count'],
                 'compatibility' => $availability['compatibility'],
             ];
         });
