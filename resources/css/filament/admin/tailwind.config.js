@@ -8,4 +8,11 @@ export default {
         './vendor/filament/**/*.blade.php',
         './vendor/awcodes/filament-curator/resources/**/*.blade.php',
     ],
+    theme: {
+        extend: {
+            colors: {
+                white: '#fefdf8',  // your beige-light
+            }
+        }
+    }
 };

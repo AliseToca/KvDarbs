@@ -45,10 +45,24 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Red,
-            ])
+                'primary' => Color::hex('#ec3f42'),
+                'danger'  => Color::hex('#c63131'),
+                'gray' => [
+                    50  => '#fefdf8',
+                    100 => '#f1ece4',
+                    200 => '#f1ece4',
+                    300 => '#f1ece4',
+                    400 => '#787878',
+                    500 => '#3c3c3c',
+                    600 => '#787878',
+                    700 => '#3c3c3c',
+                    800 => '#2a2525',
+                    900 => '#1a1a1a',
+                    950 => '#0a0a0a',
+                ],        ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->darkMode(false)
             ->pages([
                 Pages\Dashboard::class,
                 Settings::class,
@@ -83,18 +97,12 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                FilamentRedirectsPlugin::make(),
                 FilamentTranslationsPlugin::make(),
                 FilamentShieldPlugin::make(),
                 FilamentPageManagerPlugin::make()
                     ->resource(PageResource::class),
-                CuratorPlugin::make()
-                    ->label('Media')
-                    ->pluralLabel('Media')
-                    ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Content'),
-                FilamentTranslateFieldPlugin::make(),
-            ])
+                FilamentTranslateFieldPlugin::make()
+                ])
              ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
