@@ -11,7 +11,7 @@ const { page, content, blocks } = defineProps({
 <template>
     <MainLayout>
         <h1 class="capitalize">{{page.name}}</h1>
-        <!--         <div class="blocks" v-html="blocks"></div>-->
+                 <div class="blocks" v-html="blocks"></div>
     </MainLayout>
 </template>
 

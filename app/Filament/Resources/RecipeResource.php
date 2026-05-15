@@ -148,7 +148,7 @@ class RecipeResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('recipeType.name')
-                    ->label(__('fields.labels.recipe.type'))
+                    ->label('Ēdienreize')
                     ->badge(),
 
                 TextColumn::make('visibility')

@@ -90,14 +90,16 @@ class InertiaServiceProvider extends ServiceProvider
     }
 
     private function isDatabaseAvailable(): bool
-        {
-            try {
-                DB::connection()->getPdo();
-            } catch (\Exception $e) {
+    {
+        try {
+            DB::connection()->getPdo();
+            if (!DB::getSchemaBuilder()->hasTable('translator_translations')) {
                 return false;
             }
-
-            return true;
+        } catch (\Exception $e) {
+            return false;
         }
 
+        return true;
+    }
 }

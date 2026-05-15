@@ -27,6 +27,7 @@ return [
             'step' => 'Solis',
             'rating' => 'Novērtējums',
             'reviews' => 'Atsauksmes',
+            'type' => 'Ēdienreize',
         ],
         'product' => [
             'amount' => 'Daudzums',
@@ -35,6 +36,6 @@ return [
             'expiration_date' => 'Derīguma termiņš',
             'not_found' => 'Produkts nav atrasts',
         ],
-
+        'author' => 'Autors',
     ],
 ];

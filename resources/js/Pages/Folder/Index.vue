@@ -27,7 +27,7 @@ const showCreateModal = ref(false);
             />
         </header>
 
-        <div class="grid-container">
+        <div class="grid-folder-container">
             <FolderCard
                 v-for="folder in folders.data"
                 :key="folder.id"

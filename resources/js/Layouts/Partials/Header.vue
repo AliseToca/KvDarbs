@@ -59,7 +59,7 @@ onUnmounted(() => {
 <template>
     <header :class="['container', 'site-header', { mobile: isMobile }]">
         <!--Logo/mājaslapas nosaukuma saite  uz sākumlapu-->
-        <a :href="`/${languagePage.slug}/`">
+        <a>
             <strong>{{ languagePage.content.site_name }}</strong>
         </a>
 
@@ -73,9 +73,9 @@ onUnmounted(() => {
         <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
         <UserActionsDropdown v-if="!isMobile && user !== null"/>
 
-        <Link v-if="user === null" :href="route('login')" as="button" class="button primary">
-            {{ translations.auth.login }}
-        </Link>
+<!--        <Link v-if="user === null" :href="route('login')" as="button" class="button primary">-->
+<!--            {{ translations.auth.login }}-->
+<!--        </Link>-->
 
         <!--Mobilās izvēlnes poga-->
         <button v-if="isMobile && user !== null" @click="openMenu">

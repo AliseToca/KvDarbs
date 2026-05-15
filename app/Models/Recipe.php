@@ -2,19 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\User;
-use App\Models\Review;
-use App\Models\Folder;
-use App\Models\Product;
-use App\Models\RecipeCategory;
-use App\Models\RecipeType;
-use App\Services\PagesService;
 use App\Enums\Recipe\Visibility;
+use App\Models\RecipeProduct;
+use App\Services\PagesService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Recipe extends Model
 {
@@ -33,22 +28,27 @@ class Recipe extends Model
         'recipe_type_id',
     ];
 
-    // Datu pārveidošana uz tipu
     protected $casts = [
-        'image_src' => 'string',
-        'ingredients' => 'array',
+        'image_src'    => 'string',
+        'ingredients'  => 'array',
         'instructions' => 'array',
-        'visibility' => Visibility::class,
+        'visibility'   => Visibility::class,
     ];
 
-    // Vērtību piekļuves lauki
+    /**
+     * Appended virtual attributes computed on every serialisation.
+     * Keep this list short — each entry triggers an extra query if not eager-loaded.
+     */
     protected $appends = [
         'total_time',
         'average_rating',
         'reviews_count',
     ];
 
-    //--- Receptes relācijas ---
+    // -------------------------------------------------------------------------
+    // Relationships
+    // -------------------------------------------------------------------------
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -79,46 +79,73 @@ class Recipe extends Model
         return $this->belongsTo(RecipeType::class);
     }
 
-    //--- Vērtibu piekļuves metodes ---
-    // Kopējā receptes laika aprēķins
+    // -------------------------------------------------------------------------
+    // Accessors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Sum of prep and cook time in minutes.
+     */
     public function getTotalTimeAttribute(): int
     {
         return ($this->prep_time ?? 0) + ($this->cook_time ?? 0);
     }
 
-    // Receptes vidējā novērtējuma iegūšana
+    /**
+     * Average review rating rounded to one decimal, or null when no reviews exist.
+     */
     public function getAverageRatingAttribute(): ?float
     {
         $avg = $this->reviews()->avg('rating');
 
-        return $avg !== null ? round($avg, 1) : null;
+        return $avg !== null ? round((float) $avg, 1) : null;
     }
 
-    // Receptes atsauksmju skaita iegūšana
+    /**
+     * Total number of reviews for this recipe.
+     */
     public function getReviewsCountAttribute(): int
     {
         return $this->reviews()->count();
     }
 
+    // -------------------------------------------------------------------------
+    // Scopes
+    // -------------------------------------------------------------------------
+
+    /**
+     * Limits the query to recipes the given user is allowed to see.
+     *
+     * Visibility rules:
+     *  - Public    -> visible to everyone, including guests (null user).
+     *  - Private   -> visible only to the recipe's author.
+     *  - Household -> visible to any member of a household the author belongs to.
+     */
     public function scopeVisibleTo(Builder $query, ?User $user): Builder
     {
-        if($user === null){
+        // Guests may only see public recipes.
+        if ($user === null) {
             return $query->where('visibility', Visibility::Public);
         }
 
-        return $query->where(function (Builder $q) use ($user){
-            // Publiski ieraksti - redzami visiem
+        return $query->where(function (Builder $q) use ($user) {
             $q->where('visibility', Visibility::Public)
-                // Privāti ieraksti - redzami tikai pašam lietotājam
+
                 ->orWhere(function (Builder $q) use ($user) {
+                    // Private: only the author themselves.
                     $q->where('visibility', Visibility::Private)
                         ->where('user_id', $user->id);
                 })
-                // Mājsaimniecības ieraksti - redzami tikai lietotājiem no tās pašas mājsaimniecības
+
                 ->orWhere(function (Builder $q) use ($user) {
+                    // Household: the recipe's author must share at least one
+                    // household with the viewing user.
                     $q->where('visibility', Visibility::Household)
-                        ->whereHas('user.households', function ($q) use ($user) {
-                            $q->whereIn('households.id', $user->households()->pluck('households.id'));
+                        ->whereHas('user.households', function (Builder $q) use ($user) {
+                            $q->whereIn(
+                                'households.id',
+                                $user->households()->pluck('households.id')
+                            );
                         });
                 });
         });

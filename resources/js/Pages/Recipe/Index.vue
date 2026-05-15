@@ -13,7 +13,6 @@ import AvailableToggle from "../../Components/Inputs/AvailableToggle.vue";
 
 const {translations, recipes, blocks, filters, page_name, types, categories} = usePage().props;
 
-console.log(blocks);
 const urlParams = new URLSearchParams(window.location.search);
 const resultsKey = ref(0);
 

@@ -2,95 +2,103 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Household;
 use App\Models\HouseholdProduct;
-use App\Models\Unit;
 use App\Models\Product;
+use App\Models\Unit;
 use App\Services\MeasurmentConversionService;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class HouseholdProductController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Adds a product to the authenticated user's active household.
+     *
+     * If the same product already exists in the household with a matching
+     * expiration date, the stored amount is incremented rather than creating
+     * a duplicate entry. Different expiration dates are treated as separate
+     * stock items (e.g. a fresh batch alongside an older one).
+     *
+     * All amounts are converted to the product's base unit before storage.
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validē lietotāja ievadītos datus
         $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'amount' => 'required|numeric',
-            'unit_id' => 'required|exists:units,id',
+            'product_id'      => 'required|exists:products,id',
+            'amount'          => 'required|numeric',
+            'unit_id'         => 'required|exists:units,id',
             'expiration_date' => 'nullable|date',
         ]);
 
-        // Iegūstam nepieciešamos modeļus
         $household = auth()->user()->activeHousehold();
-        $unit = Unit::findOrFail($validated['unit_id']);
-        $product = Product::findOrFail($validated['product_id']);
+        $unit      = Unit::findOrFail($validated['unit_id']);
+        $product   = Product::findOrFail($validated['product_id']);
 
-        // Pārveidojam lietotāja ievadīto daudzumu uz tā bāzes vienību
-        $amountInBaseUnit = MeasurmentConversionService::toBaseAmount($validated['amount'], $unit, $product);
+        $amountInBaseUnit = MeasurmentConversionService::toBaseAmount(
+            $validated['amount'],
+            $unit,
+            $product
+        );
 
-        // Iegūstan mājsaimniecībā esošu produktu, ja tas ir
         $existingProduct = $household->householdProducts()
             ->where('product_id', $product->id)
             ->first();
 
-        // Ja mājsaimniecībā ir produkts, tam pieskaita lietotāja ievadīto daudzumu
-        if ($existingProduct && $existingProduct->expiration_date == $validated['expiration_date'])
-        {
+        $sameExpirationDate = $existingProduct
+            && $existingProduct->expiration_date == $validated['expiration_date'];
+
+        if ($sameExpirationDate) {
+            // Merge into the existing stock entry rather than creating a duplicate.
             $existingProduct->increment('amount', $amountInBaseUnit);
-        } else // citādāk tas tiek izveidots
-        {
+        } else {
             $household->householdProducts()->create([
-                'product_id' => $product->id,
-                'amount' => $amountInBaseUnit,
+                'product_id'      => $product->id,
+                'amount'          => $amountInBaseUnit,
                 'expiration_date' => $validated['expiration_date'],
             ]);
         }
 
-        return back()->with('success', 'Veiksmīgi pievienots produkts');
+        return back()->with('success', 'Produkts veiksmīgi pievienots');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Replaces the amount and expiration date of an existing household product.
+     *
+     * The incoming amount is converted from the user-selected unit to the
+     * product's base unit before being stored.
      */
     public function update(Request $request, HouseholdProduct $householdProduct): RedirectResponse
     {
-        // Validē lietotāja ievadītos datus
         $validated = $request->validate([
-            'amount' => 'required|numeric',
-            'unit_id' => 'required|exists:units,id',
+            'amount'          => 'required|numeric',
+            'unit_id'         => 'required|exists:units,id',
             'expiration_date' => 'nullable|date',
         ]);
 
-        // Iegūstam nepieciešamos modeļus
-        $unit = Unit::findOrFail($validated['unit_id']);
+        $unit    = Unit::findOrFail($validated['unit_id']);
         $product = $householdProduct->product;
 
-        // Pārveidojam lietotāja ievadīto daudzumu uz bāzes daudzumu
-        $amountInBaseUnit = MeasurmentConversionService::toBaseAmount($validated['amount'], $unit, $product);
+        $amountInBaseUnit = MeasurmentConversionService::toBaseAmount(
+            $validated['amount'],
+            $unit,
+            $product
+        );
 
-        // Atjaunina mājsaimniecības produkta datus
         $householdProduct->update([
-            'amount' => $amountInBaseUnit,
+            'amount'          => $amountInBaseUnit,
             'expiration_date' => $validated['expiration_date'],
         ]);
 
-        return back()->with('success', 'Veiksmīgi atjaunota produkta informācija');
+        return back()->with('success', 'Produkta informācija viekmsīgi atjaunota');
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Removes a product entry from the household.
      */
     public function destroy(HouseholdProduct $householdProduct): RedirectResponse
     {
         $householdProduct->delete();
 
-
-        return back()->with('success', 'Produkts tika dzēsts no mājsaimniecības');
+        return back()->with('success', 'Produkts veiksmīgi dzēsts no mājsaimniecības');
     }
 }

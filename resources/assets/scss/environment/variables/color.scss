@@ -1,7 +1,8 @@
 $color-white: #ffffff;
 $color-black: #000000;
 
-$color-beige: #fdfaf0;
+//$color-beige: #fdfaf0;
+$color-beige: #f1ece4;
 $color-beige-dark: #f1edde;
 $color-beige-light: #fefdf8;
 
@@ -21,8 +22,8 @@ $color-gray-dark: #2a2525;
 $color-brown-light: #c7b08f;
 $color-brown: #a4856c;
 
-$color-body: $color-beige;
-$color-body-dark: $color-beige-dark;
+$color-body: $color-beige-light;
+$color-body-dark: $color-beige;
 
 $color-text-primary: $color-black;
 $color-text-muted: $color-gray;
