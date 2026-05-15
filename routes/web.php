@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
@@ -133,4 +133,10 @@ Route::middleware(LocalOnly::class)->group(function () {
         Route::get('/ui-library/components', 'index')->name('components');
         Route::get('/ui-library/components/get-demo-modal', 'getDemoModal')->name('components.get-demo-modal');
     });
+});
+
+Route::get('/mail-test', function () {
+    $invitation = \App\Models\HouseholdInvitation::first();
+
+    return (new \App\Mail\HouseholdInviteMail($invitation))->render();
 });
