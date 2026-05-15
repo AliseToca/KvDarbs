@@ -6,9 +6,8 @@ const props = defineProps({
 });
 
 const expiryClass = computed(() => {
-    if (!props.breakdown) return 'expiry-badge--green';
+    if (!props.breakdown) return 'expiry-badge--beige';
     if (props.breakdown.expired)   return 'expiry-badge--red';
-    if (props.breakdown.days <= 0) return 'expiry-badge--orange';
     if (props.breakdown.days <= 3) return 'expiry-badge--orange';
     if (props.breakdown.days <= 7) return 'expiry-badge--yellow';
 
@@ -18,6 +17,6 @@ const expiryClass = computed(() => {
 
 <template>
     <span class="expiry-badge" :class="expiryClass">
-        {{ breakdown.label }}
+        {{ breakdown?.label ?? 'Nav derīguma termiņa' }}
     </span>
 </template>

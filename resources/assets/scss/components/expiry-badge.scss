@@ -10,18 +10,22 @@
     color: $color-text-muted;
 
     &--green {
-        background-color: $color-green;
+        background-color: $color-badge-green;
     }
 
     &--yellow {
-        background-color: $color-yellow;
+        background-color: $color-badge-yellow;
     }
 
     &--orange {
-        background-color: $color-orange;
+        background-color: $color-badge-orange;
     }
 
     &--red {
-        background-color: $color-red-dark;
+        background-color: $color-badge-red;
+    }
+
+    &--beige {
+        background-color: $color-body-dark;
     }
 }

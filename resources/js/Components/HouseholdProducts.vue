@@ -16,13 +16,13 @@ const isEditOpen = ref(false);
 const isDeleteOpen = ref(false);
 const selectedProduct = ref(null);
 
-// Atvērt mājsaimniecības produkta rediģēšanas logu
+// Open product edit modal
 function openEdit(entry, productName, measurementTypeId) {
     selectedProduct.value = {...entry, productName, measurementTypeId};
     isEditOpen.value = true;
 }
 
-// Atvērt mājsaimniecības produkta dzēšanas logu
+// Open product delete modal
 function openDelete(entry, productName) {
     selectedProduct.value = {...entry, productName};
     isDeleteOpen.value = true;
@@ -64,7 +64,6 @@ function openDelete(entry, productName) {
                                 <i class="pi pi-pencil entry-edit-icon"/>
                                 <span class="entry-amount">{{ entry.amount }}{{ entry.unit }}</span>
                                 <ExpiryBadge
-                                    v-if="entry.expiryBreakdown"
                                     :breakdown="entry.expiryBreakdown"
                                 />
                             </button>
@@ -87,7 +86,7 @@ function openDelete(entry, productName) {
             </ul>
         </section>
 
-        <!-- Paziņojuma logi -->
+        <!-- Modals -->
         <EditHouseholdProductModal
             v-model="isEditOpen"
             :product="selectedProduct"
