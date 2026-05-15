@@ -92,6 +92,7 @@
         overflow: hidden;
 
         &-header {
+            width: 100%;
             display: flex;
             align-items: baseline;
             background-color: $color-body-dark;

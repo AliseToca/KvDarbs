@@ -4,6 +4,7 @@ import {ref} from "vue";
 import EditHouseholdProductModal from "./Modals/EditHouseholdProductModal.vue";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal.vue";
 import ExpiryBadge from "./ExpiryBadge.vue";
+import AcordionItem from "./AcordionItem.vue";
 
 const {translations} = usePage().props;
 
@@ -31,22 +32,25 @@ function openDelete(entry, productName) {
 
 <template>
     <div class="household-products">
-        <section
+        <AcordionItem
             v-for="(products, category) in categorizedProducts"
             :key="category"
+            :defaultOpen="products.length > 0"
             class="category"
         >
-            <header class="category-header">
-                <h2>{{ category }}</h2>
-                <span class="product-count">
+            <template #header>
+                <header class="category-header">
+                    <h2>{{ category }}</h2>
+                    <span class="product-count">
                     {{ products.length }}
                     {{
-                        products.length === 1 ?
-                            translations.household.products.singular :
-                            translations.household.products.plural
-                    }}
+                            products.length === 1 ?
+                                translations.household.products.singular :
+                                translations.household.products.plural
+                        }}
                 </span>
-            </header>
+                </header>
+            </template>
 
             <ul v-if="products.length" class="category-products-list">
                 <li v-for="product in products" :key="product.productId" class="product-card">
@@ -63,9 +67,7 @@ function openDelete(entry, productName) {
                             >
                                 <i class="pi pi-pencil entry-edit-icon"/>
                                 <span class="entry-amount">{{ entry.amount }}{{ entry.unit }}</span>
-                                <ExpiryBadge
-                                    :breakdown="entry.expiryBreakdown"
-                                />
+                                <ExpiryBadge :breakdown="entry.expiryBreakdown"/>
                             </button>
 
                             <button
@@ -84,7 +86,7 @@ function openDelete(entry, productName) {
                     {{ noProductText }}
                 </li>
             </ul>
-        </section>
+        </AcordionItem>
 
         <!-- Modals -->
         <EditHouseholdProductModal

@@ -18,12 +18,13 @@ const toggle = () => {
     <div class="accordion-item">
         <button class="accordion-header" @click="toggle" type="button">
             <slot name="header"/>
-
             <i class="pi pi-chevron-down" :class="{'open': isOpen}"></i>
         </button>
 
-        <div v-show="isOpen" class="accordion-body">
-            <slot/>
-        </div>
+        <Transition name="accordion">
+            <div v-if="isOpen" class="accordion-body">
+                <slot/>
+            </div>
+        </Transition>
     </div>
 </template>
