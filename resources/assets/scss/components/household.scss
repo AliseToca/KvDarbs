@@ -3,6 +3,10 @@
 .household {
     width: 100%;
 
+    section {
+        margin-bottom: 30px;
+    }
+
     &-header {
         display: flex;
         justify-content: space-between;
