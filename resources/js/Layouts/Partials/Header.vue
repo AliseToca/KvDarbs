@@ -5,6 +5,7 @@ import NavBar from "../../Components/NavBar.vue";
 import UserActionsDropdown from "../../Components/Dropdowns/UserActionsDropdown.vue";
 import Avatar from "../../Components/Avatar.vue";
 import UserActions from "../../Components/UserActions.vue";
+import Logo from "../../Components/Logo.vue";
 
 const {translations, headerMenu, languagePage} = usePage().props;
 
@@ -59,9 +60,11 @@ onUnmounted(() => {
 <template>
     <header :class="['container', 'site-header', { mobile: isMobile }]">
         <!--Logo/mājaslapas nosaukuma saite  uz sākumlapu-->
-        <a>
-            <strong>{{ languagePage.content.site_name }}</strong>
-        </a>
+        <Logo
+            :siteName=languagePage.content.site_name
+            :siteNameAccent=languagePage.content.site_name_accent
+            :href=languagePage.slug
+        />
 
         <!--Navigācijas josla darbvirsmas izmēra ekrāniem -->
         <NavBar

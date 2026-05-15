@@ -1,0 +1,19 @@
+@use '@environment' as *;
+
+.logo {
+    display: flex;
+    align-items: baseline;
+    font-size: 18px;
+    font-weight: 600;
+
+    i {
+        align-self: baseline;
+        color: $color-primary;
+        font-size: 22px;
+        margin-right: 2px;
+    }
+
+    .accent {
+        color: $color-primary;
+    }
+}

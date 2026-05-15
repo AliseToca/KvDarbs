@@ -19,6 +19,7 @@ class LanguageTemplate extends FilamentTemplate
                 ->rules('required'),
             TextInput::make('site_name')
                 ->required(),
+            TextInput::make('site_name_accent'),
             FileUpload::make('logo')
                 ->label('Logo')
                 ->image(),
