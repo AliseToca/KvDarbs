@@ -197,6 +197,17 @@
         &-media {
             width: 100%;
             min-height: 300px;
+            margin-top: 50px;
+        }
+
+        &-food-main {
+            width: 340px;
+            height: 340px;
+        }
+
+        &-food-card {
+            width: 180px;
+            height: 180px;
         }
 
         &-features {

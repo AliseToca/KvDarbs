@@ -31,16 +31,12 @@ const submit = () => {
 <template>
     <AuthLayout>
         <div class="auth-wrapper">
-            <div class="image-wrapper">
-                <img src="../../../assets/images/placeholder.jpg">
-            </div>
-
             <div class="content-wrapper">
                 <div></div>
 
                 <div class="content">
                     <div class="content-info">
-                        <h3>{{ translations.auth.register_title }}</h3>
+                        <h2>{{ translations.auth.register_title }}</h2>
                     </div>
 
                     <form class="form-field" @submit.prevent="submit">
@@ -99,7 +95,7 @@ const submit = () => {
 
                 <p>
                     {{ translations.auth.have_account }}
-                    <a href="/login">{{ translations.auth.login_title }}</a>
+                    <a href="/login" class="link">{{ translations.auth.login_title }}</a>
                 </p>
             </div>
         </div>
