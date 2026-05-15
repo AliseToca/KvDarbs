@@ -3,9 +3,8 @@
 namespace App\Filament\Constructor\Blocks;
 
 use App\Services\ImageService;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\Models\Media;
 use CubeAgency\FilamentConstructor\Constructor\Blocks\BlockRenderer;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 
 class HeroBlock extends BlockRenderer
@@ -17,44 +16,59 @@ class HeroBlock extends BlockRenderer
 
     public function title(): string
     {
-        return __('forms.field_labels.hero');
+        return 'Hero';
     }
 
     public function schema(): array
     {
         return [
-            CuratorPicker::make('image')
-                ->label(__('forms.field_labels.image'))
-                ->directory('pages')
-                ->limitToDirectory()
-                ->rules('required'),
-            TextInput::make('image_alt')
-                ->label(__('forms.field_labels.image_alt')),
             TextInput::make('title')
-                ->label(__('forms.field_labels.title'))
+                ->label('Title')
                 ->required(),
+
+            TextInput::make('subtitle')
+                ->label('Subtitle'),
+
+            TextInput::make('cta_label')
+                ->label('Button text')
+                ->default('Skatīt receptes'),
+
+            TextInput::make('cta_url')
+                ->label('Button URL')
+                ->default('#'),
+
+            FileUpload::make('image_main')
+                ->label('Main image (center)')
+                ->image()
+                ->directory('hero')
+                ->required(),
+
+            FileUpload::make('image_top')
+                ->label('Top card image')
+                ->image()
+                ->directory('hero'),
+
+            FileUpload::make('image_bottom')
+                ->label('Bottom card image')
+                ->image()
+                ->directory('hero'),
         ];
     }
 
     public function html(object $block): string
     {
-        $imageId = $block->data->image ?? null;
-
-        if (!$imageId) {
+        if (empty($block->data->image_main)) {
             return '';
         }
-
-        $media = Media::find($imageId);
-
-        if (!$media) {
-            return '';
-        }
-
-        $imageData = resolve(ImageService::class)->getImageAndSourceSetUrls($media);
 
         return $this->view($block, [
-            'mediaData' => $imageData,
-            'title' => $block->data->title ?? '',
+            'title'       => $block->data->title ?? '',
+            'subtitle'    => $block->data->subtitle ?? '',
+            'ctaLabel'    => $block->data->cta_label ?? 'Skatīt receptes',
+            'ctaUrl'      => $block->data->cta_url ?? '#',
+            'imageMain'   => $block->data->image_main,
+            'imageTop'    => $block->data->image_top ?? null,
+            'imageBottom' => $block->data->image_bottom ?? null,
         ])->render();
     }
 }
