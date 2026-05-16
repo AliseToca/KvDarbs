@@ -6,6 +6,14 @@
         justify-content: space-between;
         padding-bottom: 10px;
 
+        @media (max-width: $phone-lg) {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        h1 {
+            margin: 0;
+        }
         i {
             font-size: 15px;
         }
@@ -21,6 +29,11 @@
             align-items: center;
             gap: 10px;
             width: 70%;
+
+            @media (max-width: $phone-lg) {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
     }
 }
