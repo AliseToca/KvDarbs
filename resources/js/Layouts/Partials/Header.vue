@@ -41,8 +41,22 @@ watch(isMobile, isMobileNow => {
 });
 
 // Lock page scroll when mobile menu is open
+let scrollY = 0;
+
 watch(isMenuOpen, open => {
-    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) {
+        scrollY = window.scrollY;
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+    } else {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY); // restore scroll position
+    }
 });
 
 onMounted(() => {
