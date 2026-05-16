@@ -9,6 +9,7 @@ variables:
     DB_PASSWORD: pass
     XDEBUG_MODE: coverage
     DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
+    GOTENBERG_URL: $GOTENBERG_URL
 
 .deploy: &deploy
     stage: deploy
@@ -17,7 +18,13 @@ variables:
     tags:
         - deploy
     script:
-        - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
+    - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
+    - |
+        eval $(ssh-agent -s)
+        echo "$DEPLOY_SSH_PRIVATE_KEY" | ssh-add -
+        mkdir -p ~/.ssh
+        echo "$DEPLOY_SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+        ssh $DEPLOY_USER@$DEPLOY_HOST "docker ps -q -f name=gotenberg | grep -q . || docker run -d --name gotenberg --restart unless-stopped -p 3000:3000 gotenberg/gotenberg:8"
 
 stages:
     - deploy
