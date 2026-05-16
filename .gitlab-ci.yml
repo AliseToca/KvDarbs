@@ -9,6 +9,7 @@ variables:
     DB_PASSWORD: pass
     XDEBUG_MODE: coverage
     DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
+    GOTENBERG_URL: $GOTENBERG_URL
 
 .deploy: &deploy
     stage: deploy
