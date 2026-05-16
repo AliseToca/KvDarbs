@@ -9,12 +9,13 @@ import Logo from "../../Components/Logo.vue";
 
 const {translations, headerMenu, languagePage} = usePage().props;
 
+// Reactive reference to the current authenticated user
 const user = computed(() => usePage().props.user);
 
 const isMenuOpen = ref(false);
 const isMobile = ref(false);
 
-//Mobilā režīma noteikšana
+// Store media query and its handler so we can remove the listener on unmount
 let mediaQuery;
 let mediaQueryHandler;
 
@@ -26,20 +27,20 @@ const setupMobile = () => {
         isMobile.value = event.matches;
     }
 
-    // Novēro ekrāna platuma izmaiņas
+    // Listen for screen width changes
     mediaQuery.addEventListener('change', mediaQueryHandler);
 }
 
-//Mobilās izvēlnes vadība
+// Mobile menu controls
 const openMenu = () => (isMenuOpen.value = true);
 const closeMenu = () => (isMenuOpen.value = false);
 
-// Ja pārslēdzas uz darbavirsmu, aizver mobilo izvēlni
+// Close mobile menu when switching to desktop
 watch(isMobile, isMobileNow => {
     if (!isMobileNow) isMenuOpen.value = false;
 });
 
-// Bloķē lapas ritināšanu, kad izvēlne ir atvērta
+// Lock page scroll when mobile menu is open
 watch(isMenuOpen, open => {
     document.body.style.overflow = open ? 'hidden' : '';
 });
@@ -50,7 +51,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    // Noņem ekrāna izmēra klausītāju
+    // Clean up screen size listener to avoid memory leaks
     if (mediaQuery && mediaQueryHandler) {
         mediaQuery.removeEventListener('change', mediaQueryHandler);
     }
@@ -59,28 +60,24 @@ onUnmounted(() => {
 
 <template>
     <header :class="['container', 'site-header', { mobile: isMobile }]">
-        <!--Logo/mājaslapas nosaukuma saite  uz sākumlapu-->
+        <!-- Logo / site name link to homepage -->
         <Logo
             :siteName=languagePage.content.site_name
             :siteNameAccent=languagePage.content.site_name_accent
             :href=languagePage.slug
         />
 
-        <!--Navigācijas josla darbvirsmas izmēra ekrāniem -->
+        <!-- Desktop navigation bar -->
         <NavBar
             v-if="!isMobile"
             :language-page="languagePage"
             :menu="headerMenu"
         />
 
-        <!--Pieslēgšanās/izrakstīšanās pogas darbvirmas izmēra ekrāniem-->
+        <!-- Desktop user actions dropdown (login/logout/profile) -->
         <UserActionsDropdown v-if="!isMobile && user !== null"/>
 
-<!--        <Link v-if="user === null" :href="route('login')" as="button" class="button primary">-->
-<!--            {{ translations.auth.login }}-->
-<!--        </Link>-->
-
-        <!--Mobilās izvēlnes poga-->
+        <!-- Mobile menu open button (hamburger icon) -->
         <button v-if="isMobile && user !== null" @click="openMenu">
             <i class="pi pi-bars"></i>
         </button>
@@ -89,29 +86,35 @@ onUnmounted(() => {
             enter-active-class="animate__animated animate__slideInRight"
             leave-active-class="animate__animated animate__slideOutRight"
         >
-            <!-- Mobilās izvēlnes pārklājums -->
+            <!-- Mobile menu fullscreen overlay -->
             <div v-if="isMobile && isMenuOpen" class="menu-overlay">
+                <!-- Overlay header with logo and close button -->
                 <header>
-                    <strong>{{ languagePage.content.site_name }}</strong>
+                    <Logo
+                        :siteName=languagePage.content.site_name
+                        :siteNameAccent=languagePage.content.site_name_accent
+                        :href=languagePage.slug
+                    />
                     <button @click="closeMenu">
                         <i class="pi pi-times"></i>
                     </button>
                 </header>
 
                 <div class="menu-content">
+                    <!-- Logged in user info (avatar, name, username) -->
                     <div class="user-info">
                         <Avatar :avatarSrc="user.avatar_src" large/>
-
                         <h3> {{ user.name }} </h3>
                         <span> @{{ user.username }} </span>
                     </div>
 
-                    <!-- Mobilā navigācijas josla -->
+                    <!-- Mobile navigation links -->
                     <NavBar
                         :language-page="languagePage"
                         :menu="headerMenu"
                     />
 
+                    <!-- Additional user actions (profile, settings, etc.) -->
                     <nav>
                         <ul>
                             <UserActions/>
@@ -119,7 +122,7 @@ onUnmounted(() => {
                     </nav>
                 </div>
 
-                <!--Izrakstīšanās mobilā poga-->
+                <!-- Mobile logout button -->
                 <Link v-if="user !== null" :href="route('logout')" method="post" as="button" class="button primary full-width">
                     <i class="pi pi-power-off"/>
                     {{ translations.auth.logout }}
