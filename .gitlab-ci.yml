@@ -18,7 +18,8 @@ variables:
     tags:
         - deploy
     script:
-        - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
+    - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
+    - npx --yes -p shell-deployer@1.6.5 deploy-ssh "docker ps -q -f name=gotenberg | grep -q . || docker run -d --name gotenberg --restart unless-stopped -p 3000:3000 gotenberg/gotenberg:8"
 
 stages:
     - deploy
