@@ -340,8 +340,6 @@ class RecipeController extends Controller
      */
     public function show(Request $request, Recipe $recipe): Response
     {
-        $this->authorize('view', $recipe);
-
         $recipe->load([
             'user:id,username,avatar_src',
             'recipeProducts.product.measurementType.units',
