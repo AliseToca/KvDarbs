@@ -5,14 +5,17 @@ import Modal from './Modal.vue';
 import InputField from "@/Components/Inputs/InputField.vue";
 import SearchableSelect from "@/Components/Inputs/SearchableSelect.vue";
 
+// Global page props: product catalog, available units, and i18n strings
 const { products, units, translations } = usePage().props;
 
 const props = defineProps({
+    // Controls modal visibility via v-model
     modelValue: Boolean,
 });
 
 const emit = defineEmits(['update:modelValue']);
 
+// Form state managed by Inertia — tracks fields, errors, and processing state
 const form = useForm({
     product_id: '',
     amount: 1,
@@ -20,21 +23,20 @@ const form = useForm({
     expiration_date: '',
 });
 
-// Iegūst atbilstošās mērvienības
+// Only show units that match the selected product's measurement type
 const filteredUnits = computed(() => {
     const product = products.find(p => p.id === form.product_id);
     if (!product) return [];
 
-    return units.filter(
-        u => u.measurement_type_id === product.measurement_type_id
-    );
+    return units.filter(u => u.measurement_type_id === product.measurement_type_id);
 });
 
-// Atjaunina mērvienību, kad produkts tiek nomainīts
+// Reset unit selection whenever the product changes to avoid unit/type mismatch
 watch(() => form.product_id, () => {
     form.unit_id = '';
 });
 
+// Emit false to let the parent close the modal via v-model
 function closeModal() {
     emit('update:modelValue', false);
 }
@@ -43,13 +45,10 @@ function submit() {
     form.post(route('household-products.store'), {
         preserveScroll: true,
         onSuccess: () => {
+            form.reset();   // Clear fields before closing so modal reopens fresh
             closeModal();
-            form.reset({ amount: 1 });
-            router.reload({ only: ['householdProducts'] });
+            router.reload({ only: ['householdProducts'] }); // Sync list without full page reload
         },
-        onError: (errors) => {
-            console.log('Validation errors:', errors);
-        }
     });
 }
 </script>
@@ -61,7 +60,9 @@ function submit() {
         </template>
 
         <template #body>
+            <!-- form id is referenced by the submit button in #footer (outside this form element) -->
             <form id="add-product-form" class="form-field" @submit.prevent="submit">
+                <!-- Product picker — drives unit filtering below -->
                 <SearchableSelect
                     v-model="form.product_id"
                     :items="products"
@@ -78,6 +79,7 @@ function submit() {
                     :error="form.errors.amount"
                 />
 
+                <!-- Unit picker — disabled until a product is selected; options filtered by measurement type -->
                 <SearchableSelect
                     v-model="form.unit_id"
                     :items="filteredUnits"
@@ -98,6 +100,7 @@ function submit() {
         </template>
 
         <template #footer>
+            <!-- Linked to the form above via the `form` attribute since it lives outside the <form> element -->
             <button
                 class="button primary full-width"
                 form="add-product-form"
