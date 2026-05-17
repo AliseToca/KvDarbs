@@ -139,14 +139,6 @@
             }
         }
 
-        &-total-bade {
-            color: $color-text-muted;
-            background: $color-body;
-            border-radius: 6px;
-            flex-shrink: 0;
-            white-space: nowrap;
-        }
-
         &-list {
             margin-left: 10px;
             border-left: 1px solid $color-gray-light;
@@ -219,7 +211,7 @@
                 }
 
                 i {
-                    font-size: 13px;
+                    font-size: 16px;
                 }
             }
         }
