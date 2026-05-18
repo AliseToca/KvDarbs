@@ -1,38 +1,66 @@
 image: arbory/arbory:ci-php8.3-nodejs20
 
 variables:
-    MYSQL_ROOT_PASSWORD: pass
-    MYSQL_DATABASE: test
-    DB_HOST: mysql
-    DB_DATABASE: test
-    DB_USERNAME: root
-    DB_PASSWORD: pass
-    XDEBUG_MODE: coverage
-    DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
-    GOTENBERG_URL: $GOTENBERG_URL
+  MYSQL_ROOT_PASSWORD: pass
+  MYSQL_DATABASE: test
+  DB_HOST: mysql
+  DB_DATABASE: test
+  DB_USERNAME: root
+  DB_PASSWORD: pass
+  XDEBUG_MODE: coverage
+  DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
+  GOTENBERG_URL: http://gotenberg:3000
 
 .deploy: &deploy
-    stage: deploy
-    allow_failure: false
-    needs: []
-    tags:
-        - deploy
-    script:
+  stage: deploy
+  allow_failure: false
+  needs: []
+  tags:
+    - deploy
+  script:
     - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
 
 stages:
-    - deploy
+  - build
+  - deploy
+
+build:
+  stage: build
+  services:
+    - name: mysql:8.4
+      alias: mysql
+      variables:
+        MYSQL_ROOT_PASSWORD: pass
+        MYSQL_DATABASE: test
+        MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+    - name: gotenberg/gotenberg:8
+      alias: gotenberg
+  variables:
+    GOTENBERG_URL: http://gotenberg:3000
+  script:
+    - cp .env.example .env
+    - composer install --no-interaction --prefer-dist
+    - php artisan key:generate
+    - php artisan migrate --force
+    - npm ci
+    - npm run build
+    - tar -czf app.tgz .
+  artifacts:
+    paths:
+      - app.tgz
+    expire_in: 1 hour
 
 deploy to staging:
-    <<: *deploy
-    when: manual
-    environment:
-        name: staging
-        url: https://majas-receptes.cube.lv
-    variables:
-        DEPLOY_HOST: staging.cube.lv
-        DEPLOY_USER: majas_receptes
-        DEPLOY_PHP_COMMAND: php8.3
-        DEPLOY_PATH: /home/majas_receptes/app
-        DEPLOY_SSH_KNOWN_HOSTS: $AGENCY_STAGING_DEPLOY_KNOWN_HOSTS
-        DEPLOY_SSH_PRIVATE_KEY: $AGENCY_STAGING_DEPLOY_PRIVATE_KEY
+  <<: *deploy
+  needs: [build]
+  when: manual
+  environment:
+    name: staging
+    url: https://majas-receptes.cube.lv
+  variables:
+    DEPLOY_HOST: staging.cube.lv
+    DEPLOY_USER: majas_receptes
+    DEPLOY_PHP_COMMAND: php8.3
+    DEPLOY_PATH: /home/majas_receptes/app
+    DEPLOY_SSH_KNOWN_HOSTS: $AGENCY_STAGING_DEPLOY_KNOWN_HOSTS
+    DEPLOY_SSH_PRIVATE_KEY: $AGENCY_STAGING_DEPLOY_PRIVATE_KEY
