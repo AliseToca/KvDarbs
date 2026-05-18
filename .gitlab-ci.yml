@@ -44,7 +44,8 @@ build:
     - php artisan migrate --force
     - npm ci
     - npm run build
-    - tar -czf app.tgz .
+    - tar -czf /tmp/app.tgz .
+    - mv /tmp/app.tgz app.tgz
   artifacts:
     paths:
       - app.tgz
