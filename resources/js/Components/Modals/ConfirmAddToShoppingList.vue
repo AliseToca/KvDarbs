@@ -45,10 +45,10 @@ function confirmFromRecipe() {
         <template #footer>
             <div class="button-container">
                 <button class="button primary full-width" @click="confirmFromRecipeHousehold" :disabled="form.processing">
-                    {{translations.button.yes}}
+                    Pievienot TRŪKSTOŠOS
                 </button>
-                <button class="button full-width" @click="confirmFromRecipe" :disabled="form.processing">
-                    {{ translations.button.no }}
+                <button class="button  full-width" @click="confirmFromRecipeHousehold" :disabled="form.processing">
+                    Pievienot VISUS
                 </button>
             </div>
         </template>

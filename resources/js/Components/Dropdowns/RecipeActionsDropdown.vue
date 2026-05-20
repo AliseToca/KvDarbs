@@ -74,7 +74,7 @@ const isConfirmAddToFolderOpen = ref(false);
 
     <ConfirmMarkAsDoneModal
         v-model="isConfirmMarkAsDoneOpen"
-        title="Vai vēlies atzīmēt recpeti kā izdarītu?"
+        title="Vai vēlies atzīmēt recepti kā izdarītu?"
         message="No tavas mājsaimniecības tiks atņemtas visas receptē esošās sastāvdaļas."
         :recipeId="recipe.id"
     />

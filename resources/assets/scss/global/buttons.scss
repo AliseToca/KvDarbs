@@ -15,6 +15,7 @@ button {
     border-radius: 8px;
     background-color: $color-secondary;
     color: $color-white;
+    max-height: 44px;
 
     &.primary {
         background-color: $color-primary;
