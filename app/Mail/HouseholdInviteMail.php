@@ -28,7 +28,7 @@ class HouseholdInviteMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "You're invited to join {$this->invitation->household->name}"
+            subject: "Tu esi uzaicināts pievienoties {$this->invitation->household->name} mājsaimniecībai"
         );
 
     }

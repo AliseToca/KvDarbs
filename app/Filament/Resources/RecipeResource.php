@@ -41,6 +41,14 @@ class RecipeResource extends Resource
     {
         return __('resources.recipes.plural');
     }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -165,13 +173,14 @@ class RecipeResource extends Resource
                     ->label(__('fields.labels.recipe.servings'))
                     ->sortable(),
 
-                TextColumn::make('average_rating')
-                    ->label(__('fields.labels.recipe.rating'))
-                    ->sortable(),
-
                 TextColumn::make('reviews_count')
                     ->label(__('fields.labels.recipe.reviews'))
                     ->sortable(),
+
+                TextColumn::make('reviews_avg_rating')
+                    ->label(__('fields.labels.recipe.rating'))
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => $state ? number_format($state, 1) : '-'),
 
                 TextColumn::make('created_at')
                     ->label(__('fields.labels.created_at'))

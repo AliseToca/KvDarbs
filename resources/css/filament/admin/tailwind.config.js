@@ -11,7 +11,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                white: '#fefdf8',  // your beige-light
+                white: '#fefdf8',  //beige-light
             }
         }
     }

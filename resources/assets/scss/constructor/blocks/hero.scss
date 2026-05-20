@@ -15,7 +15,10 @@
         align-items: center;
         justify-content: space-between;
         gap: 2rem;
-        padding: 6rem 8vw 4rem;
+        width: 100%;
+        max-width: $cont-max-width;
+        margin-inline: auto;
+        padding: 6rem $cont-padding-base 4rem;
         position: relative;
     }
 
@@ -76,7 +79,7 @@
     // ── Right: food images ────────────────────────────────────────────────────
     &-media {
         position: relative;
-        flex: 1;
+        flex: 0 0 600px;
         min-height: 420px;
         z-index: 2;
     }
@@ -185,7 +188,7 @@
     .hero-block {
         &-inner {
             flex-direction: column;
-            padding: 4rem 6vw 2rem;
+            padding: 4rem $cont-padding-base 2rem;
             min-height: auto;
             text-align: center;
         }
@@ -195,19 +198,33 @@
         }
 
         &-media {
-            width: 100%;
-            min-height: 300px;
-            margin-top: 50px;
+            flex: none;
+            width: 320px;
+            height: 320px;
+            margin: 50px auto 60px;
         }
 
         &-food-main {
-            width: 340px;
-            height: 340px;
+            width: 220px;
+            height: 220px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
 
         &-food-card {
-            width: 180px;
-            height: 180px;
+            width: 120px;
+            height: 120px;
+
+            &--top {
+                top: -10px;
+                right: -10px;
+            }
+
+            &--bottom {
+                bottom: -10px;
+                right: -10px;
+            }
         }
 
         &-features {
@@ -219,5 +236,11 @@
 @media (max-width: 540px) {
     .hero-block-features {
         grid-template-columns: 1fr;
+    }
+}
+
+@include until($phone-lg) {
+    .hero-block-inner {
+        padding-inline: $cont-padding-sm;
     }
 }
