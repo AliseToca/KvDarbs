@@ -35,6 +35,11 @@ build:
         MYSQL_ALLOW_EMPTY_PASSWORD: "1"
     - name: gotenberg/gotenberg:8
       alias: gotenberg
+      command:
+        - gotenberg
+        - --api-port=3000
+        - --chromium-disable-routes=false
+        - --libreoffice-disable-routes=false
   variables:
     GOTENBERG_URL: http://gotenberg:3000
   script:
@@ -44,6 +49,8 @@ build:
     - php artisan migrate --force
     - npm ci
     - npm run build
+    # Optional: verify Gotenberg is reachable before running tests
+    - curl --retry 5 --retry-delay 2 --retry-connrefused -f http://gotenberg:3000/health
     - tar -czf /tmp/app.tgz .
     - mv /tmp/app.tgz app.tgz
   artifacts:
