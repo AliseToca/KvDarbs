@@ -24,15 +24,15 @@ class HouseholdProductController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'product_id'      => 'required|exists:products,id',
-            'amount'          => 'required|numeric',
-            'unit_id'         => 'required|exists:units,id',
+            'product_id' => 'required|exists:products,id',
+            'amount' => 'required|numeric',
+            'unit_id' => 'required|exists:units,id',
             'expiration_date' => 'nullable|date',
         ]);
 
         $household = auth()->user()->activeHousehold();
-        $unit      = Unit::findOrFail($validated['unit_id']);
-        $product   = Product::findOrFail($validated['product_id']);
+        $unit = Unit::findOrFail($validated['unit_id']);
+        $product = Product::findOrFail($validated['product_id']);
 
         $amountInBaseUnit = MeasurmentConversionService::toBaseAmount(
             $validated['amount'],
@@ -52,8 +52,8 @@ class HouseholdProductController extends Controller
             $existingProduct->increment('amount', $amountInBaseUnit);
         } else {
             $household->householdProducts()->create([
-                'product_id'      => $product->id,
-                'amount'          => $amountInBaseUnit,
+                'product_id' => $product->id,
+                'amount' => $amountInBaseUnit,
                 'expiration_date' => $validated['expiration_date'],
             ]);
         }
@@ -70,12 +70,12 @@ class HouseholdProductController extends Controller
     public function update(Request $request, HouseholdProduct $householdProduct): RedirectResponse
     {
         $validated = $request->validate([
-            'amount'          => 'required|numeric',
-            'unit_id'         => 'required|exists:units,id',
+            'amount' => 'required|numeric',
+            'unit_id' => 'required|exists:units,id',
             'expiration_date' => 'nullable|date',
         ]);
 
-        $unit    = Unit::findOrFail($validated['unit_id']);
+        $unit = Unit::findOrFail($validated['unit_id']);
         $product = $householdProduct->product;
 
         $amountInBaseUnit = MeasurmentConversionService::toBaseAmount(
@@ -85,7 +85,7 @@ class HouseholdProductController extends Controller
         );
 
         $householdProduct->update([
-            'amount'          => $amountInBaseUnit,
+            'amount' => $amountInBaseUnit,
             'expiration_date' => $validated['expiration_date'],
         ]);
 

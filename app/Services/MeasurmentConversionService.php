@@ -58,8 +58,8 @@ class MeasurmentConversionService
         $amount = round($baseAmount / $unit->conversion_factor, 2);
 
         return [
-            'amount'  => $amount,
-            'unit'    => $unit->name,
+            'amount' => $amount,
+            'unit' => $unit->name,
             'unit_id' => $unit->id,
         ];
     }

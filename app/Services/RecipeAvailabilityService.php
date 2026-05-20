@@ -49,9 +49,9 @@ class RecipeAvailabilityService
 
         return [
             'available_products_count' => $available,
-            'missing_products_count'   => $missing,
-            'total_products_count'     => $total,
-            'compatibility'            => $total > 0 ? ($available / $total) * 100 : 0,
+            'missing_products_count' => $missing,
+            'total_products_count' => $total,
+            'compatibility' => $total > 0 ? ($available / $total) * 100 : 0,
         ];
     }
 
@@ -63,9 +63,9 @@ class RecipeAvailabilityService
     {
         return [
             'available_products_count' => 0,
-            'missing_products_count'   => $total,
-            'total_products_count'     => $total,
-            'compatibility'            => 0,
+            'missing_products_count' => $total,
+            'total_products_count' => $total,
+            'compatibility' => 0,
         ];
     }
 }

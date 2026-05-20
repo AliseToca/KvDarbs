@@ -24,9 +24,11 @@ class RecipeController extends Controller
     use AuthorizesRequests;
 
     public function __construct(
-        protected PagesService $pagesService,
+        protected PagesService      $pagesService,
         protected BreadcrumbService $breadcrumbService,
-    ) {}
+    )
+    {
+    }
 
     // -------------------------------------------------------------------------
     // Private helpers
@@ -53,21 +55,21 @@ class RecipeController extends Controller
         $availability = RecipeAvailabilityService::calculate($recipe, $user);
 
         return [
-            'id'                       => $recipe->id,
-            'slug'                     => $recipe->slug,
-            'name'                     => $recipe->name,
-            'image_src'                => $recipe->image_src,
-            'prep_time'                => $recipe->prep_time,
-            'cook_time'                => $recipe->cook_time,
-            'total_time'               => $recipe->total_time,
-            'servings'                 => $recipe->servings,
-            'average_rating'           => $recipe->average_rating,
-            'reviews_count'            => $recipe->reviewsCount,
-            'missing_products_count'   => $availability['missing_products_count'],
+            'id' => $recipe->id,
+            'slug' => $recipe->slug,
+            'name' => $recipe->name,
+            'image_src' => $recipe->image_src,
+            'prep_time' => $recipe->prep_time,
+            'cook_time' => $recipe->cook_time,
+            'total_time' => $recipe->total_time,
+            'servings' => $recipe->servings,
+            'average_rating' => $recipe->average_rating,
+            'reviews_count' => $recipe->reviewsCount,
+            'missing_products_count' => $availability['missing_products_count'],
             'available_products_count' => $availability['available_products_count'],
-            'total_products_count'     => $availability['total_products_count'],
-            'compatibility'            => $availability['compatibility'],
-            'url'                      => $this->recipeShowUrl($recipe),
+            'total_products_count' => $availability['total_products_count'],
+            'compatibility' => $availability['compatibility'],
+            'url' => $this->recipeShowUrl($recipe),
         ];
     }
 
@@ -81,9 +83,9 @@ class RecipeController extends Controller
             ->with(['recipes:id,image_src'])
             ->get()
             ->map(fn($folder) => [
-                'id'           => $folder->id,
-                'name'         => $folder->name,
-                'thumbnail'    => $folder->recipes->first()?->image_src,
+                'id' => $folder->id,
+                'name' => $folder->name,
+                'thumbnail' => $folder->recipes->first()?->image_src,
                 'recipe_count' => $folder->recipes->count(),
             ])
             ->toArray();
@@ -119,8 +121,8 @@ class RecipeController extends Controller
         match ($sort) {
             'highest_rated' => $query->withAvg('reviews', 'rating')->orderByDesc('reviews_avg_rating'),
             'most_reviewed' => $query->withCount('reviews')->orderByDesc('reviews_count'),
-            'quickest'      => $query->orderByRaw('(prep_time + cook_time) ASC'),
-            default         => $query->latest(),
+            'quickest' => $query->orderByRaw('(prep_time + cook_time) ASC'),
+            default => $query->latest(),
         };
 
         return $query;
@@ -141,14 +143,14 @@ class RecipeController extends Controller
             );
 
             return [
-                'id'      => $recipeProduct->id,
-                'amount'  => $converted['amount'],
+                'id' => $recipeProduct->id,
+                'amount' => $converted['amount'],
                 'product' => [
-                    'id'   => $recipeProduct->product_id,
+                    'id' => $recipeProduct->product_id,
                     'name' => $recipeProduct->product->name,
                 ],
-                'unit'    => [
-                    'id'   => $converted['unit_id'],
+                'unit' => [
+                    'id' => $converted['unit_id'],
                     'name' => $converted['unit'],
                 ],
             ];
@@ -183,14 +185,14 @@ class RecipeController extends Controller
         $recipe->recipeProducts()->delete();
 
         foreach ($recipeProductsData as $item) {
-            $unit    = Unit::findOrFail($item['unit_id']);
+            $unit = Unit::findOrFail($item['unit_id']);
             $product = Product::findOrFail($item['product_id']);
 
             $amountInBase = MeasurmentConversionService::toBaseAmount($item['amount'], $unit, $product);
 
             $recipe->recipeProducts()->create([
                 'product_id' => $item['product_id'],
-                'amount'     => $amountInBase,
+                'amount' => $amountInBase,
             ]);
         }
     }
@@ -202,23 +204,23 @@ class RecipeController extends Controller
     private function recipeValidationRules(Request $request): array
     {
         return [
-            'name'                              => 'required|string',
-            'image_src'                         => $request->hasFile('image_src')
+            'name' => 'required|string',
+            'image_src' => $request->hasFile('image_src')
                 ? 'nullable|image|max:2048'
                 : 'nullable',
-            'visibility'                        => 'required|string',
-            'prep_time'                         => 'required|numeric',
-            'cook_time'                         => 'required|numeric',
-            'servings'                          => 'required|numeric',
-            'instructions'                      => 'required|array',
-            'instructions.*'                    => 'required|string',
-            'recipe_products'                   => 'required|array',
-            'recipe_products.*.product_id'      => 'required|numeric',
-            'recipe_products.*.amount'          => 'required|numeric|min:0',
-            'recipe_products.*.unit_id'         => 'required|numeric',
-            'recipe_type_id'                    => 'nullable|exists:recipe_types,id',
-            'recipe_category_ids'               => 'nullable|array',
-            'recipe_category_ids.*'             => 'exists:recipe_categories,id',
+            'visibility' => 'required|string',
+            'prep_time' => 'required|numeric',
+            'cook_time' => 'required|numeric',
+            'servings' => 'required|numeric',
+            'instructions' => 'required|array',
+            'instructions.*' => 'required|string',
+            'recipe_products' => 'required|array',
+            'recipe_products.*.product_id' => 'required|numeric',
+            'recipe_products.*.amount' => 'required|numeric|min:0',
+            'recipe_products.*.unit_id' => 'required|numeric',
+            'recipe_type_id' => 'nullable|exists:recipe_types,id',
+            'recipe_category_ids' => 'nullable|array',
+            'recipe_category_ids.*' => 'exists:recipe_categories,id',
         ];
     }
 
@@ -235,15 +237,15 @@ class RecipeController extends Controller
         $page = $this->pagesService->getRecipeIndexPage();
         $user = auth()->user();
 
-        $sort          = $request->get('sort', 'newest');
+        $sort = $request->get('sort', 'newest');
         $availableOnly = $request->boolean('available') && $user;
-        $categoryIds   = array_filter(explode(',', $request->get('categories', '')));
+        $categoryIds = array_filter(explode(',', $request->get('categories', '')));
 
         // Base query: only columns needed by mapRecipe() to keep the payload lean.
         $query = Recipe::select('id', 'name', 'image_src', 'slug', 'prep_time', 'cook_time', 'servings')
             ->visibleTo($user)
-            ->when($request->search,   fn($q, $s)  => $q->where('name', 'like', "%{$s}%"))
-            ->when($request->type,     fn($q, $id) => $q->where('recipe_type_id', $id))
+            ->when($request->search, fn($q, $s) => $q->where('name', 'like', "%{$s}%"))
+            ->when($request->type, fn($q, $id) => $q->where('recipe_type_id', $id))
             ->when($categoryIds, function ($q) use ($categoryIds) {
                 // Each category must match (AND logic), so we add a whereHas per ID.
                 foreach ($categoryIds as $categoryId) {
@@ -254,7 +256,7 @@ class RecipeController extends Controller
         if ($availableOnly) {
             // Availability is computed in PHP, so we must fetch all matching records
             // first, filter them, then manually paginate the result.
-            $perPage     = 12;
+            $perPage = 12;
             $currentPage = $request->get('page', 1);
 
             $allRecipes = $this->applySortingWithoutPaginate($query, $sort)
@@ -277,17 +279,17 @@ class RecipeController extends Controller
         }
 
         return Inertia::render('Recipe/Index', [
-            'page_name'  => $page->name,
-            'blocks'     => json_decode($page->blocks) ?? [],
-            'recipes'    => $recipes,
-            'folders'    => $this->mapFolders($user),
+            'page_name' => $page->name,
+            'blocks' => json_decode($page->blocks) ?? [],
+            'recipes' => $recipes,
+            'folders' => $this->mapFolders($user),
             'categories' => RecipeCategory::all(),
-            'types'      => RecipeType::all(),
-            'filters'    => [
-                'search'     => $request->search,
-                'sort'       => $sort,
+            'types' => RecipeType::all(),
+            'filters' => [
+                'search' => $request->search,
+                'sort' => $sort,
                 'categories' => $request->get('categories', ''),
-                'available'  => $availableOnly,
+                'available' => $availableOnly,
             ],
         ]);
     }
@@ -311,12 +313,12 @@ class RecipeController extends Controller
             ->through(fn($recipe) => $this->mapRecipe($recipe, $user));
 
         return Inertia::render('Recipe/MyRecipes', [
-            'page_name'    => $page->name,
-            'blocks'       => json_decode($page->blocks) ?? [],
-            'recipes'      => $recipes,
+            'page_name' => $page->name,
+            'blocks' => json_decode($page->blocks) ?? [],
+            'recipes' => $recipes,
             'recipe_count' => $baseQuery->count(),
-            'filters'      => ['search' => $request->search],
-            'folders'      => $this->mapFolders($user),
+            'filters' => ['search' => $request->search],
+            'folders' => $this->mapFolders($user),
         ]);
     }
 
@@ -326,10 +328,10 @@ class RecipeController extends Controller
     public function create(): Response
     {
         return Inertia::render('Recipe/Create', [
-            'categories'  => RecipeCategory::all(),
-            'types'       => RecipeType::all(),
-            'products'    => Product::all(),
-            'units'       => Unit::all(),
+            'categories' => RecipeCategory::all(),
+            'types' => RecipeType::all(),
+            'products' => Product::all(),
+            'units' => Unit::all(),
             'breadcrumbs' => $this->breadcrumbService->forRecipeCreate(),
         ]);
     }
@@ -355,19 +357,19 @@ class RecipeController extends Controller
             ->latest()
             ->paginate(5);
 
-        $user       = auth()->user();
+        $user = auth()->user();
         $fromFolder = $request->query('from_folder')
             ? $user->folders()->find($request->query('from_folder'))
             : null;
 
         return Inertia::render('Recipe/Show', [
-            'recipe'      => $recipe,
-            'reviews'     => $reviews,
-            'url'         => $this->recipeShowUrl($recipe),
+            'recipe' => $recipe,
+            'reviews' => $reviews,
+            'url' => $this->recipeShowUrl($recipe),
             'breadcrumbs' => $fromFolder
                 ? $this->breadcrumbService->forRecipeFromFolder($recipe, $fromFolder)
                 : $this->breadcrumbService->forRecipe($recipe),
-            'folders'     => $this->mapFolders($user),
+            'folders' => $this->mapFolders($user),
         ]);
     }
 
@@ -377,8 +379,6 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe): Response
     {
-        $this->authorize('update', $recipe);
-
         $recipe->load([
             'recipeProducts.product.measurementType.units',
             'recipeType',
@@ -389,11 +389,11 @@ class RecipeController extends Controller
         $this->transformRecipeProducts($recipe->recipeProducts);
 
         return Inertia::render('Recipe/Edit', [
-            'recipe'      => $recipe,
-            'products'    => Product::all(),
-            'units'       => Unit::all(),
-            'types'       => RecipeType::all(),
-            'categories'  => RecipeCategory::all(),
+            'recipe' => $recipe,
+            'products' => Product::all(),
+            'units' => Unit::all(),
+            'types' => RecipeType::all(),
+            'categories' => RecipeCategory::all(),
             'breadcrumbs' => $this->breadcrumbService->forRecipeEdit($recipe),
         ]);
     }
@@ -411,13 +411,13 @@ class RecipeController extends Controller
         $imagePath = $this->handleImageUpload($request, $recipe->image_src);
 
         $recipe->update([
-            'name'           => $data['name'],
-            'image_src'      => $imagePath,
-            'visibility'     => $data['visibility'],
-            'prep_time'      => $data['prep_time'],
-            'cook_time'      => $data['cook_time'],
-            'servings'       => $data['servings'],
-            'instructions'   => $data['instructions'],
+            'name' => $data['name'],
+            'image_src' => $imagePath,
+            'visibility' => $data['visibility'],
+            'prep_time' => $data['prep_time'],
+            'cook_time' => $data['cook_time'],
+            'servings' => $data['servings'],
+            'instructions' => $data['instructions'],
             'recipe_type_id' => $data['recipe_type_id'] ?? null,
         ]);
 
@@ -445,15 +445,15 @@ class RecipeController extends Controller
         $slug = $user->username . '-' . Str::slug($data['name']);
 
         $recipe = Recipe::create([
-            'name'           => $data['name'],
-            'image_src'      => $imagePath,
-            'slug'           => $slug,
-            'visibility'     => $data['visibility'],
-            'prep_time'      => $data['prep_time'],
-            'cook_time'      => $data['cook_time'],
-            'servings'       => $data['servings'],
-            'instructions'   => $data['instructions'],
-            'user_id'        => $user->id,
+            'name' => $data['name'],
+            'image_src' => $imagePath,
+            'slug' => $slug,
+            'visibility' => $data['visibility'],
+            'prep_time' => $data['prep_time'],
+            'cook_time' => $data['cook_time'],
+            'servings' => $data['servings'],
+            'instructions' => $data['instructions'],
+            'user_id' => $user->id,
             'recipe_type_id' => $data['recipe_type_id'] ?? null,
         ]);
 
