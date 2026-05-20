@@ -5,112 +5,56 @@
     <meta charset="UTF-8">
     <style>
         /* ── Reset & base ── */
-        *,
-        *::before,
-        *::after {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: dejavusans, Arial, sans-serif;
+            /* dejavusans is built into mPDF and supports UTF-8 */
             font-size: 14px;
             color: #1a1a1a;
             background: #fff;
-            padding: 0;
         }
 
-        /* ── Recipe wrapper ── */
-        .recipe {
+        /* ── Section shared ── */
+        .section {
             width: 100%;
-        }
-
-        /* ── Header: image + meta side by side ── */
-        .recipe-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
         }
 
-        .recipe-header-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 55%;
-        }
-
-        .recipe-header img {
-            width: 42%;
-            aspect-ratio: 4/3;
-            object-fit: cover;
-            border-radius: 8px;
+        .section-last {
+            border: none;
         }
 
         h1 {
-            font-size: 1.6rem;
+            font-size: 22px;
             line-height: 1.2;
             margin-bottom: 8px;
             word-break: break-word;
         }
 
-        /* ── Rating row ── */
-        .recipe-header-info {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 13px;
-            color: #666;
+        h3 {
+            font-size: 15px;
             margin-bottom: 12px;
         }
 
+        /* ── Stars ── */
         .stars {
-            color: #f59e0b;
             font-size: 16px;
-            letter-spacing: 1px;
         }
 
-        .divider {
-            color: #ccc;
-        }
-
-        .author {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .avatar-wrap {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .avatar-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* ── Time grid ── */
-        .time-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .time-item {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        /* ── Tags ── */
+        .tag {
+            padding: 3px 8px;
+            font-size: 12px;
+            color: #4a4a4a;
+            display: inline-block;
+            margin: 2px 2px 2px 0;
         }
 
         .label {
@@ -118,250 +62,219 @@
             color: #888;
             text-transform: uppercase;
             margin-bottom: 2px;
+            display: block;
         }
 
         .value {
             font-size: 15px;
-            font-weight: 600;
+            font-weight: bold;
             color: #1a1a1a;
         }
 
-        /* ── Tags ── */
-        .recipe-tags {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tag-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .tag {
-            background: #f3f0e8;
-            border-radius: 6px;
-            padding: 5px 10px;
-            font-size: 12px;
-            color: #4a4a4a;
-        }
-
-        /* ── Section shared ── */
-        section {
-            width: 100%;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-        }
-
-        section:last-child {
-            border: none;
-        }
-
-        section h3 {
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-        }
-
         /* ── Ingredients ── */
-        .ingredients-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
         .servings-badge {
             font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-            background: #2a2525;
-            padding: 4px 12px;
-            border-radius: 6px;
-        }
-
-        .ingredient {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 2px;
-            font-size: 14px;
-        }
-
-        .ingredient-checkbox {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ec3f42;
-            border-radius: 4px;
-            flex-shrink: 0;
-            /* Gotenberg can't tick boxes, so show an empty one */
+            font-weight: bold;
+            color: #2a2525;
+            display: inline-block;
         }
 
         /* ── Instructions ── */
-        .recipe-instructions ol {
-            counter-reset: step-counter;
-            list-style: none;
-            padding-left: 0;
-            margin-top: 12px;
-        }
-
-        .recipe-instructions ol li {
-            counter-increment: step-counter;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 14px;
-            line-height: 1.5;
-        }
-
-        .recipe-instructions ol li::before {
-            content: counter(step-counter);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background-color: #2a2525;
-            color: #fff;
+        .step-number {
+            width: 26px;
             font-weight: bold;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        /* ── Footer ── */
-        .pdf-footer {
-            text-align: center;
-            font-size: 11px;
-            color: #aaa;
-            margin-top: 30px;
+            font-size: 13px;
+            color: #2a2525;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-    <div class="recipe">
 
-        {{-- ── HEADER: title + meta + image ── --}}
-        <section class="recipe-header">
-            <div class="recipe-header-content">
-                <div>
-                    <h1>{{ $recipe->name }}</h1>
+    {{-- ── HEADER: title + meta + image ── --}}
+    {{-- mPDF supports <table> layout reliably; flexbox/grid are not supported --}}
+    <div class="section">
+        <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+        >
+            <tr>
+                {{-- Left column: title, rating, times, tags --}}
+                <td
+                    width="55%"
+                    valign="top"
+                    style="padding-right: 16px;"
+                >
 
-                    <div class="recipe-header-info">
-                        {{-- Star rating --}}
-                        @php
-                            $rating = round($recipe->average_rating ?? 0);
-                            $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
-                        @endphp
+                    <h1 style="margin-bottom: 16px;">{{ $recipe->name }}</h1>
+
+                    {{-- Rating row --}}
+                    @php
+                        $rating = round($recipe->average_rating ?? 0);
+                        $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
+                    @endphp
+                    <p style="font-size:13px;">
                         <span class="stars">{{ $stars }}</span>
-                        <span>{{ number_format($recipe->average_rating ?? 0, 1) }}</span>
-                        <span>({{ $recipe->reviews_count ?? 0 }}) {{ $translations['reviews'] }}</span>
-                        <span class="divider">•</span>
-                        <span class="author">
-                            @if ($recipe->user->avatar_src)
-                                <div class="avatar-wrap">
-                                    <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $recipe->user->avatar_src))) }}" alt="{{ $recipe->user->username }}">
-                                </div>
+                        {{ number_format($recipe->average_rating ?? 0, 1) }}
+                        ({{ $recipe->reviews_count ?? 0 }}) {{ $translations['reviews'] }}
+                        &nbsp;•&nbsp;
+                        {{-- Avatar + username --}}
+                        @if ($recipe->user->avatar_src)
+                            @if ($avatarBase64)
+                                <img
+                                    src="{{ $avatarBase64 }}"
+                                    width="20"
+                                    height="20"
+                                    style="border-radius:10px; vertical-align:middle;"
+                                >
                             @endif
-                            {{ $recipe->user->username }}
-                        </span>
-                    </div>
-                </div>
+                        @endif
+                        {{ $recipe->user->username }}
+                    </p>
 
-                {{-- ── Time formatting helper ── --}}
-                @php
-                    function formatTime(int $minutes): string
-                    {
-                        if ($minutes < 60) {
-                            return $minutes . ' min';
+                    {{-- Time grid via table --}}
+                    @php
+                        function formatTime(int $minutes): string
+                        {
+                            if ($minutes < 60) {
+                                return $minutes . ' min';
+                            }
+                            $h = intdiv($minutes, 60);
+                            $m = $minutes % 60;
+                            return $m > 0 ? "{$h} h {$m} min" : "{$h} h";
                         }
-                        $h = intdiv($minutes, 60);
-                        $m = $minutes % 60;
-                        return $m > 0 ? "{$h} h {$m} min" : "{$h} h";
-                    }
-                @endphp
-                {{-- Time grid --}}
-                <div class="time-grid">
-                    <div class="time-item">
-                        <span class="label">{{ $translations['prep_time'] }}</span>
-                        <span class="value">{{ formatTime($recipe->prep_time) }}</span>
-                    </div>
-                    <div class="time-item">
-                        <span class="label">{{ $translations['cook_time'] }}</span>
-                        <span class="value">{{ formatTime($recipe->cook_time) }}</span>
-                    </div>
-                    <div class="time-item">
-                        <span class="label">{{ $translations['total_time'] }}</span>
-                        <span class="value">{{ formatTime($recipe->total_time) }}</span>
-                    </div>
-                </div>
+                    @endphp
+                    <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="5px"
+                        style="margin-bottom:16px; margin-top:24px;"
+                    >
+                        <tr>
+                            <td width="33%">
+                                <span class="label">{{ $translations['prep_time'] }}</span>
+                            </td>
+                            <td width="33%">
+                                <span class="label">{{ $translations['cook_time'] }}</span>
+                            </td>
+                            <td width="33%">
+                                <span class="label">{{ $translations['total_time'] }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="33%">
+                                <span class="value">{{ formatTime($recipe->prep_time) }}</span>
+                            </td>
+                            <td width="33%">
+                                <span class="value">{{ formatTime($recipe->cook_time) }}</span>
+                            </td>
+                            <td width="33%">
+                                <span class="value">{{ formatTime($recipe->total_time) }}</span>
+                            </td>
+                        </tr>
+                    </table>
 
-                {{-- Tags --}}
-                <div class="recipe-tags">
+                    {{-- Tags --}}
                     @if ($recipe->recipeType)
-                        <div class="tag-group">
-                            <span class="label">{{ $translations['types'] }}</span>
-                            <div class="tags">
-                                <span class="tag">{{ $recipe->recipeType->name }}</span>
-                            </div>
-                        </div>
+                        <span class="label">{{ $translations['types'] }}</span>
+                        <span class="tag">{{ $recipe->recipeType->name }}</span>
+                        <br style="margin-bottom:6px;">
                     @endif
 
                     @if ($recipe->recipeCategories->isNotEmpty())
-                        <div class="tag-group">
-                            <span class="label">{{ $translations['categories'] }}</span>
-                            <div class="tags">
-                                @foreach ($recipe->recipeCategories as $cat)
-                                    <span class="tag">{{ $cat->name }}</span>
-                                @endforeach
-                            </div>
-                        </div>
+                        <span class="label" style="margin-top:8px;">{{ $translations['categories'] }}</span>
+                        @foreach ($recipe->recipeCategories as $cat)
+                            <span class="tag">{{ $cat->name }}</span>
+                        @endforeach
                     @endif
-                </div>
-            </div>
 
-            {{-- Recipe image --}}
-            @if ($imageBase64)
-                <img src="{{ $imageBase64 }}" alt="{{ $recipe->name }}">
-            @endif
-        </section>
+                </td>
 
-        {{-- INGREDIENTS --}}
-        <section class="recipe-ingredients">
-            <div class="ingredients-header">
-                <h3>{{ $translations['ingredients'] }}</h3>
-                <span class="servings-badge">{{ $translations['servings'] }}: {{ $servings }}</span>
-            </div>
-            @foreach ($recipe->recipeProducts as $ingredient)
-                <div class="ingredient">
-                    <div class="ingredient-checkbox"></div>
-                    <span>
+                {{-- Right column: recipe image --}}
+                {{--
+                Image sizing strategy for mPDF:
+                - width="100%" fills the 45% column
+                - max-height caps portrait images; mPDF respects max-height on <img>
+                - height="auto" lets mPDF scale proportionally within those bounds
+            --}}
+                <td
+                    width="45%"
+                    valign="top"
+                    align="right"
+                    style="max-height: 200px; overflow: hidden;"
+                >
+                    @if ($imageBase64)
+                        <img
+                            src="{{ $imageBase64 }}"
+                            width="220"
+                            style="max-height:200px; display:block;"
+                        >
+                    @endif
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {{-- ── INGREDIENTS ── --}}
+    <div class="section">
+        <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="margin-bottom:12px;"
+        >
+            <tr>
+                <td valign="middle">
+                    <h3 style="margin:0;">{{ $translations['ingredients'] }}</h3>
+                </td>
+                <td valign="middle" align="right">
+                    <span class="servings-badge">{{ $translations['servings'] }}: {{ $servings }}</span>
+                </td>
+            </tr>
+        </table>
+
+        @foreach ($recipe->recipeProducts as $ingredient)
+            <table
+                width="100%"
+                cellpadding="0"
+                cellspacing="0"
+                style="margin-bottom:6px;"
+            >
+                <tr>
+                    <td width="20" valign="middle">
+                        <span style="font-size:20px;">☐</span>
+                    </td>
+                    <td valign="middle" style="padding-left:4px; font-size:14px;">
                         {{ $ingredient['amount'] }}{{ $ingredient['unit']['name'] }}
                         {{ $ingredient['product']['name'] }}
-                    </span>
-                </div>
-            @endforeach
-        </section>
+                    </td>
+                </tr>
+            </table>
+        @endforeach
+    </div>
 
-        {{-- INSTRUCTIONS --}}
-        <section class="recipe-instructions">
-            <h3>{{ $translations['instructions'] }}</h3>
-            <ol>
-                @foreach ($recipe->instructions as $step)
-                    <li>{{ $step }}</li>
-                @endforeach
-            </ol>
-        </section>
-        <div class="pdf-footer">
-            {{ now()->format('d M Y') }}
-        </div>
+    {{-- ── INSTRUCTIONS ── --}}
+    <div class="section section-last">
+        <h3>{{ $translations['instructions'] }}</h3>
+
+        @foreach ($recipe->instructions as $i => $step)
+            <table
+                width="100%"
+                cellpadding="0"
+                cellspacing="0"
+                style="margin-bottom: 10px;"
+            >
+                <tr>
+                    <td width="20" valign="top">
+                        <div class="step-number">{{ $i + 1 }}</div>
+                    </td>
+                    <td valign="top" style="padding-left:5px; font-size:14px; line-height:1.5;">
+                        {{ $step }}
+                    </td>
+                </tr>
+            </table>
+        @endforeach
     </div>
 </body>
 </html>

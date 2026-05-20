@@ -2,32 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Recipe;
-use App\Services\GotenbergPdfService;
 use App\Services\MeasurmentConversionService;
+use App\Services\PdfService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RecipePdfController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(protected GotenbergPdfService $pdf)
+    public function __construct(protected PdfService $pdf)
     {
     }
 
-    /**
-     * Download a single recipe as a PDF.
-     *
-     * Route: GET /recipes/{recipe}/pdf
-     * Name: recipe.pdf
-     */
     public function __invoke(Recipe $recipe): \Illuminate\Http\Response
     {
         $this->authorize('view', $recipe);
 
-        // Reuse the same eager-load + conversion logic as RecipeController@show
         $recipe->load([
             'user:id,username,avatar_src',
             'recipeProducts.product.measurementType.units',
@@ -55,28 +46,26 @@ class RecipePdfController extends Controller
             ];
         });
 
-        $filename = str($recipe->name)->slug() . '.pdf';
-
-        return $this->pdf->fromView(
+        return $this->pdf->render(
             view: 'pdf.recipe',
             data: [
-                'recipe'      => $recipe,
+                'recipe' => $recipe,
                 'imageBase64' => $this->encodeImage($recipe->image_src),
-                'servings'    => $recipe->servings,
+                'avatarBase64' => $this->encodeImage($recipe->user->avatar_src),
+                'servings' => $recipe->servings,
                 'translations' => [
-                    'prep_time'   => trans('recipe.prep_time'),
-                    'cook_time'   => trans('recipe.cook_time'),
-                    'total_time'  => trans('recipe.total_time'),
-                    'types'       => trans('recipe.types'),
-                    'categories'  => trans('recipe.categories'),
+                    'prep_time' => trans('recipe.prep_time'),
+                    'cook_time' => trans('recipe.cook_time'),
+                    'total_time' => trans('recipe.total_time'),
+                    'types' => trans('recipe.types'),
+                    'categories' => trans('recipe.categories'),
                     'ingredients' => trans('recipe.ingredients'),
-                    'instructions'=> trans('recipe.instructions'),
-                    'reviews'     => trans('recipe.reviews.plural'),
-                    'servings'    => trans('recipe.servings'),
+                    'instructions' => trans('recipe.instructions'),
+                    'reviews' => trans('recipe.reviews.plural'),
+                    'servings' => trans('recipe.servings'),
                 ],
             ],
-            filename: $filename,
-            inline: true,
+            filename: str($recipe->name)->slug() . '.pdf',
         );
     }
 
@@ -91,6 +80,21 @@ class RecipePdfController extends Controller
         if (!file_exists($path)) {
             return null;
         }
+
+        $img = imagecreatefromstring(file_get_contents($path));
+
+        if ($img === false) {
+            return null;
+        }
+
+        imagefilter($img, IMG_FILTER_GRAYSCALE);
+
+        ob_start();
+        imagejpeg($img, null, 90);
+        $data = base64_encode(ob_get_clean());
+        imagedestroy($img);
+
+        return "data:image/jpeg;base64,{$data}";
 
         $mime = mime_content_type($path);
         $data = base64_encode(file_get_contents($path));

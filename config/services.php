@@ -34,7 +34,4 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-    'gotenberg' => [
-        'url' => env('GOTENBERG_URL', 'https://localhost:3000'),
-    ]
 ];

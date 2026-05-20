@@ -9,7 +9,6 @@ variables:
   DB_PASSWORD: pass
   XDEBUG_MODE: coverage
   DEPLOY_REVISION: $CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
-  GOTENBERG_URL: http://gotenberg:3000
 
 .deploy: &deploy
   stage: deploy
@@ -21,39 +20,10 @@ variables:
     - npx --yes -p shell-deployer@1.6.5 deploy-laravel app.tgz --with-build
 
 stages:
-  - build
   - deploy
-
-build:
-  stage: build
-  services:
-    - name: mysql:8.4
-      alias: mysql
-      variables:
-        MYSQL_ROOT_PASSWORD: pass
-        MYSQL_DATABASE: test
-        MYSQL_ALLOW_EMPTY_PASSWORD: "1"
-    - name: gotenberg/gotenberg:8
-      alias: gotenberg
-  variables:
-    GOTENBERG_URL: http://gotenberg:3000
-  script:
-    - cp .env.example .env
-    - composer install --no-interaction --prefer-dist
-    - php artisan key:generate
-    - php artisan migrate --force
-    - npm ci
-    - npm run build
-    - tar -czf /tmp/app.tgz .
-    - mv /tmp/app.tgz app.tgz
-  artifacts:
-    paths:
-      - app.tgz
-    expire_in: 1 hour
 
 deploy to staging:
   <<: *deploy
-  needs: [build]
   when: manual
   environment:
     name: staging
