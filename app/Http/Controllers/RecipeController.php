@@ -26,9 +26,7 @@ class RecipeController extends Controller
     public function __construct(
         protected PagesService      $pagesService,
         protected BreadcrumbService $breadcrumbService,
-    )
-    {
-    }
+    ){}
 
     // -------------------------------------------------------------------------
     // Private helpers
@@ -404,8 +402,6 @@ class RecipeController extends Controller
      */
     public function update(Request $request, Recipe $recipe)
     {
-        $this->authorize('update', $recipe);
-
         $data = $request->validate($this->recipeValidationRules($request));
 
         $imagePath = $this->handleImageUpload($request, $recipe->image_src);
@@ -472,8 +468,6 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
-        $this->authorize('delete', $recipe);
-
         // Remove the stored image file to avoid orphaned files on disk.
         if ($recipe->image_src) {
             Storage::disk('public')->delete($recipe->image_src);
