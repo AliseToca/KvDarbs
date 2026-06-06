@@ -42,30 +42,33 @@ PageRoutes::for(CookiesTemplate::class, static function (Page $page) {
 });
 
 PageRoutes::for(RecipeTemplate::class, static function (Page $page) {
-    //Recepšu lapu katalogs
-    Route::get($page->getUri(), ['pageId' => $page->getKey()])
-        ->uses([RecipeController::class, 'index'])
-        ->name('index');
-    //Individuālā receptes lapa
-    Route::get($page->getUri().'/{recipe:slug}', ['pageId' => $page->getKey()])
-        ->uses([RecipeController::class, 'show'])
-        ->name('show');
+    Route::middleware('auth')->group(function () use ($page) {
+        Route::get($page->getUri(), ['pageId' => $page->getKey()])
+            ->uses([RecipeController::class, 'index'])
+            ->name('index');
+
+        Route::get($page->getUri().'/{recipe:slug}', ['pageId' => $page->getKey()])
+            ->uses([RecipeController::class, 'show'])
+            ->name('show');
+    });
 });
 
 PageRoutes::for(HouseholdTemplate::class, static function (Page $page) {
-    // Mājsaimniecības lapa nepiesaistītiem lietotājiem
-    Route::get($page->getUri(), ['pageId' => $page->getKey()])
+    Route::middleware('auth')->group(function () use ($page) {
+        Route::get($page->getUri(), ['pageId' => $page->getKey()])
         ->uses([HouseholdController::class, 'index'])
         ->name('index');
 
-    // Mājsaimniecības lapa ar lietotāja mājsaimniecību
-    Route::get($page->getUri().'/{user:username}', ['pageId' => $page->getKey()])
-        ->uses([HouseholdController::class, 'show'])
-        ->name('show');
+        Route::get($page->getUri().'/{user:username}', ['pageId' => $page->getKey()])
+            ->uses([HouseholdController::class, 'show'])
+            ->name('show');
+    });
 });
 
 PageRoutes::for(ShoppingListTemplate::class, static function (Page $page) {
-    Route::get($page->getUri(), ['pageId' => $page->getKey()])
+    Route::middleware('auth')->group(function () use ($page) {
+        Route::get($page->getUri(), ['pageId' => $page->getKey()])
         ->uses([ShoppingListController::class, 'show'])
         ->name('show');
+    });
 });
