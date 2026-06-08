@@ -100,8 +100,12 @@ class HouseholdEmailInviteController extends Controller
             ->where('token', $token)
             ->firstOrFail();
 
-        // Reject expired or already-accepted invitations
         abort_if(!$invitation->isValid(), 410, 'Šis uzaicinājums ir beidzies vai jau izmantots');
+
+        $user = auth()->user();
+
+        // Enforces that the logged-in user is actually the intended recipient
+        abort_if($user->email !== $invitation->email, 403, 'Šis uzaicinājums nav paredzēts jums');
 
         $user = auth()->user();
         $household = $invitation->household;
