@@ -69,6 +69,11 @@ class HouseholdProductController extends Controller
      */
     public function update(Request $request, HouseholdProduct $householdProduct): RedirectResponse
     {
+        abort_unless(
+            $householdProduct->household_id === auth()->user()->activeHousehold()->id,
+            403
+        );
+
         $validated = $request->validate([
             'amount' => 'required|numeric',
             'unit_id' => 'required|exists:units,id',
@@ -97,6 +102,11 @@ class HouseholdProductController extends Controller
      */
     public function destroy(HouseholdProduct $householdProduct): RedirectResponse
     {
+        abort_unless(
+            $householdProduct->household_id === auth()->user()->activeHousehold()->id,
+            403
+        );
+
         $householdProduct->delete();
 
         return back()->with('success', 'Produkts veiksmīgi dzēsts no mājsaimniecības');

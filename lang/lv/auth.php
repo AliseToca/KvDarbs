@@ -21,7 +21,6 @@ return [
     'password_confirmation' => 'Paroles apstiprinājums',
 
     'remember_me' => 'Atcerēties mani',
-    'forgot_password' => 'Aizmirsāt paroli?',
 
     'no_account' => 'Nav konta?',
     'have_account' => 'Jau ir konts?',
@@ -38,4 +37,6 @@ return [
 
     'reset_password' => 'Paroles atiestatīšana',
     'reset_password_button' => 'Atiestatīt paroli',
+
+    'failed' => 'Autentifikācijas dati nav pareizi. Mēģini vēlreiz.'
 ];

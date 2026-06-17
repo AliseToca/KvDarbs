@@ -17,11 +17,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/login', {
-        onError: (errors) => {
-            console.log('Validation errors:', errors);
-        },
-    });
+    form.post('/login');
 };
 </script>
 

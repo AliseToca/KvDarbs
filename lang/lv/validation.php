@@ -167,6 +167,15 @@ return [
         'password.min' => 'Jābūt vismaz :min rakstzīmju garai.',
         'password.regex' => 'Jābūt vismaz 1 lielais burts, 1 mazais burts, 1 cipars un 1 simbols.',
         'password.confirmed' => 'Paroles nesakrīt.',
+        'unit_id' => [
+            'required' => 'Mērvienība ir obligāta.',
+        ],
+        'recipe_products.*.unit_id' => [
+            'required' => 'Mērvienība ir obligāta.',
+        ],
+        'instructions.*' => [
+            'required' => 'Solis ir obligāts.',
+        ],
     ],
 
     /*
@@ -180,6 +189,15 @@ return [
         'username' => 'Lietotājvārds',
         'password' => 'Parole',
         'password_confirmation' => 'Paroles apstiprinājums',
+        'unit_id' => 'Mērvienība',
+        'product_id' => 'Produkts',
+        'amount' => 'Daudzums',
+        'expiration_date' => 'Derīguma termiņš',
+
+        'recipe_products.*.product_id' => 'Produkts',
+        'recipe_products.*.amount' => 'Daudzums',
+        'recipe_products.*.unit_id' => 'Mērvienība',
+        'instructions.*' => 'Solis',
     ],
 
 ];

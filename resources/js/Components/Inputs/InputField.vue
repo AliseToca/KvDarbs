@@ -1,5 +1,8 @@
 <script setup>
 import {computed, ref} from 'vue';
+import {usePage} from "@inertiajs/vue3";
+
+const translations = usePage().props.translations;
 
 const props = defineProps({
     type: String,
@@ -32,6 +35,11 @@ const errorList = computed(() => {
 const charCount = computed(() => {
     return props.modelValue?.length || 0;
 });
+
+function translate(key) {
+    if (!key) return '';
+    return key.split('.').reduce((obj, part) => obj?.[part], translations) ?? key;
+}
 </script>
 
 <template>
@@ -66,7 +74,7 @@ const charCount = computed(() => {
 
         <ul class="error-container">
             <li v-for="(err, i) in errorList" :key="i" class="error-message">
-                {{ err }}
+                {{ translate(err) }}
             </li>
         </ul>
     </div>

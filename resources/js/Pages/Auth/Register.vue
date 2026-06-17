@@ -20,11 +20,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/register', {
-        onError: (errors) => {
-            console.log('Validation errors:', errors);
-        },
-    });
+    form.post('/register');
 };
 </script>
 
