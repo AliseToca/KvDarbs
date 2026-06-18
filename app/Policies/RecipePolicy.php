@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Recipe;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Enums\Recipe\Visibility;
 
 class RecipePolicy
 {
@@ -21,9 +22,27 @@ class RecipePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Recipe $recipe): bool
+    public function view(?User $user, Recipe $recipe): bool
     {
-        return $user->can('view_recipe');
+        if ($recipe->visibility === Visibility::Public) {
+            return true;
+        }
+
+        if ($user === null) {
+            return false;
+        }
+
+        if ($recipe->visibility === Visibility::Private) {
+            return $recipe->user_id === $user->id;
+        }
+
+        if ($recipe->visibility === Visibility::Household) {
+            return $recipe->user->households()
+                ->whereIn('households.id', $user->households()->pluck('households.id'))
+                ->exists();
+        }
+
+        return false;
     }
 
     /**
